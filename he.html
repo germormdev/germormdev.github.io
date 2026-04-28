@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CargoLog — יומן נסיעות דיגיטלי לנהגי משאיות</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { -webkit-font-smoothing: antialiased; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+        <div class="text-2xl font-bold text-orange-500 tracking-tight">CargoLog</div>
+        <div class="space-x-4 space-x-reverse text-sm font-medium">
+            <a href="index.html" class="text-gray-500 hover:text-orange-500 transition">EN</a>
+            <a href="ru.html" class="text-gray-500 hover:text-orange-500 transition">RU</a>
+            <span class="text-orange-500 border-b-2 border-orange-500 pb-1">HE</span>
+        </div>
+    </nav>
+
+    <header class="container mx-auto px-6 pt-12 pb-8 md:pt-20 md:pb-12 text-center">
+        <h1 class="text-4xl md:text-6xl font-extrabold text-gray-900 mb-6 tracking-tight">
+            יומן נסיעות דיגיטלי <br><span class="text-orange-500">לנהגי משאיות</span>
+        </h1>
+        <p class="text-lg md:text-xl text-gray-600 mb-10 max-w-2xl mx-auto">
+            אפליקציית יומן נסיעות חינמית. נסיעות, משמרות, תדלוקים, מטענים ומכולות. עובד אופליין. בלי הרשמה. בלי ענן. בלי פרסומות. המידע שלך נשאר בטלפון.
+        </p>
+        
+        <a href="https://groups.google.com/g/cargolog-testers" target="_blank" class="inline-block bg-orange-500 text-white font-bold text-lg py-4 px-10 rounded-full shadow-lg hover:bg-orange-600 hover:shadow-xl transition transform hover:-translate-y-1">
+            <i class="fa-brands fa-google ml-2"></i> הפוך לבודק (טסטר)
+        </a>
+        <p class="mt-4 text-sm text-gray-500">Android 7.0+ • ~15 MB • חינם</p>
+    </header>
+
+    <section class="container mx-auto px-6 mb-16 max-w-3xl">
+        <div class="bg-orange-50 border-r-4 border-orange-500 p-6 md:p-8 rounded-l-2xl shadow-sm text-right">
+            <h3 class="text-xl font-bold text-gray-900 mb-4"><i class="fa-solid fa-list-check text-orange-500 ml-2"></i> איך להתקין את CargoLog (בטא):</h3>
+            <ol class="list-decimal list-inside space-y-3 text-gray-700">
+                <li>
+                    לחצו על הכפתור למעלה ו<strong>הצטרפו לקבוצה</strong> <a href="https://groups.google.com/g/cargolog-testers" target="_blank" class="text-orange-600 font-semibold hover:underline">cargolog-testers</a> (נדרש חשבון Google).
+                </li>
+                <li>
+                    לאחר ההצטרפות, היכנסו ל<strong><a href="https://play.google.com/apps/internaltest/4701540346950414205" target="_blank" class="text-orange-600 font-semibold hover:underline">קישור הזה</a></strong> ולחצו על "Become a tester".
+                </li>
+                <li>הורידו את האפליקציה מ-Google Play לטלפון שלכם.</li>
+            </ol>
+            <p class="mt-4 text-sm text-gray-500"><i class="fa-solid fa-circle-info ml-1"></i> <em>חשוב: הקישור ל-Google Play לא יעבוד אם לא הצטרפתם קודם לקבוצת Google.</em></p>
+        </div>
+    </section>
+
+    <section class="container mx-auto px-6 mb-20">
+        <div class="flex justify-start md:justify-center gap-6 overflow-x-auto hide-scrollbar pb-8 px-4" dir="ltr">
+            <img src="screen1.png" alt="CargoLog Main Screen" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800 w-64 md:w-72 flex-shrink-0">
+            <img src="screen2.png" alt="Trip History" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800 w-64 md:w-72 flex-shrink-0">
+            <img src="screen3.png" alt="Refuel Log" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800 w-64 md:w-72 flex-shrink-0">
+        </div>
+    </section>
+
+    <section class="bg-white py-20">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-16">מה CargoLog עושה</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                
+                <div class="bg-gray-50 p-8 rounded-2xl">
+                    <div class="text-orange-500 text-3xl mb-4"><i class="fa-solid fa-route"></i></div>
+                    <h3 class="text-xl font-bold mb-3">תיעוד נסיעות</h3>
+                    <p class="text-gray-600">מד-אוץ, שעות יציאה והגעה, המתנה, טעינה. תמיכה בנסיעות רב-שלביות ועצירת לילה.</p>
+                </div>
+
+                <div class="bg-gray-50 p-8 rounded-2xl">
+                    <div class="text-orange-500 text-3xl mb-4"><i class="fa-solid fa-box-open"></i></div>
+                    <h3 class="text-xl font-bold mb-3">זיהוי מכולות OCR</h3>
+                    <p class="text-gray-600">סרקו מספרי מכולות (ISO 6346) וחותמות עם המצלמה. בדיקת ספרת ביקורת אוטומטית.</p>
+                </div>
+
+                <div class="bg-gray-50 p-8 rounded-2xl">
+                    <div class="text-orange-500 text-3xl mb-4"><i class="fa-solid fa-truck-front"></i></div>
+                    <h3 class="text-xl font-bold mb-3">מוסך ומשמרות</h3>
+                    <p class="text-gray-600">נהלו משאיות ונגררים. התחילו וסיימו משמרות. היסטוריית עבודה מלאה מקובצת לפי תאריכים.</p>
+                </div>
+
+                <div class="bg-gray-50 p-8 rounded-2xl">
+                    <div class="text-orange-500 text-3xl mb-4"><i class="fa-solid fa-gas-pump"></i></div>
+                    <h3 class="text-xl font-bold mb-3">יומן תדלוקים</h3>
+                    <p class="text-gray-600">תעדו כל תדלוק: ליטרים, מד-אוץ, מספר רכב. הפקת דוחות PDF נוחים.</p>
+                </div>
+
+                <div class="bg-gray-50 p-8 rounded-2xl">
+                    <div class="text-orange-500 text-3xl mb-4"><i class="fa-solid fa-stopwatch"></i></div>
+                    <h3 class="text-xl font-bold mb-3">טיימרים חכמים</h3>
+                    <p class="text-gray-600">טיימרים מובנים להמתנה אצל לקוח, תדלוק ופריקה עם התראות ברקע.</p>
+                </div>
+
+                <div class="bg-gray-50 p-8 rounded-2xl">
+                    <div class="text-orange-500 text-3xl mb-4"><i class="fa-solid fa-shield-halved"></i></div>
+                    <h3 class="text-xl font-bold mb-3">אופליין לגמרי</h3>
+                    <p class="text-gray-600">לא צריך אינטרנט במשמרת. בלי חשבונות. נתוני הנסיעות לעולם לא עוזבים את הטלפון.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-6 text-center">
+            <h3 class="text-2xl font-bold mb-6">צור קשר עם המפתח</h3>
+            <div class="flex justify-center space-x-8 space-x-reverse mb-8">
+                <a href="https://t.me/TripLog_app" target="_blank" class="text-gray-400 hover:text-blue-400 text-4xl transition">
+                    <i class="fa-brands fa-telegram"></i>
+                </a>
+                <a href="mailto:germormdev@gmail.com" class="text-gray-400 hover:text-red-400 text-4xl transition">
+                    <i class="fa-solid fa-envelope"></i>
+                </a>
+                <a href="https://www.facebook.com/CargoLogApp" target="_blank" class="text-gray-400 hover:text-blue-600 text-4xl transition">
+                    <i class="fa-brands fa-facebook"></i>
+                </a>
+            </div>
+            <p class="text-gray-500 text-sm">© 2026 CargoLog. נוצר על ידי נהג עבור נהגים.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

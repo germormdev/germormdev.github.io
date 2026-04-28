@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CargoLog — Цифровой бортовой журнал для водителей грузовиков</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { -webkit-font-smoothing: antialiased; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+        <div class="text-2xl font-bold text-orange-500 tracking-tight">CargoLog</div>
+        <div class="space-x-4 text-sm font-medium">
+            <a href="index.html" class="text-gray-500 hover:text-orange-500 transition">EN</a>
+            <span class="text-orange-500 border-b-2 border-orange-500 pb-1">RU</span>
+            <a href="he.html" class="text-gray-500 hover:text-orange-500 transition">HE</a>
+        </div>
+    </nav>
+
+    <header class="container mx-auto px-6 pt-12 pb-8 md:pt-20 md:pb-12 text-center">
+        <h1 class="text-4xl md:text-6xl font-extrabold text-gray-900 mb-6 tracking-tight">
+            Цифровой бортовой журнал <br><span class="text-orange-500">для водителей грузовиков</span>
+        </h1>
+        <p class="text-lg md:text-xl text-gray-600 mb-10 max-w-2xl mx-auto">
+            Бесплатное приложение бортового журнала. Рейсы, смены, заправки, грузы и контейнеры. Работает офлайн. Без регистрации. Без облака. Без рекламы. Ваши данные остаются на телефоне.
+        </p>
+        
+        <a href="https://groups.google.com/g/cargolog-testers" target="_blank" class="inline-block bg-orange-500 text-white font-bold text-lg py-4 px-10 rounded-full shadow-lg hover:bg-orange-600 hover:shadow-xl transition transform hover:-translate-y-1">
+            <i class="fa-brands fa-google mr-2"></i> Стать тестером
+        </a>
+        <p class="mt-4 text-sm text-gray-500">Android 7.0+ • ~15 МБ • Бесплатно</p>
+    </header>
+
+    <section class="container mx-auto px-6 mb-16 max-w-3xl">
+        <div class="bg-orange-50 border-l-4 border-orange-500 p-6 md:p-8 rounded-r-2xl shadow-sm text-left">
+            <h3 class="text-xl font-bold text-gray-900 mb-4"><i class="fa-solid fa-list-check text-orange-500 mr-2"></i> Как установить CargoLog (Beta):</h3>
+            <ol class="list-decimal list-inside space-y-3 text-gray-700">
+                <li>
+                    Нажмите кнопку выше и <strong>вступите в группу</strong> <a href="https://groups.google.com/g/cargolog-testers" target="_blank" class="text-orange-600 font-semibold hover:underline">cargolog-testers</a> (нужен аккаунт Google).
+                </li>
+                <li>
+                    После вступления перейдите по <strong><a href="https://play.google.com/apps/internaltest/4701540346950414205" target="_blank" class="text-orange-600 font-semibold hover:underline">этой ссылке</a></strong> и нажмите «Стать тестером».
+                </li>
+                <li>Скачайте приложение из Google Play на свой телефон.</li>
+            </ol>
+            <p class="mt-4 text-sm text-gray-500"><i class="fa-solid fa-circle-info mr-1"></i> <em>Важно: без вступления в Google Группу ссылка на скачивание в Google Play работать не будет.</em></p>
+        </div>
+    </section>
+
+    <section class="container mx-auto px-6 mb-20">
+        <div class="flex justify-start md:justify-center gap-6 overflow-x-auto hide-scrollbar pb-8 px-4">
+            <img src="screen1.png" alt="Главный экран CargoLog" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800 w-64 md:w-72 flex-shrink-0">
+            <img src="screen2.png" alt="История рейсов" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800 w-64 md:w-72 flex-shrink-0">
+            <img src="screen3.png" alt="Журнал заправок" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800 w-64 md:w-72 flex-shrink-0">
+        </div>
+    </section>
+
+    <section class="bg-white py-20">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-16">Что умеет CargoLog</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                
+                <div class="bg-gray-50 p-8 rounded-2xl">
+                    <div class="text-orange-500 text-3xl mb-4"><i class="fa-solid fa-route"></i></div>
+                    <h3 class="text-xl font-bold mb-3">Учёт рейсов</h3>
+                    <p class="text-gray-600">Одометр, время выезда и прибытия, ожидание, погрузка. Поддержка многоплечевых рейсов с ночевкой.</p>
+                </div>
+
+                <div class="bg-gray-50 p-8 rounded-2xl">
+                    <div class="text-orange-500 text-3xl mb-4"><i class="fa-solid fa-box-open"></i></div>
+                    <h3 class="text-xl font-bold mb-3">OCR контейнеров</h3>
+                    <p class="text-gray-600">Сканируйте номера контейнеров (ISO 6346) и пломб камерой. Автоматическая проверка контрольной цифры.</p>
+                </div>
+
+                <div class="bg-gray-50 p-8 rounded-2xl">
+                    <div class="text-orange-500 text-3xl mb-4"><i class="fa-solid fa-truck-front"></i></div>
+                    <h3 class="text-xl font-bold mb-3">Гараж и Смены</h3>
+                    <p class="text-gray-600">Управляйте тягачами и прицепами. Начинайте и завершайте смены. Полная история работы с группировкой по датам.</p>
+                </div>
+
+                <div class="bg-gray-50 p-8 rounded-2xl">
+                    <div class="text-orange-500 text-3xl mb-4"><i class="fa-solid fa-gas-pump"></i></div>
+                    <h3 class="text-xl font-bold mb-3">Журнал заправок</h3>
+                    <p class="text-gray-600">Записывайте каждую заправку: литры, одометр, номер машины. Генерация удобных PDF-отчётов.</p>
+                </div>
+
+                <div class="bg-gray-50 p-8 rounded-2xl">
+                    <div class="text-orange-500 text-3xl mb-4"><i class="fa-solid fa-stopwatch"></i></div>
+                    <h3 class="text-xl font-bold mb-3">Умные таймеры</h3>
+                    <p class="text-gray-600">Встроенные таймеры ожидания у клиента, заправки и разгрузки с фоновыми уведомлениями.</p>
+                </div>
+
+                <div class="bg-gray-50 p-8 rounded-2xl">
+                    <div class="text-orange-500 text-3xl mb-4"><i class="fa-solid fa-shield-halved"></i></div>
+                    <h3 class="text-xl font-bold mb-3">Полный Офлайн</h3>
+                    <p class="text-gray-600">Интернет не нужен во время смены. Никаких аккаунтов. Данные рейсов никогда не покидают ваш телефон.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-6 text-center">
+            <h3 class="text-2xl font-bold mb-6">Связь с разработчиком</h3>
+            <div class="flex justify-center space-x-8 mb-8">
+                <a href="https://t.me/TripLog_app" target="_blank" class="text-gray-400 hover:text-blue-400 text-4xl transition">
+                    <i class="fa-brands fa-telegram"></i>
+                </a>
+                <a href="mailto:germormdev@gmail.com" class="text-gray-400 hover:text-red-400 text-4xl transition">
+                    <i class="fa-solid fa-envelope"></i>
+                </a>
+                <a href="https://www.facebook.com/CargoLogApp" target="_blank" class="text-gray-400 hover:text-blue-600 text-4xl transition">
+                    <i class="fa-brands fa-facebook"></i>
+                </a>
+            </div>
+            <p class="text-gray-500 text-sm">© 2026 CargoLog. Создано водителем для водителей.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CargoLog — Digital Logbook for Truck Drivers</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { -webkit-font-smoothing: antialiased; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+        <div class="text-2xl font-bold text-orange-500 tracking-tight">CargoLog</div>
+        <div class="space-x-4 text-sm font-medium">
+            <span class="text-orange-500 border-b-2 border-orange-500 pb-1">EN</span>
+            <a href="ru.html" class="text-gray-500 hover:text-orange-500 transition">RU</a>
+            <a href="he.html" class="text-gray-500 hover:text-orange-500 transition">HE</a>
+        </div>
+    </nav>
+
+    <header class="container mx-auto px-6 pt-12 pb-8 md:pt-20 md:pb-12 text-center">
+        <h1 class="text-4xl md:text-6xl font-extrabold text-gray-900 mb-6 tracking-tight">
+            Digital Logbook <br><span class="text-orange-500">for Truck Drivers</span>
+        </h1>
+        <p class="text-lg md:text-xl text-gray-600 mb-10 max-w-2xl mx-auto">
+            Free truck driver logbook app. Track trips, shifts, refueling, cargo, and containers. Works offline. No registration. No cloud. No ads. Your data stays on your phone.
+        </p>
+        
+        <a href="https://groups.google.com/g/cargolog-testers" target="_blank" class="inline-block bg-orange-500 text-white font-bold text-lg py-4 px-10 rounded-full shadow-lg hover:bg-orange-600 hover:shadow-xl transition transform hover:-translate-y-1">
+            <i class="fa-brands fa-google mr-2"></i> Become a Tester
+        </a>
+        <p class="mt-4 text-sm text-gray-500">Android 7.0+ • ~15 MB • Free</p>
+    </header>
+
+    <section class="container mx-auto px-6 mb-16 max-w-3xl">
+        <div class="bg-orange-50 border-l-4 border-orange-500 p-6 md:p-8 rounded-r-2xl shadow-sm text-left">
+            <h3 class="text-xl font-bold text-gray-900 mb-4"><i class="fa-solid fa-list-check text-orange-500 mr-2"></i> How to install CargoLog (Beta):</h3>
+            <ol class="list-decimal list-inside space-y-3 text-gray-700">
+                <li>
+                    Click the button above and <strong>join the group</strong> <a href="https://groups.google.com/g/cargolog-testers" target="_blank" class="text-orange-600 font-semibold hover:underline">cargolog-testers</a> (Google account required).
+                </li>
+                <li>
+                    After joining, click <strong><a href="https://play.google.com/apps/internaltest/4701540346950414205" target="_blank" class="text-orange-600 font-semibold hover:underline">this link</a></strong> and select "Become a tester".
+                </li>
+                <li>Download the app from Google Play to your phone.</li>
+            </ol>
+            <p class="mt-4 text-sm text-gray-500"><i class="fa-solid fa-circle-info mr-1"></i> <em>Important: The Google Play link will not work until you join the Google Group.</em></p>
+        </div>
+    </section>
+
+    <section class="container mx-auto px-6 mb-20">
+        <div class="flex justify-start md:justify-center gap-6 overflow-x-auto hide-scrollbar pb-8 px-4">
+            <img src="screen1.png" alt="CargoLog Main Screen" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800 w-64 md:w-72 flex-shrink-0">
+            <img src="screen2.png" alt="Trip History" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800 w-64 md:w-72 flex-shrink-0">
+            <img src="screen3.png" alt="Refuel Log" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800 w-64 md:w-72 flex-shrink-0">
+        </div>
+    </section>
+
+    <section class="bg-white py-20">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-16">What CargoLog does</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                
+                <div class="bg-gray-50 p-8 rounded-2xl">
+                    <div class="text-orange-500 text-3xl mb-4"><i class="fa-solid fa-route"></i></div>
+                    <h3 class="text-xl font-bold mb-3">Trip Logging</h3>
+                    <p class="text-gray-600">Odometer, departure and arrival times, waiting, loading. Support for multi-leg trips and overnight stops.</p>
+                </div>
+
+                <div class="bg-gray-50 p-8 rounded-2xl">
+                    <div class="text-orange-500 text-3xl mb-4"><i class="fa-solid fa-box-open"></i></div>
+                    <h3 class="text-xl font-bold mb-3">Container OCR</h3>
+                    <p class="text-gray-600">Scan container (ISO 6346) and seal numbers with your camera. Automatic check digit validation.</p>
+                </div>
+
+                <div class="bg-gray-50 p-8 rounded-2xl">
+                    <div class="text-orange-500 text-3xl mb-4"><i class="fa-solid fa-truck-front"></i></div>
+                    <h3 class="text-xl font-bold mb-3">Garage & Shifts</h3>
+                    <p class="text-gray-600">Manage trucks and trailers. Start and end shifts. Full work history grouped by date.</p>
+                </div>
+
+                <div class="bg-gray-50 p-8 rounded-2xl">
+                    <div class="text-orange-500 text-3xl mb-4"><i class="fa-solid fa-gas-pump"></i></div>
+                    <h3 class="text-xl font-bold mb-3">Refueling Log</h3>
+                    <p class="text-gray-600">Record every refuel: liters, odometer, truck plate. Generate convenient PDF reports.</p>
+                </div>
+
+                <div class="bg-gray-50 p-8 rounded-2xl">
+                    <div class="text-orange-500 text-3xl mb-4"><i class="fa-solid fa-stopwatch"></i></div>
+                    <h3 class="text-xl font-bold mb-3">Smart Timers</h3>
+                    <p class="text-gray-600">Built-in timers for waiting at client, refueling, and unloading with background notifications.</p>
+                </div>
+
+                <div class="bg-gray-50 p-8 rounded-2xl">
+                    <div class="text-orange-500 text-3xl mb-4"><i class="fa-solid fa-shield-halved"></i></div>
+                    <h3 class="text-xl font-bold mb-3">Fully Offline</h3>
+                    <p class="text-gray-600">No internet needed during your shift. No accounts. Your trip data never leaves your phone.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-6 text-center">
+            <h3 class="text-2xl font-bold mb-6">Contact Developer</h3>
+            <div class="flex justify-center space-x-8 mb-8">
+                <a href="https://t.me/TripLog_app" target="_blank" class="text-gray-400 hover:text-blue-400 text-4xl transition">
+                    <i class="fa-brands fa-telegram"></i>
+                </a>
+                <a href="mailto:germormdev@gmail.com" class="text-gray-400 hover:text-red-400 text-4xl transition">
+                    <i class="fa-solid fa-envelope"></i>
+                </a>
+                <a href="https://www.facebook.com/CargoLogApp" target="_blank" class="text-gray-400 hover:text-blue-600 text-4xl transition">
+                    <i class="fa-brands fa-facebook"></i>
+                </a>
+            </div>
+            <p class="text-gray-500 text-sm">© 2026 CargoLog. Built by a driver for drivers.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
