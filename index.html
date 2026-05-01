@@ -6,13 +6,14 @@
     <title>CargoLog — Digital Logbook for Truck Drivers</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <style>
         body { -webkit-font-smoothing: antialiased; }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800">
+<body class="bg-gray-50 text-gray-800" data-versions-preview="true">
 
     <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
         <div class="text-2xl font-bold text-orange-500 tracking-tight">CargoLog</div>
@@ -30,22 +31,48 @@
         <p class="text-lg md:text-xl text-gray-600 mb-10 max-w-2xl mx-auto">
             Free truck driver logbook app. Track trips, shifts, refueling, cargo, and containers. Works offline. No registration. No cloud. No ads. Your data stays on your phone.
         </p>
-        
-        <a href="https://groups.google.com/g/cargolog-testers" target="_blank" class="inline-block bg-orange-500 text-white font-bold text-lg py-4 px-10 rounded-full shadow-lg hover:bg-orange-600 hover:shadow-xl transition transform hover:-translate-y-1">
-            <i class="fa-brands fa-google mr-2"></i> Become a Tester
-        </a>
-        <p class="mt-4 text-sm text-gray-500">Android 7.0+ • ~15 MB • Free</p>
+
+        <!-- ── Two ways to become a tester ─────────────────────────── -->
+        <div class="max-w-md mx-auto">
+            <button id="btn-google-signin"
+                    class="w-full inline-flex items-center justify-center bg-white border-2 border-gray-300 text-gray-800 font-bold text-lg py-4 px-8 rounded-full shadow-md hover:shadow-lg hover:border-orange-500 transition transform hover:-translate-y-0.5">
+                <svg class="w-6 h-6 mr-3" viewBox="0 0 24 24">
+                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                </svg>
+                Sign in with Google
+            </button>
+            <p class="mt-3 text-sm text-gray-500">Quick — one click. We'll add you to the test program.</p>
+
+            <div class="flex items-center my-6">
+                <div class="flex-grow border-t border-gray-300"></div>
+                <span class="px-4 text-gray-400 text-sm">or</span>
+                <div class="flex-grow border-t border-gray-300"></div>
+            </div>
+
+            <a href="https://groups.google.com/g/cargolog-testers" target="_blank"
+               class="block w-full bg-orange-500 text-white font-bold text-lg py-4 px-8 rounded-full shadow-lg hover:bg-orange-600 hover:shadow-xl transition transform hover:-translate-y-0.5">
+                <i class="fa-brands fa-google mr-2"></i> Join via Google Group
+            </a>
+            <p class="mt-3 text-sm text-gray-500">Old way — manual approval.</p>
+        </div>
+
+        <div id="auth-status" class="hidden max-w-md mx-auto"></div>
+
+        <p class="mt-8 text-sm text-gray-500">Android 7.0+ • ~15 MB • Free</p>
     </header>
 
     <section class="container mx-auto px-6 mb-12 max-w-3xl">
         <div class="bg-orange-50 border-l-4 border-orange-500 p-6 md:p-8 rounded-r-2xl shadow-sm text-left">
             <h3 class="text-xl font-bold text-gray-900 mb-4"><i class="fa-solid fa-list-check text-orange-500 mr-2"></i> How to install CargoLog (Beta):</h3>
             <ol class="list-decimal list-inside space-y-3 text-gray-700">
-                <li>Click the button above and <strong>join the group</strong> <a href="https://groups.google.com/g/cargolog-testers" target="_blank" class="text-orange-600 font-semibold hover:underline">cargolog-testers</a>.</li>
-                <li>After joining, click <strong><a href="https://play.google.com/apps/testing/com.driver.triplog" target="_blank" class="text-orange-600 font-semibold hover:underline">this link</a></strong> and select "Become a tester".</li>
+                <li>Click <strong>"Sign in with Google"</strong> above to register quickly, or join the group <a href="https://groups.google.com/g/cargolog-testers" target="_blank" class="text-orange-600 font-semibold hover:underline">cargolog-testers</a>.</li>
+                <li>After registration, follow <strong><a href="https://play.google.com/apps/testing/com.driver.triplog" target="_blank" class="text-orange-600 font-semibold hover:underline">this link</a></strong> and select "Become a tester".</li>
                 <li>Download the app from Google Play.</li>
             </ol>
-            <p class="mt-4 text-sm text-gray-500"><i class="fa-solid fa-circle-info mr-1"></i> <em>Important: The Google Play link will not work until you join the Google Group.</em></p>
+            <p class="mt-4 text-sm text-gray-500"><i class="fa-solid fa-circle-info mr-1"></i> <em>Important: The Google Play link will not work until you are added to the test program.</em></p>
         </div>
     </section>
 
@@ -59,7 +86,7 @@
 
     <section class="bg-white py-16 border-t border-gray-200">
         <div class="container mx-auto px-6 max-w-4xl">
-            
+
             <h2 class="text-3xl font-bold text-gray-900 mb-8 pb-2 border-b-2 border-orange-500 inline-block">What CargoLog does</h2>
             <div class="space-y-6 text-lg text-gray-700 mb-16">
                 <div><h4 class="font-bold text-xl text-gray-900 mb-2">Trip Logging</h4><p>Record every trip from origin to destination. Track odometer readings, departure and arrival times, waiting time, loading and unloading. Support for multi-leg trips — park at a stop, continue the same delivery the next day.</p></div>
@@ -106,6 +133,17 @@
         </div>
     </section>
 
+    <!-- ── Latest versions block ─────────────────────────────────────── -->
+    <section class="bg-gray-50 py-16 border-t border-gray-200">
+        <div class="container mx-auto px-6 max-w-4xl">
+            <div class="flex justify-between items-baseline mb-8">
+                <h2 class="text-3xl font-bold text-gray-900 pb-2 border-b-2 border-orange-500 inline-block">What's New</h2>
+                <a href="versions.html" class="text-orange-500 hover:underline font-medium">Full history →</a>
+            </div>
+            <div id="versions-list"></div>
+        </div>
+    </section>
+
     <footer class="bg-gray-900 text-white py-12">
         <div class="container mx-auto px-6 text-center">
             <h3 class="text-2xl font-bold mb-6">Contact Developer</h3>
@@ -114,8 +152,14 @@
                 <a href="mailto:germormdev@gmail.com" class="text-gray-400 hover:text-red-400 text-4xl transition"><i class="fa-solid fa-envelope"></i></a>
                 <a href="https://www.facebook.com/CargoLogApp" target="_blank" class="text-gray-400 hover:text-blue-600 text-4xl transition"><i class="fa-brands fa-facebook"></i></a>
             </div>
+            <div class="flex justify-center space-x-6 mb-6 text-sm">
+                <a href="privacy.html" class="text-gray-400 hover:text-orange-400 transition">Privacy Policy</a>
+                <a href="versions.html" class="text-gray-400 hover:text-orange-400 transition">Version History</a>
+            </div>
             <p class="text-gray-500 text-sm">© 2026 CargoLog. Built by a driver for drivers.</p>
         </div>
     </footer>
+
+    <script type="module" src="signin.js"></script>
 </body>
 </html>

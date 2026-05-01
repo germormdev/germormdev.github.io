@@ -1,0 +1,61 @@
+rules_version = '2';
+
+// ═══════════════════════════════════════════════════════════════════════
+// CargoLog Firestore Security Rules
+// ═══════════════════════════════════════════════════════════════════════
+// Деплой: скопировать в Firebase Console →
+//   Firestore Database → Rules → Publish
+// или через CLI: firebase deploy --only firestore:rules
+// ═══════════════════════════════════════════════════════════════════════
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ── Whitelist админов ────────────────────────────────────────────
+    function isAdmin() {
+      return request.auth != null
+        && request.auth.token.email in [
+            "germormdev@gmail.com",
+            "ormgerm@gmail.com"
+          ];
+    }
+
+    // ── pending_testers ──────────────────────────────────────────────
+    // Регистрация тестера. Документ ID = uid пользователя.
+    // - Создание: только сам пользователь и только со своим email.
+    // - Чтение: только сам пользователь видит свою запись + админы видят всё.
+    // - Изменение: только админы (например, статус pending → approved).
+    // - Удаление: только админы.
+    match /pending_testers/{uid} {
+      allow read: if request.auth != null
+                  && (request.auth.uid == uid || isAdmin());
+
+      allow create: if request.auth != null
+                    && request.auth.uid == uid
+                    && request.resource.data.email == request.auth.token.email
+                    && request.resource.data.keys().hasOnly([
+                         "email", "displayName", "photoURL", "locale",
+                         "userAgent", "createdAt", "status"
+                       ])
+                    && request.resource.data.status == "pending";
+
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // ── version_history ──────────────────────────────────────────────
+    // Журнал версий приложения.
+    // - Чтение: всем (публичная информация).
+    // - Создание/изменение/удаление: только админы из whitelist.
+    match /version_history/{docId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    // ── Default deny ─────────────────────────────────────────────────
+    // Любые другие пути запрещены до явного разрешения.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
