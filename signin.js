@@ -434,69 +434,102 @@ async function loadSiteContent() {
 }
 
 function setupContentForm() {
-  const form = document.getElementById("admin-content-form");
-  if (!form) return;
+  const localeSelect = document.getElementById("content-locale");
+  if (!localeSelect) return;
 
-  const localeSelect = form.querySelector("[name=locale]");
+  // При смене локали — подгружаем текущее содержимое в поля
+  localeSelect.addEventListener("change", () => loadContentIntoForm(localeSelect.value));
+  loadContentIntoForm(localeSelect.value);
 
-  // При смене локали — подгружаем текущее содержимое в форму
-  localeSelect.addEventListener("change", () => loadContentIntoForm(form, localeSelect.value));
-  loadContentIntoForm(form, localeSelect.value);
+  // Кнопки "Save" по секциям — каждая обновляет только свой блок через updateDoc().
+  // setDoc с merge: true создаст документ если его нет, либо обновит только указанные поля.
+  document.querySelectorAll("[data-save-section]").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const section = btn.dataset.saveSection;
+      const locale = localeSelect.value;
+      const origLabel = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = "Saving…";
 
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const submitBtn = form.querySelector("button[type=submit]");
-    submitBtn.disabled = true;
-    submitBtn.textContent = "Saving…";
-
-    const locale = localeSelect.value;
-    const data = {
-      hero: {
-        title_html: form.querySelector("[name=hero_title]").value,
-        subtitle:   form.querySelector("[name=hero_subtitle]").value,
-      },
-      features: parseFeatures(form.querySelector("[name=features]").value),
-      reasons:  parseLines(form.querySelector("[name=reasons]").value),
-      tech:     parseLines(form.querySelector("[name=tech]").value),
-      audience: form.querySelector("[name=audience]").value,
-      updatedAt: serverTimestamp(),
-      updatedBy: auth.currentUser ? auth.currentUser.email : "unknown",
-    };
-
-    try {
-      await setDoc(doc(db, "site_content", locale), data);
-      alert(`Saved content for ${locale.toUpperCase()}`);
-    } catch (err) {
-      alert("Save failed: " + err.message);
-    } finally {
-      submitBtn.disabled = false;
-      submitBtn.textContent = submitBtn.dataset.origLabel || "Save";
-    }
+      try {
+        const partial = buildSectionUpdate(section);
+        partial.updatedAt = serverTimestamp();
+        partial.updatedBy = auth.currentUser ? auth.currentUser.email : "unknown";
+        // setDoc with {merge:true} обновляет только переданные поля.
+        // Это безопаснее чем updateDoc — работает и когда документа ещё нет.
+        await setDoc(doc(db, "site_content", locale), partial, { merge: true });
+        // Краткое подтверждение в кнопке вместо alert
+        btn.textContent = "✓ Saved";
+        setTimeout(() => { btn.textContent = origLabel; btn.disabled = false; }, 1500);
+      } catch (err) {
+        alert("Save failed: " + err.message);
+        btn.textContent = origLabel;
+        btn.disabled = false;
+      }
+    });
   });
 }
 
-async function loadContentIntoForm(form, locale) {
+// Собирает partial-объект для setDoc{merge:true} по секции.
+// Возвращает только те поля которые относятся к секции — остальные не трогаются.
+function buildSectionUpdate(section) {
+  switch (section) {
+    case "hero":
+      return {
+        hero: {
+          title_html: document.getElementById("content-hero-title-input").value,
+          subtitle:   document.getElementById("content-hero-subtitle-input").value,
+        },
+      };
+    case "features":
+      return {
+        features: parseFeatures(document.getElementById("content-features-input").value),
+      };
+    case "reasons":
+      return {
+        reasons: parseLines(document.getElementById("content-reasons-input").value),
+      };
+    case "tech":
+      return {
+        tech: parseLines(document.getElementById("content-tech-input").value),
+      };
+    case "audience":
+      return {
+        audience: document.getElementById("content-audience-input").value,
+      };
+    default:
+      throw new Error("Unknown section: " + section);
+  }
+}
+
+async function loadContentIntoForm(locale) {
+  // Все ID полей в Content tab. Если каких-то нет в DOM — фрагмент не на этой странице.
+  const ids = [
+    "content-hero-title-input",
+    "content-hero-subtitle-input",
+    "content-features-input",
+    "content-reasons-input",
+    "content-tech-input",
+    "content-audience-input",
+  ];
+  const els = ids.map((id) => document.getElementById(id));
+  if (els.some((e) => !e)) return; // не на admin-странице
+
   try {
     const snap = await getDoc(doc(db, "site_content", locale));
     if (!snap.exists()) {
-      // Очищаем — пользователь начнёт с нуля для этой локали
-      form.querySelector("[name=hero_title]").value = "";
-      form.querySelector("[name=hero_subtitle]").value = "";
-      form.querySelector("[name=features]").value = "";
-      form.querySelector("[name=reasons]").value = "";
-      form.querySelector("[name=tech]").value = "";
-      form.querySelector("[name=audience]").value = "";
+      els.forEach((e) => { e.value = ""; });
       return;
     }
     const d = snap.data();
-    form.querySelector("[name=hero_title]").value    = d.hero?.title_html || "";
-    form.querySelector("[name=hero_subtitle]").value = d.hero?.subtitle || "";
-    form.querySelector("[name=features]").value      = (d.features || []).map(
+    els[0].value = d.hero?.title_html || "";
+    els[1].value = d.hero?.subtitle || "";
+    els[2].value = (d.features || []).map(
       (f) => `${f.title || ""} :: ${f.description || ""}`
     ).join("\n");
-    form.querySelector("[name=reasons]").value = (d.reasons || []).join("\n");
-    form.querySelector("[name=tech]").value    = (d.tech    || []).join("\n");
-    form.querySelector("[name=audience]").value = d.audience || "";
+    els[3].value = (d.reasons || []).join("\n");
+    els[4].value = (d.tech    || []).join("\n");
+    els[5].value = d.audience || "";
   } catch (e) {
     console.warn("loadContentIntoForm:", e);
   }

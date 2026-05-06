@@ -138,70 +138,108 @@
                     Edit page content
                 </h3>
                 <p class="text-xs text-gray-500 mb-4">
-                    Pick locale → fields auto-fill from Firestore. Save to publish (no rebuild needed).
+                    Pick locale → fields auto-fill from Firestore. Each section saves independently.
                 </p>
-                <form id="admin-content-form" class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Locale</label>
-                        <select name="locale" required
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none">
-                            <option value="en">English</option>
-                            <option value="ru">Русский</option>
-                            <option value="he">עברית</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">
-                            Hero title (HTML allowed: &lt;br&gt;, &lt;span class="text-orange-500"&gt;…&lt;/span&gt;)
-                        </label>
-                        <input type="text" name="hero_title"
-                               placeholder='Digital Logbook <br><span class="text-orange-500">for Truck Drivers</span>'
-                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none font-mono text-sm">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Hero subtitle (plain text)</label>
-                        <textarea name="hero_subtitle" rows="2"
-                                  placeholder="Free truck driver logbook app. Track trips…"
-                                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none"></textarea>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">
-                            Features (one per line, format: <code class="text-xs bg-gray-100 px-1">Title :: Description</code>)
-                        </label>
-                        <textarea name="features" rows="8"
-                                  placeholder="Trip Logging :: Record every trip from origin to destination…&#10;Cargo Tracking :: Supports all types of transport…"
-                                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none font-mono text-sm"></textarea>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">
-                            Why drivers choose (one bullet per line, &lt;strong&gt;…&lt;/strong&gt; allowed)
-                        </label>
-                        <textarea name="reasons" rows="6"
-                                  placeholder="<strong>Works offline</strong> — no internet needed during shift"
-                                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none font-mono text-sm"></textarea>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Technical details (one bullet per line)</label>
-                        <textarea name="tech" rows="5"
-                                  placeholder="Android 7.0+ (API 24)&#10;~15 MB install size"
-                                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none font-mono text-sm"></textarea>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Who is it for (single paragraph)</label>
-                        <textarea name="audience" rows="3"
-                                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none"></textarea>
-                    </div>
-                    <div class="flex justify-end">
-                        <button type="submit" data-orig-label="Save content"
-                                class="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-2 rounded-lg shadow transition">
-                            Save content
+
+                <!-- Locale picker — общий для всех секций -->
+                <div id="content-locale-wrap" class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Locale</label>
+                    <select id="content-locale" required
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none">
+                        <option value="en">English</option>
+                        <option value="ru">Русский</option>
+                        <option value="he">עברית</option>
+                    </select>
+                </div>
+
+                <!-- ── Section: Hero ─────────────────────────────────── -->
+                <div class="bg-gray-50 border border-gray-200 rounded-xl p-4 mb-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <h4 class="font-bold text-gray-900">Hero (title + subtitle)</h4>
+                        <button type="button" data-save-section="hero"
+                                class="bg-orange-500 hover:bg-orange-600 text-white text-sm font-semibold px-4 py-1.5 rounded-lg shadow transition">
+                            Save
                         </button>
                     </div>
-                </form>
+                    <label class="block text-xs font-medium text-gray-700 mb-1">
+                        Title (HTML allowed: &lt;br&gt;, &lt;span class="text-orange-500"&gt;…&lt;/span&gt;)
+                    </label>
+                    <input type="text" id="content-hero-title-input"
+                           placeholder='Digital Logbook <br><span class="text-orange-500">for Truck Drivers</span>'
+                           class="w-full px-4 py-2 mb-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none font-mono text-sm">
+                    <label class="block text-xs font-medium text-gray-700 mb-1">Subtitle (plain text)</label>
+                    <textarea id="content-hero-subtitle-input" rows="2"
+                              placeholder="Free truck driver logbook app. Track trips…"
+                              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none"></textarea>
+                </div>
+
+                <!-- ── Section: Features ─────────────────────────────── -->
+                <div class="bg-gray-50 border border-gray-200 rounded-xl p-4 mb-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <h4 class="font-bold text-gray-900">Features (What CargoLog does)</h4>
+                        <button type="button" data-save-section="features"
+                                class="bg-orange-500 hover:bg-orange-600 text-white text-sm font-semibold px-4 py-1.5 rounded-lg shadow transition">
+                            Save
+                        </button>
+                    </div>
+                    <label class="block text-xs font-medium text-gray-700 mb-1">
+                        One feature per line, format: <code class="text-xs bg-gray-100 px-1">Title :: Description</code>
+                    </label>
+                    <textarea id="content-features-input" rows="8"
+                              placeholder="Trip Logging :: Record every trip from origin to destination…&#10;Cargo Tracking :: Supports all types of transport…"
+                              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none font-mono text-sm"></textarea>
+                </div>
+
+                <!-- ── Section: Reasons ──────────────────────────────── -->
+                <div class="bg-gray-50 border border-gray-200 rounded-xl p-4 mb-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <h4 class="font-bold text-gray-900">Why drivers choose</h4>
+                        <button type="button" data-save-section="reasons"
+                                class="bg-orange-500 hover:bg-orange-600 text-white text-sm font-semibold px-4 py-1.5 rounded-lg shadow transition">
+                            Save
+                        </button>
+                    </div>
+                    <label class="block text-xs font-medium text-gray-700 mb-1">
+                        One bullet per line. <code class="text-xs bg-gray-100 px-1">&lt;strong&gt;…&lt;/strong&gt;</code> allowed.
+                    </label>
+                    <textarea id="content-reasons-input" rows="6"
+                              placeholder="<strong>Works offline</strong> — no internet needed during shift"
+                              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none font-mono text-sm"></textarea>
+                </div>
+
+                <!-- ── Section: Tech ─────────────────────────────────── -->
+                <div class="bg-gray-50 border border-gray-200 rounded-xl p-4 mb-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <h4 class="font-bold text-gray-900">Technical details</h4>
+                        <button type="button" data-save-section="tech"
+                                class="bg-orange-500 hover:bg-orange-600 text-white text-sm font-semibold px-4 py-1.5 rounded-lg shadow transition">
+                            Save
+                        </button>
+                    </div>
+                    <label class="block text-xs font-medium text-gray-700 mb-1">One bullet per line.</label>
+                    <textarea id="content-tech-input" rows="5"
+                              placeholder="Android 7.0+ (API 24)&#10;~15 MB install size"
+                              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none font-mono text-sm"></textarea>
+                </div>
+
+                <!-- ── Section: Audience ─────────────────────────────── -->
+                <div class="bg-gray-50 border border-gray-200 rounded-xl p-4 mb-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <h4 class="font-bold text-gray-900">Who is it for</h4>
+                        <button type="button" data-save-section="audience"
+                                class="bg-orange-500 hover:bg-orange-600 text-white text-sm font-semibold px-4 py-1.5 rounded-lg shadow transition">
+                            Save
+                        </button>
+                    </div>
+                    <label class="block text-xs font-medium text-gray-700 mb-1">Single paragraph.</label>
+                    <textarea id="content-audience-input" rows="3"
+                              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none"></textarea>
+                </div>
+
                 <p class="text-xs text-gray-500 mt-3">
                     <i class="fa-solid fa-circle-info mr-1"></i>
+                    Each "Save" button updates only that section in Firestore — other sections stay untouched.
                     HTML tags &lt;br&gt;, &lt;strong&gt;, &lt;span&gt;, &lt;a href&gt; allowed in <em>Hero title</em> and <em>Reasons</em>.
-                    Other fields are plain text.
                 </p>
             </div>
 
