@@ -73,6 +73,8 @@ const I18N = {
     error_popup_closed: "Sign-in cancelled.",
     sign_out: "Sign out",
     signed_in_as: "Signed in as",
+    admin_welcome: "✓ Welcome, admin",
+    admin_open_panel: "Open admin panel →",
     confirm_delete_version: "Delete this version entry?",
     confirm_delete_screenshot: "Delete this screenshot? This will commit a deletion to GitHub.",
     confirm_delete_video: "Delete this video entry?",
@@ -87,6 +89,8 @@ const I18N = {
     error_popup_closed: "Вход отменён.",
     sign_out: "Выйти",
     signed_in_as: "Вы вошли как",
+    admin_welcome: "✓ С возвращением, админ",
+    admin_open_panel: "Открыть админ-панель →",
     confirm_delete_version: "Удалить эту запись версии?",
     confirm_delete_screenshot: "Удалить скриншот? Это сделает коммит удаления в GitHub.",
     confirm_delete_video: "Удалить эту запись видео?",
@@ -101,6 +105,8 @@ const I18N = {
     error_popup_closed: "ההתחברות בוטלה.",
     sign_out: "התנתק",
     signed_in_as: "מחובר כ",
+    admin_welcome: "✓ ברוך שובך, מנהל",
+    admin_open_panel: "פתח את לוח הניהול ←",
     confirm_delete_version: "למחוק את רשומת הגרסה הזו?",
     confirm_delete_screenshot: "למחוק את הצילום? פעולה זו תיצור קומיט מחיקה ב-GitHub.",
     confirm_delete_video: "למחוק את רשומת הסרטון?",
@@ -123,6 +129,20 @@ function showStatus(message, isError = false) {
 function clearStatus() {
   const banner = document.getElementById("auth-status");
   if (banner) banner.classList.add("hidden");
+}
+
+// Спец-баннер для админа: вместо обычного "registered" — приглашение в панель.
+function showAdminWelcome(user) {
+  const banner = document.getElementById("auth-status");
+  if (!banner) return;
+  banner.className = "mt-4 p-4 rounded-lg bg-orange-100 text-orange-900 text-center";
+  banner.innerHTML = `
+    <div class="font-semibold mb-2">${t("admin_welcome")} — ${escapeHtml(user.email)}</div>
+    <a href="versions.html" class="inline-block bg-orange-500 hover:bg-orange-600 text-white font-bold px-4 py-2 rounded-lg transition">
+      ${t("admin_open_panel")}
+    </a>
+  `;
+  banner.classList.remove("hidden");
 }
 
 function escapeHtml(s) {
@@ -149,8 +169,11 @@ async function handleSignIn() {
   try {
     const result = await signInWithPopup(auth, provider);
     const user = result.user;
-    // Тестера регистрируем только если он НЕ админ (админ заходит ради админки)
-    if (!ADMIN_EMAILS.includes(user.email)) {
+    // Админ — показываем приглашение в админку (не регистрируем как тестера).
+    // Не-админ — регистрируем в pending_testers.
+    if (ADMIN_EMAILS.includes(user.email)) {
+      showAdminWelcome(user);
+    } else {
       await registerTester(user);
     }
   } catch (err) {
@@ -896,6 +919,7 @@ function updateAdminUI(user) {
   const userBadge = document.getElementById("user-badge");
 
   if (user && ADMIN_EMAILS.includes(user.email)) {
+    // На admin-странице (versions.html) — показываем админ-блок и badge
     if (adminBlock) adminBlock.classList.remove("hidden");
     if (userBadge) {
       userBadge.classList.remove("hidden");
@@ -906,7 +930,12 @@ function updateAdminUI(user) {
       const signoutBtn = document.getElementById("btn-signout");
       if (signoutBtn) signoutBtn.addEventListener("click", handleSignOut);
     }
-    // Подгружаем админ-списки
+    // На обычных страницах (index/ru/he) — показываем баннер с кнопкой "Open admin panel"
+    // (если #auth-status есть и admin-block отсутствует — значит мы не на admin-странице)
+    if (!adminBlock && document.getElementById("auth-status")) {
+      showAdminWelcome(user);
+    }
+    // Подгружаем админ-списки (только на versions.html, где они есть)
     loadScreenshotsAdmin();
     loadVideosAdmin();
   } else {
