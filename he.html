@@ -25,10 +25,10 @@
     </nav>
 
     <header class="container mx-auto px-6 pt-12 pb-8 text-center">
-        <h1 class="text-4xl md:text-6xl font-extrabold text-gray-900 mb-6 tracking-tight">
+        <h1 id="content-hero-title" class="text-4xl md:text-6xl font-extrabold text-gray-900 mb-6 tracking-tight">
             יומן נסיעות דיגיטלי <br><span class="text-orange-500">לנהגי משאיות</span>
         </h1>
-        <p class="text-lg md:text-xl text-gray-600 mb-10 max-w-2xl mx-auto">
+        <p id="content-hero-subtitle" class="text-lg md:text-xl text-gray-600 mb-10 max-w-2xl mx-auto">
             אפליקציית יומן נסיעות חינמית. נסיעות, משמרות, תדלוקים, מטענים ומכולות. עובד אופליין. בלי הרשמה. בלי ענן. בלי פרסומות. המידע שלך נשאר בטלפון.
         </p>
 
@@ -76,18 +76,24 @@
     </section>
 
     <section class="container mx-auto px-6 mb-16">
-        <div class="flex justify-start md:justify-center gap-6 overflow-x-auto hide-scrollbar pb-8 px-4" dir="ltr">
+        <div id="screenshots-list" class="flex justify-start md:justify-center gap-6 overflow-x-auto hide-scrollbar pb-8 px-4" dir="ltr">
             <img src="screen1.png" alt="Screenshot 1" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800 w-64 md:w-72 flex-shrink-0">
             <img src="screen2.png" alt="Screenshot 2" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800 w-64 md:w-72 flex-shrink-0">
             <img src="screen3.png" alt="Screenshot 3" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800 w-64 md:w-72 flex-shrink-0">
         </div>
     </section>
 
+    <!-- Видео — секция скрыта если в Firestore нет видео для текущей локали -->
+    <section id="videos-section" class="container mx-auto px-6 mb-16 max-w-5xl">
+        <h2 class="text-3xl font-bold text-gray-900 mb-8 pb-2 border-b-2 border-orange-500 inline-block">סרטונים</h2>
+        <div id="videos-list" class="grid md:grid-cols-2 gap-6"></div>
+    </section>
+
     <section class="bg-white py-16 border-t border-gray-200">
         <div class="container mx-auto px-6 max-w-4xl">
 
             <h2 class="text-3xl font-bold text-gray-900 mb-8 pb-2 border-b-2 border-orange-500 inline-block">מה CargoLog עושה</h2>
-            <div class="space-y-6 text-lg text-gray-700 mb-16">
+            <div id="content-features" class="space-y-6 text-lg text-gray-700 mb-16">
                 <div><h4 class="font-bold text-xl text-gray-900 mb-2">תיעוד נסיעות</h4><p>תעדו כל נסיעה ממוצא ליעד. מד-אוץ, שעות יציאה והגעה, המתנה, טעינה ופריקה. תמיכה בנסיעות רב-שלביות — עצירה בלילה, המשך המשלוח למחרת.</p></div>
                 <div><h4 class="font-bold text-xl text-gray-900 mb-2">מעקב מטענים</h4><p>תומך לחלוטין בכל סוגי ההובלות והנגררים, כולל עבודה עם מנופים.</p></div>
                 <div><h4 class="font-bold text-xl text-gray-900 mb-2">ניהול משמרות</h4><p>התחילו וסיימו משמרות. סך שעות עבודה, מספר נסיעות וקילומטרים. היסטוריית משמרות מקובצת לפי תאריכים.</p></div>
@@ -100,7 +106,7 @@
             <div class="grid md:grid-cols-2 gap-12 mb-16">
                 <div>
                     <h2 class="text-2xl font-bold text-gray-900 mb-6">למה נהגים בוחרים בנו</h2>
-                    <ul class="space-y-3 text-lg text-gray-700">
+                    <ul id="content-reasons" class="space-y-3 text-lg text-gray-700">
                         <li><i class="fa-solid fa-check text-orange-500 ml-2"></i> <strong>עובד אופליין</strong> — לא צריך אינטרנט במשמרת</li>
                         <li><i class="fa-solid fa-check text-orange-500 ml-2"></i> <strong>בלי הרשמה</strong> — פותחים, מוסיפים משאית, מתחילים</li>
                         <li><i class="fa-solid fa-check text-orange-500 ml-2"></i> <strong>בלי פרסומות</strong> — לעולם לא</li>
@@ -112,7 +118,7 @@
                 </div>
                 <div>
                     <h2 class="text-2xl font-bold text-gray-900 mb-6">פרטים טכניים</h2>
-                    <ul class="space-y-3 text-lg text-gray-700">
+                    <ul id="content-tech" class="space-y-3 text-lg text-gray-700">
                         <li><i class="fa-solid fa-microchip text-gray-400 ml-2"></i> Android 7.0+ (API 24)</li>
                         <li><i class="fa-solid fa-mobile-screen text-gray-400 ml-2"></i> כ-15 MB גודל התקנה</li>
                         <li><i class="fa-solid fa-wifi text-gray-400 ml-2"></i> אופליין — עובד בלי אינטרנט</li>
@@ -124,7 +130,7 @@
 
             <div class="bg-gray-100 p-8 rounded-2xl">
                 <h2 class="text-2xl font-bold text-gray-900 mb-4">למי זה מתאים</h2>
-                <p class="text-lg text-gray-700 leading-relaxed">
+                <p id="content-audience" class="text-lg text-gray-700 leading-relaxed">
                     נהגי משאיות שעובדים אצל מעסיק ורוצים דרך פשוטה ומהירה לתעד את העבודה בלי טפסים.
                 </p>
             </div>

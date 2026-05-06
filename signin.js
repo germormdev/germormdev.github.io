@@ -1,9 +1,11 @@
 // ═══════════════════════════════════════════════════════════════════════
-// CargoLog Site — Auth & Tester Registration & Version History
+// CargoLog Site — Auth, Tester Registration, Version History,
+//                  Site Content, Screenshots (GitHub), Videos
 // ═══════════════════════════════════════════════════════════════════════
 //
-// Используется на index.html, ru.html, he.html (кнопка Sign-In + 3 версии)
-// и на versions.html (полный список + админ-форма).
+// Подключается на:
+//   - index.html / ru.html / he.html — публичный рендер контента
+//   - versions.html — админ-формы (видны только whitelist email'ам)
 //
 // Зависимости (подключить в HTML до этого файла):
 //   - Firebase v10 ES modules CDN
@@ -17,10 +19,10 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
 import {
   getFirestore, doc, setDoc, getDoc, addDoc, collection,
-  query, orderBy, limit, getDocs, serverTimestamp, deleteDoc
+  query, orderBy, where, limit, getDocs, serverTimestamp, deleteDoc
 } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 
-// ── Firebase config (создан Firebase Console) ─────────────────────────
+// ── Firebase config ──────────────────────────────────────────────────
 const firebaseConfig = {
   apiKey: "AIzaSyBgS40KxwWoSn3vcL_k-m9C__qpIciS3nI",
   authDomain: "cargolog-28bdd.firebaseapp.com",
@@ -31,27 +33,35 @@ const firebaseConfig = {
   measurementId: "G-1W3HBDDM7P"
 };
 
-// ── EmailJS config ─────────────────────────────────────────────────────
+// ── EmailJS config ───────────────────────────────────────────────────
 const EMAILJS_PUBLIC_KEY = "hkEmjKw6XParMcuQ0";
 const EMAILJS_SERVICE_ID = "service_gs58cka";
 const EMAILJS_TEMPLATE_ID = "template_ot60bck";
 
-// ── Whitelist админов для редактирования версий ───────────────────────
+// ── Whitelist админов ────────────────────────────────────────────────
 const ADMIN_EMAILS = ["germormdev@gmail.com", "ormgerm@gmail.com"];
 
-// ── Инициализация ──────────────────────────────────────────────────────
+// ── GitHub repo для скриншотов ───────────────────────────────────────
+// PAT хранится в localStorage и вводится админом один раз через "Set GitHub Token".
+// Скриншоты заливаются в screenshots/ в этом репо через GitHub Contents API.
+const GITHUB_OWNER = "germormdev";
+const GITHUB_REPO  = "germormdev.github.io";
+const GITHUB_BRANCH = "main";
+const GITHUB_SCREENSHOTS_DIR = "screenshots";
+const PAT_LS_KEY = "cargolog_github_pat";
+
+// ── Инициализация ────────────────────────────────────────────────────
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const provider = new GoogleAuthProvider();
 provider.setCustomParameters({ prompt: "select_account" });
 
-// EmailJS инициализируется при загрузке страницы из глобального scope
 if (typeof emailjs !== "undefined") {
   emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
 }
 
-// ── Локализация UI-сообщений ──────────────────────────────────────────
+// ── Локализация UI-сообщений ─────────────────────────────────────────
 const LOCALE = (document.documentElement.lang || "en").toLowerCase();
 const I18N = {
   en: {
@@ -64,6 +74,9 @@ const I18N = {
     sign_out: "Sign out",
     signed_in_as: "Signed in as",
     confirm_delete_version: "Delete this version entry?",
+    confirm_delete_screenshot: "Delete this screenshot? This will commit a deletion to GitHub.",
+    confirm_delete_video: "Delete this video entry?",
+    confirm_delete_section: "Delete this section?",
   },
   ru: {
     signing_in: "Вход…",
@@ -75,6 +88,9 @@ const I18N = {
     sign_out: "Выйти",
     signed_in_as: "Вы вошли как",
     confirm_delete_version: "Удалить эту запись версии?",
+    confirm_delete_screenshot: "Удалить скриншот? Это сделает коммит удаления в GitHub.",
+    confirm_delete_video: "Удалить эту запись видео?",
+    confirm_delete_section: "Удалить эту секцию?",
   },
   he: {
     signing_in: "מתחבר…",
@@ -86,11 +102,14 @@ const I18N = {
     sign_out: "התנתק",
     signed_in_as: "מחובר כ",
     confirm_delete_version: "למחוק את רשומת הגרסה הזו?",
+    confirm_delete_screenshot: "למחוק את הצילום? פעולה זו תיצור קומיט מחיקה ב-GitHub.",
+    confirm_delete_video: "למחוק את רשומת הסרטון?",
+    confirm_delete_section: "למחוק את הסעיף הזה?",
   }
 };
 const t = (key) => (I18N[LOCALE] || I18N.en)[key] || key;
 
-// ── Утилита: показ статуса в кнопке/баннере ───────────────────────────
+// ── Утилита: показ статуса в кнопке/баннере ──────────────────────────
 function showStatus(message, isError = false) {
   const banner = document.getElementById("auth-status");
   if (!banner) return;
@@ -106,7 +125,18 @@ function clearStatus() {
   if (banner) banner.classList.add("hidden");
 }
 
-// ── Sign-In кнопка: вешаем обработчик ─────────────────────────────────
+function escapeHtml(s) {
+  return String(s)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// AUTH (Sign-in / Sign-out / Tester registration)
+// ═══════════════════════════════════════════════════════════════════════
+
 async function handleSignIn() {
   clearStatus();
   const btn = document.getElementById("btn-google-signin");
@@ -119,7 +149,10 @@ async function handleSignIn() {
   try {
     const result = await signInWithPopup(auth, provider);
     const user = result.user;
-    await registerTester(user);
+    // Тестера регистрируем только если он НЕ админ (админ заходит ради админки)
+    if (!ADMIN_EMAILS.includes(user.email)) {
+      await registerTester(user);
+    }
   } catch (err) {
     console.error("Sign-in error:", err);
     if (err.code === "auth/popup-blocked") {
@@ -138,20 +171,17 @@ async function handleSignIn() {
   }
 }
 
-// ── Регистрация тестера в Firestore + уведомление по email ────────────
 async function registerTester(user) {
   const email = user.email;
   const uid = user.uid;
   const displayName = user.displayName || "";
 
-  // Проверяем, не зарегистрирован ли уже
   const existing = await getDoc(doc(db, "pending_testers", uid));
   if (existing.exists()) {
     showStatus(t("welcome_already_registered"), false);
     return;
   }
 
-  // Записываем в Firestore
   await setDoc(doc(db, "pending_testers", uid), {
     email,
     displayName,
@@ -162,7 +192,6 @@ async function registerTester(user) {
     status: "pending"
   });
 
-  // Шлём уведомление через EmailJS — не критично, если не сработает
   try {
     if (typeof emailjs !== "undefined") {
       await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
@@ -179,7 +208,6 @@ async function registerTester(user) {
   showStatus(t("welcome_registered"), false);
 }
 
-// ── Sign-out ──────────────────────────────────────────────────────────
 async function handleSignOut() {
   try {
     await signOut(auth);
@@ -189,7 +217,10 @@ async function handleSignOut() {
   }
 }
 
-// ── Подгрузка последних N версий ──────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════════
+// VERSIONS (existing — не трогаем, только переиспользуем)
+// ═══════════════════════════════════════════════════════════════════════
+
 async function loadVersions(maxCount = null) {
   const container = document.getElementById("versions-list");
   if (!container) return;
@@ -211,7 +242,6 @@ async function loadVersions(maxCount = null) {
       return;
     }
 
-    // Фильтруем по текущей локали страницы
     const filtered = [];
     snap.forEach((d) => {
       const data = d.data();
@@ -228,7 +258,6 @@ async function loadVersions(maxCount = null) {
     const isAdmin = auth.currentUser && ADMIN_EMAILS.includes(auth.currentUser.email);
     container.innerHTML = filtered.map((v) => renderVersionCard(v, isAdmin)).join("");
 
-    // Обработчики удаления для админа
     if (isAdmin) {
       container.querySelectorAll("[data-delete-version]").forEach((btn) => {
         btn.addEventListener("click", async (e) => {
@@ -281,16 +310,7 @@ function renderVersionCard(v, isAdmin) {
   `;
 }
 
-function escapeHtml(s) {
-  return String(s)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
-}
-
-// ── Админ-форма добавления версии (на versions.html) ──────────────────
-function setupAdminForm() {
+function setupVersionForm() {
   const form = document.getElementById("admin-add-version-form");
   if (!form) return;
 
@@ -307,14 +327,11 @@ function setupAdminForm() {
 
     try {
       await addDoc(collection(db, "version_history"), {
-        version,
-        changes,
-        locale,
+        version, changes, locale,
         releasedAt: serverTimestamp(),
         createdBy: auth.currentUser ? auth.currentUser.email : "unknown"
       });
       form.reset();
-      // Перезагружаем список — берём текущий язык страницы
       loadVersions();
     } catch (err) {
       alert("Save failed: " + err.message);
@@ -325,7 +342,555 @@ function setupAdminForm() {
   });
 }
 
-// ── UI: показ/скрытие админ-блока в зависимости от логина ─────────────
+// ═══════════════════════════════════════════════════════════════════════
+// SITE CONTENT (texts) — Firestore: site_content/{locale}
+// ═══════════════════════════════════════════════════════════════════════
+//
+// Document structure (один документ на локаль):
+// {
+//   hero: { title_html, subtitle },
+//   features: [{ title, description }, ...],   // "What CargoLog does"
+//   reasons:  [string, ...],                    // "Why drivers choose"
+//   tech:     [string, ...],                    // "Technical Details"
+//   audience: string,                           // "Who is it for"
+//   updatedAt
+// }
+// Если документа нет — рендер использует fallback из HTML (статика).
+// ═══════════════════════════════════════════════════════════════════════
+
+async function loadSiteContent() {
+  // Подмена текстов на индексе. Если документ не существует — оставляем статику.
+  let data;
+  try {
+    const snap = await getDoc(doc(db, "site_content", LOCALE));
+    if (!snap.exists()) return;
+    data = snap.data();
+  } catch (e) {
+    console.warn("loadSiteContent failed:", e);
+    return;
+  }
+
+  // Hero
+  const heroTitle = document.getElementById("content-hero-title");
+  const heroSubtitle = document.getElementById("content-hero-subtitle");
+  if (heroTitle && data.hero?.title_html) heroTitle.innerHTML = data.hero.title_html;
+  if (heroSubtitle && data.hero?.subtitle) heroSubtitle.textContent = data.hero.subtitle;
+
+  // Features
+  const featuresBox = document.getElementById("content-features");
+  if (featuresBox && Array.isArray(data.features)) {
+    featuresBox.innerHTML = data.features.map((f) => `
+      <div>
+        <h4 class="font-bold text-xl text-gray-900 mb-2">${escapeHtml(f.title || "")}</h4>
+        <p>${escapeHtml(f.description || "")}</p>
+      </div>
+    `).join("");
+  }
+
+  // Reasons
+  const reasonsBox = document.getElementById("content-reasons");
+  if (reasonsBox && Array.isArray(data.reasons)) {
+    reasonsBox.innerHTML = data.reasons.map((r) => `
+      <li><i class="fa-solid fa-check text-orange-500 mr-2"></i> ${escapeHtml(r)}</li>
+    `).join("");
+  }
+
+  // Tech
+  const techBox = document.getElementById("content-tech");
+  if (techBox && Array.isArray(data.tech)) {
+    techBox.innerHTML = data.tech.map((line) => `
+      <li><i class="fa-solid fa-circle-dot text-gray-400 mr-2"></i> ${escapeHtml(line)}</li>
+    `).join("");
+  }
+
+  // Audience
+  const audienceBox = document.getElementById("content-audience");
+  if (audienceBox && data.audience) {
+    audienceBox.textContent = data.audience;
+  }
+}
+
+function setupContentForm() {
+  const form = document.getElementById("admin-content-form");
+  if (!form) return;
+
+  const localeSelect = form.querySelector("[name=locale]");
+
+  // При смене локали — подгружаем текущее содержимое в форму
+  localeSelect.addEventListener("change", () => loadContentIntoForm(form, localeSelect.value));
+  loadContentIntoForm(form, localeSelect.value);
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const submitBtn = form.querySelector("button[type=submit]");
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Saving…";
+
+    const locale = localeSelect.value;
+    const data = {
+      hero: {
+        title_html: form.querySelector("[name=hero_title]").value,
+        subtitle:   form.querySelector("[name=hero_subtitle]").value,
+      },
+      features: parseFeatures(form.querySelector("[name=features]").value),
+      reasons:  parseLines(form.querySelector("[name=reasons]").value),
+      tech:     parseLines(form.querySelector("[name=tech]").value),
+      audience: form.querySelector("[name=audience]").value,
+      updatedAt: serverTimestamp(),
+      updatedBy: auth.currentUser ? auth.currentUser.email : "unknown",
+    };
+
+    try {
+      await setDoc(doc(db, "site_content", locale), data);
+      alert(`Saved content for ${locale.toUpperCase()}`);
+    } catch (err) {
+      alert("Save failed: " + err.message);
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = submitBtn.dataset.origLabel || "Save";
+    }
+  });
+}
+
+async function loadContentIntoForm(form, locale) {
+  try {
+    const snap = await getDoc(doc(db, "site_content", locale));
+    if (!snap.exists()) {
+      // Очищаем — пользователь начнёт с нуля для этой локали
+      form.querySelector("[name=hero_title]").value = "";
+      form.querySelector("[name=hero_subtitle]").value = "";
+      form.querySelector("[name=features]").value = "";
+      form.querySelector("[name=reasons]").value = "";
+      form.querySelector("[name=tech]").value = "";
+      form.querySelector("[name=audience]").value = "";
+      return;
+    }
+    const d = snap.data();
+    form.querySelector("[name=hero_title]").value    = d.hero?.title_html || "";
+    form.querySelector("[name=hero_subtitle]").value = d.hero?.subtitle || "";
+    form.querySelector("[name=features]").value      = (d.features || []).map(
+      (f) => `${f.title || ""} :: ${f.description || ""}`
+    ).join("\n");
+    form.querySelector("[name=reasons]").value = (d.reasons || []).join("\n");
+    form.querySelector("[name=tech]").value    = (d.tech    || []).join("\n");
+    form.querySelector("[name=audience]").value = d.audience || "";
+  } catch (e) {
+    console.warn("loadContentIntoForm:", e);
+  }
+}
+
+// "Title :: Description" → { title, description }
+function parseFeatures(text) {
+  return text.split("\n")
+    .map((l) => l.trim())
+    .filter((l) => l.length > 0)
+    .map((line) => {
+      const idx = line.indexOf("::");
+      if (idx === -1) return { title: line, description: "" };
+      return {
+        title:       line.slice(0, idx).trim(),
+        description: line.slice(idx + 2).trim(),
+      };
+    });
+}
+
+function parseLines(text) {
+  return text.split("\n").map((l) => l.trim()).filter((l) => l.length > 0);
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// SCREENSHOTS — GitHub репо как хостинг + Firestore site_screenshots
+// ═══════════════════════════════════════════════════════════════════════
+//
+// Firestore document: { fileName, githubPath, sha, order, createdAt, createdBy }
+// Файл лежит в GitHub: screenshots/{fileName}
+// На фронте URL: https://germormdev.github.io/screenshots/{fileName}
+// ═══════════════════════════════════════════════════════════════════════
+
+function getGitHubPat() {
+  return localStorage.getItem(PAT_LS_KEY) || "";
+}
+
+function setGitHubPat(pat) {
+  localStorage.setItem(PAT_LS_KEY, pat);
+}
+
+function clearGitHubPat() {
+  localStorage.removeItem(PAT_LS_KEY);
+}
+
+async function loadScreenshots() {
+  const container = document.getElementById("screenshots-list");
+  if (!container) return;
+  try {
+    const snap = await getDocs(query(collection(db, "site_screenshots"), orderBy("order", "asc")));
+    if (snap.empty) {
+      // Fallback на статические screen1/2/3 если в Firestore пусто
+      container.innerHTML = `
+        <img src="screen1.png" alt="Screenshot 1" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800 w-64 md:w-72 flex-shrink-0">
+        <img src="screen2.png" alt="Screenshot 2" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800 w-64 md:w-72 flex-shrink-0">
+        <img src="screen3.png" alt="Screenshot 3" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800 w-64 md:w-72 flex-shrink-0">
+      `;
+      return;
+    }
+    const html = [];
+    snap.forEach((d) => {
+      const data = d.data();
+      const url = `${GITHUB_SCREENSHOTS_DIR}/${data.fileName}`;
+      html.push(`
+        <img src="${escapeHtml(url)}" alt="Screenshot"
+             class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800 w-64 md:w-72 flex-shrink-0">
+      `);
+    });
+    container.innerHTML = html.join("");
+  } catch (e) {
+    console.warn("loadScreenshots:", e);
+  }
+}
+
+async function loadScreenshotsAdmin() {
+  const container = document.getElementById("admin-screenshots-list");
+  if (!container) return;
+  try {
+    const snap = await getDocs(query(collection(db, "site_screenshots"), orderBy("order", "asc")));
+    if (snap.empty) {
+      container.innerHTML = `<p class="text-gray-500 text-sm">No screenshots in Firestore yet. Use the form above to add.</p>`;
+      return;
+    }
+    const html = [];
+    snap.forEach((d) => {
+      const data = d.data();
+      const url = `${GITHUB_SCREENSHOTS_DIR}/${data.fileName}`;
+      html.push(`
+        <div class="flex items-center gap-3 bg-gray-50 p-3 rounded-lg border">
+          <img src="${escapeHtml(url)}" class="w-16 h-28 object-cover rounded border" alt="">
+          <div class="flex-1 text-sm">
+            <div class="font-mono text-xs text-gray-700">${escapeHtml(data.fileName)}</div>
+            <div class="text-xs text-gray-500">order: ${data.order ?? "—"}</div>
+          </div>
+          <button data-delete-screenshot="${d.id}"
+                  data-file="${escapeHtml(data.fileName)}"
+                  data-sha="${escapeHtml(data.sha || "")}"
+                  class="text-red-500 hover:text-red-700 text-sm">
+            <i class="fa-solid fa-trash"></i>
+          </button>
+        </div>
+      `);
+    });
+    container.innerHTML = html.join("");
+
+    container.querySelectorAll("[data-delete-screenshot]").forEach((btn) => {
+      btn.addEventListener("click", async (e) => {
+        const id = e.currentTarget.dataset.deleteScreenshot;
+        const fileName = e.currentTarget.dataset.file;
+        const sha = e.currentTarget.dataset.sha;
+        if (!confirm(t("confirm_delete_screenshot"))) return;
+        const pat = getGitHubPat();
+        if (!pat) {
+          alert("GitHub token not set. Click 'Set GitHub Token'.");
+          return;
+        }
+        try {
+          // Удаление из GitHub
+          await deleteFromGitHub(`${GITHUB_SCREENSHOTS_DIR}/${fileName}`, sha, pat);
+          // Удаление из Firestore
+          await deleteDoc(doc(db, "site_screenshots", id));
+          loadScreenshotsAdmin();
+        } catch (err) {
+          alert("Delete failed: " + err.message);
+        }
+      });
+    });
+  } catch (e) {
+    console.warn("loadScreenshotsAdmin:", e);
+  }
+}
+
+function setupScreenshotForm() {
+  const form = document.getElementById("admin-add-screenshot-form");
+  if (!form) return;
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const fileInput = form.querySelector("[name=file]");
+    const orderInput = form.querySelector("[name=order]");
+    const file = fileInput.files[0];
+    if (!file) return;
+
+    const pat = getGitHubPat();
+    if (!pat) {
+      alert("GitHub token not set. Click 'Set GitHub Token' first.");
+      return;
+    }
+
+    const submitBtn = form.querySelector("button[type=submit]");
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Uploading…";
+
+    try {
+      // Имя файла: timestamp + sanitized
+      const safeName = file.name.replace(/[^\w.\-]+/g, "_");
+      const fileName = `${Date.now()}_${safeName}`;
+      const path = `${GITHUB_SCREENSHOTS_DIR}/${fileName}`;
+
+      // Читаем base64
+      const base64 = await fileToBase64(file);
+      // Пушим в GitHub
+      const sha = await uploadToGitHub(path, base64,
+        `Add screenshot: ${fileName}`, pat);
+
+      // Сохраняем метаданные в Firestore
+      const order = parseInt(orderInput.value, 10) || 99;
+      await addDoc(collection(db, "site_screenshots"), {
+        fileName,
+        githubPath: path,
+        sha,
+        order,
+        createdAt: serverTimestamp(),
+        createdBy: auth.currentUser ? auth.currentUser.email : "unknown",
+      });
+
+      form.reset();
+      loadScreenshotsAdmin();
+    } catch (err) {
+      alert("Upload failed: " + err.message);
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = submitBtn.dataset.origLabel || "Upload";
+    }
+  });
+}
+
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => {
+      const result = r.result;
+      // result = "data:image/png;base64,XXXX..."
+      const b64 = result.split(",")[1];
+      resolve(b64);
+    };
+    r.onerror = () => reject(new Error("File read failed"));
+    r.readAsDataURL(file);
+  });
+}
+
+async function uploadToGitHub(path, base64Content, commitMessage, pat) {
+  const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${path}`;
+  const res = await fetch(url, {
+    method: "PUT",
+    headers: {
+      "Authorization": `Bearer ${pat}`,
+      "Accept": "application/vnd.github+json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      message: commitMessage,
+      content: base64Content,
+      branch: GITHUB_BRANCH,
+    }),
+  });
+  if (!res.ok) {
+    const txt = await res.text();
+    throw new Error(`GitHub upload ${res.status}: ${txt}`);
+  }
+  const json = await res.json();
+  return json.content?.sha || "";
+}
+
+async function deleteFromGitHub(path, sha, pat) {
+  const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${path}`;
+  const res = await fetch(url, {
+    method: "DELETE",
+    headers: {
+      "Authorization": `Bearer ${pat}`,
+      "Accept": "application/vnd.github+json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      message: `Delete screenshot: ${path}`,
+      sha,
+      branch: GITHUB_BRANCH,
+    }),
+  });
+  if (!res.ok) {
+    const txt = await res.text();
+    throw new Error(`GitHub delete ${res.status}: ${txt}`);
+  }
+}
+
+function setupGitHubPatUI() {
+  const btn = document.getElementById("btn-set-github-pat");
+  if (!btn) return;
+  btn.addEventListener("click", () => {
+    const current = getGitHubPat();
+    const masked = current ? `${current.slice(0, 6)}…${current.slice(-4)}` : "(not set)";
+    const next = prompt(
+      `GitHub Personal Access Token (current: ${masked}).\n` +
+      `Required scopes: contents:write on this repo.\n` +
+      `Stored only in this browser's localStorage.\n\n` +
+      `Enter new token (or empty string to clear):`,
+      ""
+    );
+    if (next === null) return; // cancel
+    if (next.trim() === "") {
+      clearGitHubPat();
+      alert("Token cleared.");
+    } else {
+      setGitHubPat(next.trim());
+      alert("Token saved to localStorage.");
+    }
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// VIDEOS — Firestore: site_videos
+// ═══════════════════════════════════════════════════════════════════════
+
+async function loadVideos() {
+  const container = document.getElementById("videos-list");
+  if (!container) return;
+  try {
+    const snap = await getDocs(query(collection(db, "site_videos"), orderBy("order", "asc")));
+    const items = [];
+    snap.forEach((d) => {
+      const data = d.data();
+      if (!data.locale || data.locale === LOCALE) {
+        items.push({ id: d.id, ...data });
+      }
+    });
+    if (items.length === 0) {
+      container.innerHTML = "";
+      // Скрываем секцию целиком
+      const section = document.getElementById("videos-section");
+      if (section) section.classList.add("hidden");
+      return;
+    }
+    container.innerHTML = items.map((v) => `
+      <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-200">
+        <div class="aspect-video mb-3 rounded-xl overflow-hidden bg-black">
+          <iframe class="w-full h-full"
+                  src="https://www.youtube.com/embed/${escapeHtml(v.youtubeId)}"
+                  title="${escapeHtml(v.title || "")}"
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen></iframe>
+        </div>
+        <h3 class="font-bold text-lg text-gray-900">${escapeHtml(v.title || "")}</h3>
+        ${v.description ? `<p class="text-gray-600 text-sm mt-1">${escapeHtml(v.description)}</p>` : ""}
+      </div>
+    `).join("");
+  } catch (e) {
+    console.warn("loadVideos:", e);
+  }
+}
+
+async function loadVideosAdmin() {
+  const container = document.getElementById("admin-videos-list");
+  if (!container) return;
+  try {
+    const snap = await getDocs(query(collection(db, "site_videos"), orderBy("order", "asc")));
+    if (snap.empty) {
+      container.innerHTML = `<p class="text-gray-500 text-sm">No videos yet.</p>`;
+      return;
+    }
+    const html = [];
+    snap.forEach((d) => {
+      const data = d.data();
+      html.push(`
+        <div class="flex items-center gap-3 bg-gray-50 p-3 rounded-lg border">
+          <img src="https://i.ytimg.com/vi/${escapeHtml(data.youtubeId)}/mqdefault.jpg"
+               class="w-24 h-14 object-cover rounded border" alt="">
+          <div class="flex-1 text-sm">
+            <div class="font-bold">${escapeHtml(data.title || "")}</div>
+            <div class="text-xs text-gray-500">
+              ${escapeHtml(data.locale || "—")} · order ${data.order ?? "—"} · id ${escapeHtml(data.youtubeId || "")}
+            </div>
+          </div>
+          <button data-delete-video="${d.id}" class="text-red-500 hover:text-red-700 text-sm">
+            <i class="fa-solid fa-trash"></i>
+          </button>
+        </div>
+      `);
+    });
+    container.innerHTML = html.join("");
+
+    container.querySelectorAll("[data-delete-video]").forEach((btn) => {
+      btn.addEventListener("click", async (e) => {
+        const id = e.currentTarget.dataset.deleteVideo;
+        if (!confirm(t("confirm_delete_video"))) return;
+        try {
+          await deleteDoc(doc(db, "site_videos", id));
+          loadVideosAdmin();
+        } catch (err) {
+          alert("Delete failed: " + err.message);
+        }
+      });
+    });
+  } catch (e) {
+    console.warn("loadVideosAdmin:", e);
+  }
+}
+
+function setupVideoForm() {
+  const form = document.getElementById("admin-add-video-form");
+  if (!form) return;
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const submitBtn = form.querySelector("button[type=submit]");
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Saving…";
+
+    const youtubeRaw = form.querySelector("[name=youtube]").value.trim();
+    const youtubeId  = extractYouTubeId(youtubeRaw);
+    if (!youtubeId) {
+      alert("Could not parse YouTube ID from: " + youtubeRaw);
+      submitBtn.disabled = false;
+      submitBtn.textContent = submitBtn.dataset.origLabel || "Save";
+      return;
+    }
+
+    try {
+      await addDoc(collection(db, "site_videos"), {
+        title:       form.querySelector("[name=title]").value.trim(),
+        description: form.querySelector("[name=description]").value.trim(),
+        youtubeId,
+        locale:      form.querySelector("[name=locale]").value,
+        order:       parseInt(form.querySelector("[name=order]").value, 10) || 99,
+        createdAt:   serverTimestamp(),
+        createdBy:   auth.currentUser ? auth.currentUser.email : "unknown",
+      });
+      form.reset();
+      loadVideosAdmin();
+    } catch (err) {
+      alert("Save failed: " + err.message);
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = submitBtn.dataset.origLabel || "Save";
+    }
+  });
+}
+
+// Принимает либо чистый ID (11 знаков), либо https://youtu.be/ID, либо
+// https://www.youtube.com/watch?v=ID, либо .../embed/ID
+function extractYouTubeId(input) {
+  if (!input) return null;
+  const trimmed = input.trim();
+  if (/^[\w-]{11}$/.test(trimmed)) return trimmed;
+  const m1 = trimmed.match(/youtu\.be\/([\w-]{11})/);
+  if (m1) return m1[1];
+  const m2 = trimmed.match(/[?&]v=([\w-]{11})/);
+  if (m2) return m2[1];
+  const m3 = trimmed.match(/youtube\.com\/embed\/([\w-]{11})/);
+  if (m3) return m3[1];
+  return null;
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// Admin UI gating
+// ═══════════════════════════════════════════════════════════════════════
+
 function updateAdminUI(user) {
   const adminBlock = document.getElementById("admin-block");
   const userBadge = document.getElementById("user-badge");
@@ -341,20 +906,35 @@ function updateAdminUI(user) {
       const signoutBtn = document.getElementById("btn-signout");
       if (signoutBtn) signoutBtn.addEventListener("click", handleSignOut);
     }
+    // Подгружаем админ-списки
+    loadScreenshotsAdmin();
+    loadVideosAdmin();
   } else {
     if (adminBlock) adminBlock.classList.add("hidden");
     if (userBadge) userBadge.classList.add("hidden");
   }
 }
 
-// ── Главный entry point ───────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════════
+// Entry point
+// ═══════════════════════════════════════════════════════════════════════
+
 document.addEventListener("DOMContentLoaded", () => {
   const signinBtn = document.getElementById("btn-google-signin");
   if (signinBtn) signinBtn.addEventListener("click", handleSignIn);
 
-  setupAdminForm();
+  setupVersionForm();
+  setupContentForm();
+  setupScreenshotForm();
+  setupVideoForm();
+  setupGitHubPatUI();
 
-  // Подгрузка версий: если есть #versions-list-preview → 3 шт., иначе все
+  // Публичный контент: тексты, скриншоты, видео
+  loadSiteContent();
+  loadScreenshots();
+  loadVideos();
+
+  // Версии: если есть #versions-list-preview → 3 шт., иначе все
   if (document.getElementById("versions-list")) {
     const preview = document.body.dataset.versionsPreview === "true";
     loadVersions(preview ? 3 : null);
@@ -362,7 +942,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   onAuthStateChanged(auth, (user) => {
     updateAdminUI(user);
-    // Перезагружаем версии чтобы показать кнопки Delete админу
     if (document.getElementById("versions-list")) {
       const preview = document.body.dataset.versionsPreview === "true";
       loadVersions(preview ? 3 : null);

@@ -9,6 +9,20 @@
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <style>
         body { -webkit-font-smoothing: antialiased; }
+        .locale-btn:not(.active) { background: transparent; }
+        .locale-btn.active { background: #f97316; color: white !important; border-color: #f97316; }
+        .tab-btn:not(.active) {
+            background: transparent;
+            color: #4b5563;
+            border-color: #e5e7eb;
+        }
+        .tab-btn.active {
+            background: #f97316;
+            color: white;
+            border-color: #f97316;
+        }
+        .tab-pane { display: none; }
+        .tab-pane.active { display: block; }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800">
@@ -33,54 +47,255 @@
             <p class="text-gray-600">All releases of CargoLog from newest to oldest.</p>
         </div>
 
-        <!-- ── Locale filter (visible to everyone) ────────────────── -->
+        <!-- Locale filter (видим всем) -->
         <div class="text-center mb-8">
             <button onclick="switchLocale('en', this)" class="locale-btn px-4 py-2 mx-1 border-2 border-orange-500 text-orange-500 rounded-full text-sm font-semibold transition active">English</button>
             <button onclick="switchLocale('ru', this)" class="locale-btn px-4 py-2 mx-1 border-2 border-orange-500 text-orange-500 rounded-full text-sm font-semibold transition">Русский</button>
             <button onclick="switchLocale('he', this)" class="locale-btn px-4 py-2 mx-1 border-2 border-orange-500 text-orange-500 rounded-full text-sm font-semibold transition">עברית</button>
         </div>
 
-        <!-- ── Admin block (visible only to whitelisted emails) ──── -->
+        <!-- ────────────────────────────────────────────────────────────
+             ADMIN BLOCK — виден только whitelist email'ам.
+             Содержит 4 вкладки:
+              1. Versions — добавить релиз (как было)
+              2. Content  — редактировать тексты по локали
+              3. Screenshots — загрузка/удаление в GitHub
+              4. Videos   — добавить YouTube видео по локали
+        ──────────────────────────────────────────────────────────── -->
         <div id="admin-block" class="hidden bg-white rounded-2xl shadow-md p-6 mb-8 border-2 border-orange-200">
-            <h2 class="text-xl font-bold text-gray-900 mb-4">
-                <i class="fa-solid fa-plus-circle text-orange-500 mr-2"></i>
-                Add a new version
-            </h2>
-            <form id="admin-add-version-form" class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Version number</label>
-                    <input type="text" name="version" required placeholder="0.2.6"
-                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Language for this entry</label>
-                    <select name="locale" required
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none">
-                        <option value="en">English</option>
-                        <option value="ru">Русский</option>
-                        <option value="he">עברית</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Changes (one per line)</label>
-                    <textarea name="changes" required rows="6"
-                              placeholder="Added Fuel Drop dialog for tankers&#10;Fixed odometer validation across all wizard steps&#10;Improved trip history layout"
-                              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none font-mono text-sm"></textarea>
-                </div>
-                <div class="flex justify-end">
-                    <button type="submit" data-orig-label="Save"
-                            class="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-2 rounded-lg shadow transition">
-                        Save
-                    </button>
-                </div>
-            </form>
-            <p class="text-xs text-gray-500 mt-3">
-                <i class="fa-solid fa-info-circle mr-1"></i>
-                The entry will appear only on the page in the chosen language. To publish in all 3 languages, add 3 separate entries.
-            </p>
+
+            <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+                <h2 class="text-xl font-bold text-gray-900">
+                    <i class="fa-solid fa-screwdriver-wrench text-orange-500 mr-2"></i>
+                    Admin
+                </h2>
+                <button id="btn-set-github-pat"
+                        class="text-xs bg-gray-800 hover:bg-gray-900 text-white px-3 py-1.5 rounded-lg">
+                    <i class="fa-brands fa-github mr-1"></i> Set GitHub Token
+                </button>
+            </div>
+
+            <!-- Табы -->
+            <div class="flex flex-wrap gap-2 mb-6 border-b border-gray-200 pb-3">
+                <button data-tab="tab-versions" class="tab-btn active border-2 px-4 py-2 rounded-full text-sm font-semibold transition">
+                    Versions
+                </button>
+                <button data-tab="tab-content" class="tab-btn border-2 px-4 py-2 rounded-full text-sm font-semibold transition">
+                    Content
+                </button>
+                <button data-tab="tab-screenshots" class="tab-btn border-2 px-4 py-2 rounded-full text-sm font-semibold transition">
+                    Screenshots
+                </button>
+                <button data-tab="tab-videos" class="tab-btn border-2 px-4 py-2 rounded-full text-sm font-semibold transition">
+                    Videos
+                </button>
+            </div>
+
+            <!-- ── TAB 1: Versions ─────────────────────────────────── -->
+            <div id="tab-versions" class="tab-pane active">
+                <h3 class="text-lg font-bold text-gray-900 mb-3">
+                    <i class="fa-solid fa-plus-circle text-orange-500 mr-2"></i>
+                    Add a new version
+                </h3>
+                <form id="admin-add-version-form" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Version number</label>
+                        <input type="text" name="version" required placeholder="0.2.6"
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Language for this entry</label>
+                        <select name="locale" required
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none">
+                            <option value="en">English</option>
+                            <option value="ru">Русский</option>
+                            <option value="he">עברית</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Changes (one per line)</label>
+                        <textarea name="changes" required rows="6"
+                                  placeholder="Added Fuel Drop dialog for tankers&#10;Fixed odometer validation across all wizard steps"
+                                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none font-mono text-sm"></textarea>
+                    </div>
+                    <div class="flex justify-end">
+                        <button type="submit" data-orig-label="Save"
+                                class="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-2 rounded-lg shadow transition">
+                            Save
+                        </button>
+                    </div>
+                </form>
+                <p class="text-xs text-gray-500 mt-3">
+                    <i class="fa-solid fa-info-circle mr-1"></i>
+                    Entry appears only on page in the chosen language. To publish in all 3 languages, add 3 separate entries.
+                </p>
+            </div>
+
+            <!-- ── TAB 2: Content ──────────────────────────────────── -->
+            <div id="tab-content" class="tab-pane">
+                <h3 class="text-lg font-bold text-gray-900 mb-3">
+                    <i class="fa-solid fa-file-pen text-orange-500 mr-2"></i>
+                    Edit page content
+                </h3>
+                <p class="text-xs text-gray-500 mb-4">
+                    Pick locale → fields auto-fill from Firestore. Save to publish (no rebuild needed).
+                </p>
+                <form id="admin-content-form" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Locale</label>
+                        <select name="locale" required
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none">
+                            <option value="en">English</option>
+                            <option value="ru">Русский</option>
+                            <option value="he">עברית</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">
+                            Hero title (HTML allowed: &lt;br&gt;, &lt;span class="text-orange-500"&gt;…&lt;/span&gt;)
+                        </label>
+                        <input type="text" name="hero_title"
+                               placeholder='Digital Logbook <br><span class="text-orange-500">for Truck Drivers</span>'
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none font-mono text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Hero subtitle (plain text)</label>
+                        <textarea name="hero_subtitle" rows="2"
+                                  placeholder="Free truck driver logbook app. Track trips…"
+                                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">
+                            Features (one per line, format: <code class="text-xs bg-gray-100 px-1">Title :: Description</code>)
+                        </label>
+                        <textarea name="features" rows="8"
+                                  placeholder="Trip Logging :: Record every trip from origin to destination…&#10;Cargo Tracking :: Supports all types of transport…"
+                                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none font-mono text-sm"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">
+                            Why drivers choose (one bullet per line, &lt;strong&gt;…&lt;/strong&gt; allowed)
+                        </label>
+                        <textarea name="reasons" rows="6"
+                                  placeholder="<strong>Works offline</strong> — no internet needed during shift"
+                                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none font-mono text-sm"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Technical details (one bullet per line)</label>
+                        <textarea name="tech" rows="5"
+                                  placeholder="Android 7.0+ (API 24)&#10;~15 MB install size"
+                                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none font-mono text-sm"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Who is it for (single paragraph)</label>
+                        <textarea name="audience" rows="3"
+                                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none"></textarea>
+                    </div>
+                    <div class="flex justify-end">
+                        <button type="submit" data-orig-label="Save content"
+                                class="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-2 rounded-lg shadow transition">
+                            Save content
+                        </button>
+                    </div>
+                </form>
+                <p class="text-xs text-gray-500 mt-3">
+                    <i class="fa-solid fa-circle-info mr-1"></i>
+                    HTML tags &lt;br&gt;, &lt;strong&gt;, &lt;span&gt;, &lt;a href&gt; allowed in <em>Hero title</em> and <em>Reasons</em>.
+                    Other fields are plain text.
+                </p>
+            </div>
+
+            <!-- ── TAB 3: Screenshots ──────────────────────────────── -->
+            <div id="tab-screenshots" class="tab-pane">
+                <h3 class="text-lg font-bold text-gray-900 mb-3">
+                    <i class="fa-solid fa-image text-orange-500 mr-2"></i>
+                    Screenshots (uploaded to GitHub)
+                </h3>
+                <form id="admin-add-screenshot-form" class="space-y-4 mb-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Image file</label>
+                        <input type="file" name="file" accept="image/*" required
+                               class="w-full text-sm text-gray-700 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-orange-50 file:text-orange-600 hover:file:bg-orange-100">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Order (lower = first)</label>
+                        <input type="number" name="order" value="10" min="0" max="999"
+                               class="w-32 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none">
+                    </div>
+                    <div class="flex justify-end">
+                        <button type="submit" data-orig-label="Upload"
+                                class="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-2 rounded-lg shadow transition">
+                            Upload
+                        </button>
+                    </div>
+                </form>
+                <h4 class="text-sm font-bold text-gray-700 mb-2">Current screenshots</h4>
+                <div id="admin-screenshots-list" class="space-y-2"></div>
+                <p class="text-xs text-gray-500 mt-3">
+                    <i class="fa-solid fa-circle-info mr-1"></i>
+                    Files commit to <code class="text-xs bg-gray-100 px-1">screenshots/</code> in GitHub.
+                    Set token first via "Set GitHub Token" button. Token requires <em>contents:write</em> scope.
+                </p>
+            </div>
+
+            <!-- ── TAB 4: Videos ───────────────────────────────────── -->
+            <div id="tab-videos" class="tab-pane">
+                <h3 class="text-lg font-bold text-gray-900 mb-3">
+                    <i class="fa-brands fa-youtube text-orange-500 mr-2"></i>
+                    Videos (YouTube embeds)
+                </h3>
+                <form id="admin-add-video-form" class="space-y-4 mb-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">YouTube URL or ID</label>
+                        <input type="text" name="youtube" required
+                               placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ  or  dQw4w9WgXcQ"
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none font-mono text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Title</label>
+                        <input type="text" name="title" required placeholder="App overview"
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Description (optional)</label>
+                        <textarea name="description" rows="2"
+                                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none"></textarea>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Locale</label>
+                            <select name="locale" required
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none">
+                                <option value="en">English</option>
+                                <option value="ru">Русский</option>
+                                <option value="he">עברית</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Order</label>
+                            <input type="number" name="order" value="10" min="0" max="999"
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none">
+                        </div>
+                    </div>
+                    <div class="flex justify-end">
+                        <button type="submit" data-orig-label="Add video"
+                                class="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-2 rounded-lg shadow transition">
+                            Add video
+                        </button>
+                    </div>
+                </form>
+                <h4 class="text-sm font-bold text-gray-700 mb-2">Current videos (all locales)</h4>
+                <div id="admin-videos-list" class="space-y-2"></div>
+                <p class="text-xs text-gray-500 mt-3">
+                    <i class="fa-solid fa-circle-info mr-1"></i>
+                    Videos appear on <code class="text-xs bg-gray-100 px-1">index/ru/he.html</code> filtered by locale.
+                    Section is hidden if no videos for current locale.
+                </p>
+            </div>
+
         </div>
 
-        <!-- ── Versions list ──────────────────────────────────────── -->
+        <!-- Versions list -->
         <div id="versions-list"></div>
 
     </section>
@@ -100,25 +315,16 @@
         </div>
     </footer>
 
-    <style>
-        .locale-btn:not(.active) { background: transparent; }
-        .locale-btn.active { background: #f97316; color: white !important; border-color: #f97316; }
-    </style>
-
     <script>
-        // Переключатель локали для просмотра — меняет document.lang
-        // и перерисовывает список через signin.js
+        // Locale switch (как было)
         function switchLocale(lang, btn) {
             document.documentElement.lang = lang;
             document.documentElement.dir = lang === 'he' ? 'rtl' : 'ltr';
             document.querySelectorAll('.locale-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            // Перезагрузим страницу с правильным lang в URL
-            // (signin.js читает lang один раз при старте через document.documentElement.lang)
             location.hash = '#' + lang;
             location.reload();
         }
-        // При загрузке — проверим hash
         if (location.hash) {
             const lang = location.hash.replace('#', '');
             if (['en', 'ru', 'he'].includes(lang)) {
@@ -134,6 +340,20 @@
                 });
             }
         }
+
+        // Tab switching
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const targetId = btn.dataset.tab;
+                    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                    document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+                    btn.classList.add('active');
+                    const pane = document.getElementById(targetId);
+                    if (pane) pane.classList.add('active');
+                });
+            });
+        });
     </script>
 
     <script type="module" src="signin.js"></script>
