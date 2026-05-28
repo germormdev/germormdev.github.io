@@ -75,6 +75,7 @@ const I18N = {
     signed_in_as: "Signed in as",
     admin_welcome: "✓ Welcome, admin",
     admin_open_panel: "Open admin panel →",
+    not_admin: "This login is for administrators only.",
     confirm_delete_version: "Delete this version entry?",
     confirm_delete_screenshot: "Delete this screenshot? This will commit a deletion to GitHub.",
     confirm_delete_video: "Delete this video entry?",
@@ -91,6 +92,7 @@ const I18N = {
     signed_in_as: "Вы вошли как",
     admin_welcome: "✓ С возвращением, админ",
     admin_open_panel: "Открыть админ-панель →",
+    not_admin: "Этот вход только для администраторов.",
     confirm_delete_version: "Удалить эту запись версии?",
     confirm_delete_screenshot: "Удалить скриншот? Это сделает коммит удаления в GitHub.",
     confirm_delete_video: "Удалить эту запись видео?",
@@ -107,6 +109,7 @@ const I18N = {
     signed_in_as: "מחובר כ",
     admin_welcome: "✓ ברוך שובך, מנהל",
     admin_open_panel: "פתח את לוח הניהול ←",
+    not_admin: "התחברות זו מיועדת למנהלים בלבד.",
     confirm_delete_version: "למחוק את רשומת הגרסה הזו?",
     confirm_delete_screenshot: "למחוק את הצילום? פעולה זו תיצור קומיט מחיקה ב-GitHub.",
     confirm_delete_video: "למחוק את רשומת הסרטון?",
@@ -169,12 +172,16 @@ async function handleSignIn() {
   try {
     const result = await signInWithPopup(auth, provider);
     const user = result.user;
-    // Админ — показываем приглашение в админку (не регистрируем как тестера).
-    // Не-админ — регистрируем в pending_testers.
+    // v1.0.1 (S28): тестерская программа закрыта — приложение в production.
+    // Кнопка "Admin" в футере служит только для входа в админ-панель.
+    // Админ — показываем приглашение в админку. Не-админ — вежливо
+    // сообщаем что вход только для админов и разлогиниваем (чтобы случайный
+    // юзер не висел залогиненным без цели).
     if (ADMIN_EMAILS.includes(user.email)) {
       showAdminWelcome(user);
     } else {
-      await registerTester(user);
+      showStatus(t("not_admin"), false);
+      await signOut(auth);
     }
   } catch (err) {
     console.error("Sign-in error:", err);
@@ -238,6 +245,67 @@ async function handleSignOut() {
   } catch (e) {
     console.error("Sign-out error:", e);
   }
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// VISIT COUNTER (v1.0.1, S28) — уникальные визиты через Firestore stats/visits
+// ═══════════════════════════════════════════════════════════════════════
+//
+// Механика:
+//  - При первом заходе с браузера (нет localStorage флага) инкрементим
+//    stats/visits.count на +1 и ставим флаг навсегда.
+//  - При повторных заходах — только читаем и показываем число, не инкрементим.
+//  - Один общий счётчик на все локали (index/ru/he делят stats/visits).
+//  - Защита в firestore.rules: update разрешён только как count+1, нельзя
+//    обнулить/записать произвольное.
+//
+// Накрутка возможна (чистка localStorage + рефреш), но для солопроекта это
+// приемлемая честная метрика "сколько уникальных браузеров видели сайт".
+
+const VISIT_LS_KEY = "cargolog_visited_v1";
+
+async function initVisitCounter() {
+  const el = document.getElementById("visit-counter");
+  if (!el) return; // счётчика нет на этой странице (например versions.html)
+
+  const ref = doc(db, "stats", "visits");
+  const alreadyVisited = localStorage.getItem(VISIT_LS_KEY) === "1";
+
+  try {
+    if (!alreadyVisited) {
+      // Первый визит с этого браузера — инкрементим.
+      const snap = await getDoc(ref);
+      if (snap.exists()) {
+        await setDoc(ref, { count: snap.data().count + 1 }, { merge: false });
+      } else {
+        // Документа ещё нет — создаём с count: 1 (разрешено правилом create).
+        await setDoc(ref, { count: 1 });
+      }
+      localStorage.setItem(VISIT_LS_KEY, "1");
+    }
+
+    // Читаем актуальное значение (после возможного инкремента) и показываем.
+    const fresh = await getDoc(ref);
+    const count = fresh.exists() ? fresh.data().count : 0;
+    renderVisitCounter(el, count);
+  } catch (e) {
+    console.warn("Visit counter failed:", e);
+    // Тихо прячем элемент если счётчик не сработал — не ломаем страницу.
+    el.classList.add("hidden");
+  }
+}
+
+function renderVisitCounter(el, count) {
+  // Формат числа с разделителями: 1234 → 1,234
+  const formatted = Number(count).toLocaleString(
+    LOCALE === "ru" ? "ru-RU" : LOCALE === "he" ? "he-IL" : "en-US"
+  );
+  const label =
+    LOCALE === "ru" ? "посещений" :
+    LOCALE === "he" ? "ביקורים" :
+    "visits";
+  el.innerHTML = `<i class="fa-solid fa-eye mr-1"></i> ${formatted} ${label}`;
+  el.classList.remove("hidden");
 }
 
 // ═══════════════════════════════════════════════════════════════════════
@@ -950,10 +1018,15 @@ function extractYouTubeId(input) {
 function updateAdminUI(user) {
   const adminBlock = document.getElementById("admin-block");
   const userBadge = document.getElementById("user-badge");
+  // v1.0.1 (S28): кнопка "Admin login" в nav versions.html — прячем когда
+  // уже залогинен админ (тогда виден user-badge с sign out).
+  const adminLoginBtn = document.getElementById("btn-google-signin");
 
   if (user && ADMIN_EMAILS.includes(user.email)) {
     // На admin-странице (versions.html) — показываем админ-блок и badge
     if (adminBlock) adminBlock.classList.remove("hidden");
+    // Залогинен — прячем кнопку входа (на versions.html в nav)
+    if (adminLoginBtn && adminBlock) adminLoginBtn.classList.add("hidden");
     if (userBadge) {
       userBadge.classList.remove("hidden");
       userBadge.innerHTML = `
@@ -974,6 +1047,8 @@ function updateAdminUI(user) {
   } else {
     if (adminBlock) adminBlock.classList.add("hidden");
     if (userBadge) userBadge.classList.add("hidden");
+    // Не залогинен — показываем кнопку входа на versions.html
+    if (adminLoginBtn && adminBlock) adminLoginBtn.classList.remove("hidden");
   }
 }
 
@@ -995,6 +1070,7 @@ document.addEventListener("DOMContentLoaded", () => {
   loadSiteContent();
   loadScreenshots();
   loadVideos();
+  initVisitCounter();
 
   // Версии: если есть #versions-list-preview → 3 шт., иначе все
   if (document.getElementById("versions-list")) {
