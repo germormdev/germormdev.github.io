@@ -1,318 +1,165 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CargoLog — Privacy Policy</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        body { -webkit-font-smoothing: antialiased; }
-        .privacy-content table { width: 100%; border-collapse: collapse; margin: 12px 0 20px; font-size: 14px; }
-        .privacy-content th, .privacy-content td { border: 1px solid #e0e0e0; padding: 8px 12px; text-align: left; vertical-align: top; }
-        .privacy-content th { background: #fff7ed; font-weight: 600; color: #1a1a2e; }
-        .privacy-content h2 { font-size: 1.25rem; font-weight: 700; margin-top: 2rem; margin-bottom: 0.75rem; color: #111827; }
-        .privacy-content p { margin-bottom: 0.875rem; line-height: 1.7; }
-        .privacy-content ul { margin: 0.5rem 0 1rem 1.5rem; }
-        .privacy-content li { margin-bottom: 0.375rem; line-height: 1.6; }
-        .privacy-content a { color: #f97316; }
-        .privacy-content a:hover { text-decoration: underline; }
-        .lang-block { display: none; }
-        .lang-block.active { display: block; }
-        .lang-block[data-lang="he"] { direction: rtl; text-align: right; }
-        .lang-block[data-lang="he"] ul { margin: 0.5rem 1.5rem 1rem 0; }
-        .lang-block[data-lang="he"] th, .lang-block[data-lang="he"] td { text-align: right; }
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CargoLog — Privacy Policy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Newsreader:opsz@6..72&family=Newsreader:ital,opsz@1,6..72&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f7f4ee; --ink:#211e1a; --muted:#6b6258; --line:#e2dccf;
+    --accent:#d2691e; --accent-deep:#a8521a; --card:#fffdf9;
+    --serif:"Newsreader",Georgia,serif; --display:"Fraunces",Georgia,serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif);font-size:18px;line-height:1.7}
+  body{background-image:radial-gradient(1200px 600px at 80% -10%,rgba(210,105,30,.07),transparent 60%)}
+  .wrap{max-width:760px;margin:0 auto;padding:0 22px 90px}
+  header{padding:46px 0 8px}
+  .brand{display:flex;align-items:center;gap:12px;font-family:var(--display);font-weight:600;font-size:1.5rem;letter-spacing:.3px}
+  .mark{width:34px;height:34px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent-deep));
+        display:grid;place-items:center;color:#fff;font-size:18px}
+  h1{font-family:var(--display);font-weight:600;font-size:clamp(2rem,5vw,2.9rem);line-height:1.08;margin:.5em 0 .1em}
+  .eff{color:var(--muted);font-style:italic;font-size:.95rem;margin-bottom:26px}
+  .tabs{position:sticky;top:0;z-index:5;display:flex;gap:8px;padding:14px 0;background:linear-gradient(var(--paper) 70%,transparent);
+        margin-bottom:8px}
+  .tab{font-family:var(--display);font-weight:500;font-size:.95rem;cursor:pointer;border:1px solid var(--line);
+       background:var(--card);color:var(--muted);padding:7px 16px;border-radius:999px;transition:.18s}
+  .tab:hover{border-color:var(--accent)}
+  .tab.active{background:var(--accent);border-color:var(--accent);color:#fff}
+  section.lang{display:none;animation:fade .35s ease}
+  section.lang.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  h2{font-family:var(--display);font-weight:600;font-size:1.28rem;margin:34px 0 6px;display:flex;gap:.5rem;align-items:baseline}
+  h2 .n{color:var(--accent);font-size:1rem;font-variant-numeric:tabular-nums}
+  p{margin:.5em 0}
+  .note{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--accent);
+        border-radius:10px;padding:14px 18px;margin:14px 0}
+  ul{margin:.4em 0;padding-inline-start:1.25em}
+  li{margin:.3em 0}
+  a{color:var(--accent-deep);text-decoration-thickness:1px;text-underline-offset:2px}
+  code{font-family:ui-monospace,Menlo,Consolas,monospace;background:#efe9dd;padding:1px 6px;border-radius:5px;font-size:.92em}
+  footer{margin-top:46px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:.9rem}
+  [dir="rtl"]{text-align:right}
+  [dir="rtl"] .note{border-left:none;border-right:3px solid var(--accent)}
+  [dir="rtl"] h2{flex-direction:row-reverse;justify-content:flex-end}
+</style>
 </head>
-<body class="bg-gray-50 text-gray-800">
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand"><span class="mark">🚛</span> CargoLog</div>
+    <h1>Privacy Policy</h1>
+    <div class="eff">Effective date: 29 May 2026 · Last updated: 29 May 2026</div>
+    <div class="tabs">
+      <button class="tab active" data-l="en">English</button>
+      <button class="tab" data-l="ru">Русский</button>
+      <button class="tab" data-l="he">עברית</button>
+    </div>
+  </header>
 
-    <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-        <a href="index.html" class="text-2xl font-bold text-orange-500 tracking-tight">CargoLog</a>
-        <div class="space-x-4 text-sm font-medium">
-            <a href="index.html" class="text-gray-500 hover:text-orange-500 transition">Home</a>
-            <a href="versions.html" class="text-gray-500 hover:text-orange-500 transition">Versions</a>
-        </div>
-    </nav>
+  <!-- ============ ENGLISH ============ -->
+  <section class="lang active" id="en">
+    <h2><span class="n">1.</span> Introduction</h2>
+    <p>This Privacy Policy explains what information the CargoLog app ("the app", "we") processes, how it is used, and how it is protected. CargoLog is a logbook for professional truck drivers that stores trip and shift data on your device.</p>
 
-    <section class="container mx-auto px-6 py-8 max-w-3xl">
+    <h2><span class="n">2.</span> Camera</h2>
+    <p>The app requests camera access only for Optical Character Recognition (OCR) — scanning container, seal and VIN numbers. Video processing and text recognition happen entirely on your device (offline), using on-device machine-learning libraries. The app does not take hidden photos, does not save images to your gallery, and does not transmit video or photos to any server or third party.</p>
 
-        <div class="text-center mb-8">
-            <button onclick="switchLang('en', this)" class="lang-btn px-4 py-2 mx-1 border-2 border-orange-500 text-orange-500 rounded-full text-sm font-semibold transition active">English</button>
-            <button onclick="switchLang('ru', this)" class="lang-btn px-4 py-2 mx-1 border-2 border-orange-500 text-orange-500 rounded-full text-sm font-semibold transition">Русский</button>
-            <button onclick="switchLang('he', this)" class="lang-btn px-4 py-2 mx-1 border-2 border-orange-500 text-orange-500 rounded-full text-sm font-semibold transition">עברית</button>
-        </div>
+    <h2><span class="n">3.</span> Location</h2>
+    <p>The app may request location access to record your city and coordinates in the local trip log (for example, when you start a shift or mark a stop). Location is used only while you actively use the relevant feature and is stored in the app's internal on-device database (Room). To convert coordinates into a human-readable address, the app may use the device's built-in geocoding service. Location data is not uploaded to our servers and is shared only when you yourself export or send a report.</p>
 
-        <div class="bg-white rounded-2xl shadow-sm p-8 md:p-12 privacy-content">
+    <h2><span class="n">4.</span> Diagnostics &amp; usage data (Firebase)</h2>
+    <p>To keep the app stable and fix problems, CargoLog automatically sends the following to <strong>Firebase</strong>, a service operated by Google:</p>
+    <ul>
+      <li><strong>Crash reports and diagnostics</strong> (Firebase Crashlytics) — error logs, stack traces, device model and OS version, app version. This helps us find and fix crashes.</li>
+      <li><strong>Anonymous usage statistics</strong> (Firebase Analytics) — aggregated, non-identifying events about how features are used.</li>
+    </ul>
+    <div class="note">This data is processed by Google as part of the Firebase service and is governed by <a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener">Google's privacy terms</a>. It is used solely to improve and stabilise the app. We do not sell your data and we do not use it for advertising.</div>
 
-        <!-- ======================== ENGLISH ======================== -->
-        <div class="lang-block active" data-lang="en">
+    <h2><span class="n">5.</span> What we do <em>not</em> do</h2>
+    <p>We do not sell personal data, do not use advertising trackers, and do not share your trip, vehicle or shift records with third parties beyond the diagnostic processing described in Section 4.</p>
 
-        <h1 class="text-3xl font-extrabold text-gray-900 mb-2">Privacy Policy</h1>
-        <p class="text-gray-500 text-sm mb-8">CargoLog — Truck Driver Logbook · Last updated: April 28, 2026</p>
+    <h2><span class="n">6.</span> Your choices</h2>
+    <p>You can decline optional permissions (camera, location, notifications) during onboarding or later in system Settings; related features will be limited accordingly. Uninstalling the app removes all locally stored data from your device.</p>
 
-        <p>CargoLog ("the App") is a truck driver logbook application developed by German ("Developer", "we", "us"). This Privacy Policy explains what data the App collects, how it is used, and your rights regarding that data.</p>
+    <h2><span class="n">7.</span> Contact</h2>
+    <p>Questions about this Policy: <a href="mailto:germormdev@gmail.com">germormdev@gmail.com</a></p>
+  </section>
 
-        <h2>1. Data We Collect</h2>
-        <table>
-            <tr><th>Data type</th><th>Purpose</th><th>Stored where</th></tr>
-            <tr><td>Trip records (origin, destination, odometer, cargo details, timestamps)</td><td>Core logbook functionality</td><td>On-device only</td></tr>
-            <tr><td>Vehicle and trailer information (plate numbers, type, year)</td><td>Garage management</td><td>On-device only</td></tr>
-            <tr><td>Refueling records</td><td>Fuel tracking and reports</td><td>On-device only</td></tr>
-            <tr><td>Driver name</td><td>Display in app header and reports</td><td>On-device only</td></tr>
-            <tr><td>Camera images (container numbers, cargo photos)</td><td>OCR recognition of container/seal numbers, trip documentation</td><td>On-device only</td></tr>
-            <tr><td>Location (precise, approximate, background)</td><td>Determining trip origin/destination; future GPS tracking feature</td><td>On-device only</td></tr>
-            <tr><td>App usage analytics</td><td>Understanding app usage patterns to improve the product</td><td>Google servers (Firebase Analytics)</td></tr>
-            <tr><td>Crash reports</td><td>Identifying and fixing bugs</td><td>Google servers (Firebase Crashlytics)</td></tr>
-        </table>
+  <!-- ============ RUSSIAN ============ -->
+  <section class="lang" id="ru">
+    <h2><span class="n">1.</span> Введение</h2>
+    <p>Настоящая Политика описывает, какие данные обрабатывает приложение CargoLog («приложение», «мы»), как они используются и защищаются. CargoLog — это путевой журнал для профессиональных водителей грузовиков, хранящий данные о рейсах и сменах на вашем устройстве.</p>
 
-        <h2>2. Data That Stays on Your Device</h2>
-        <p>All trip data, vehicle profiles, trailer information, refueling records, driver name, and photos are stored exclusively in a local database on your device. <strong>We do not transmit this data to any server.</strong> The App does not have user accounts, cloud sync, or remote storage. You can export your database manually via the Settings screen.</p>
+    <h2><span class="n">2.</span> Камера</h2>
+    <p>Доступ к камере запрашивается только для функции распознавания текста (OCR) — сканирования номеров контейнеров, пломб и VIN. Обработка видео и распознавание происходят полностью на устройстве (офлайн) с помощью встроенных библиотек машинного обучения. Приложение не делает скрытых снимков, не сохраняет изображения в галерею и не передаёт видео или фото на серверы или третьим лицам.</p>
 
-        <h2>3. Third-Party Services</h2>
-        <p>The App uses the following third-party services that may collect data:</p>
-        <ul>
-            <li><strong>Firebase Analytics</strong> (Google) — collects anonymous app usage data such as screen views, session duration, device model, and OS version. No personally identifiable information is sent. <a href="https://firebase.google.com/support/privacy" target="_blank">Firebase Privacy</a>.</li>
-            <li><strong>Firebase Crashlytics</strong> (Google) — collects crash reports including stack traces, device model, OS version, and app state at the time of crash. No personal data from your logbook is included. <a href="https://firebase.google.com/support/privacy" target="_blank">Firebase Privacy</a>.</li>
-            <li><strong>Google ML Kit</strong> (on-device) — used for text recognition (OCR) of container numbers. All processing happens on-device; no images or text are sent to Google servers.</li>
-            <li><strong>Google Play In-App Updates</strong> — checks for app updates via the Google Play Store.</li>
-        </ul>
+    <h2><span class="n">3.</span> Геолокация</h2>
+    <p>Приложение может запрашивать доступ к местоположению, чтобы записывать ваш город и координаты в локальный журнал поездок (например, при начале смены или отметке стоянки). Геолокация используется только во время активного использования соответствующей функции и хранится во внутренней базе данных на устройстве (Room). Для преобразования координат в адрес может использоваться встроенный геокодер устройства. Данные о местоположении не загружаются на наши серверы и передаются только тогда, когда вы сами экспортируете или отправляете отчёт.</p>
 
-        <h2>4. Permissions</h2>
-        <table>
-            <tr><th>Permission</th><th>Why we need it</th></tr>
-            <tr><td>Camera</td><td>Scanning container/seal numbers (OCR) and taking cargo photos</td></tr>
-            <tr><td>Fine / Coarse Location</td><td>Auto-filling trip origin and destination</td></tr>
-            <tr><td>Background Location</td><td>Future GPS tracking feature (not active by default)</td></tr>
-            <tr><td>Internet</td><td>Firebase Analytics, Crashlytics, and checking for app updates</td></tr>
-            <tr><td>Notifications</td><td>Timer notifications (waiting time, refueling, at client, unloading)</td></tr>
-            <tr><td>Vibration</td><td>Haptic feedback for OCR container number validation</td></tr>
-            <tr><td>Foreground Service</td><td>Running timers while the app is in background</td></tr>
-        </table>
+    <h2><span class="n">4.</span> Диагностика и данные об использовании (Firebase)</h2>
+    <p>Для обеспечения стабильности и устранения ошибок CargoLog автоматически отправляет в <strong>Firebase</strong> — сервис компании Google — следующее:</p>
+    <ul>
+      <li><strong>Отчёты о сбоях и диагностика</strong> (Firebase Crashlytics) — журналы ошибок, трассировки стека, модель устройства и версия ОС, версия приложения. Это помогает находить и исправлять сбои.</li>
+      <li><strong>Анонимная статистика использования</strong> (Firebase Analytics) — обобщённые, не идентифицирующие события о том, как используются функции.</li>
+    </ul>
+    <div class="note">Эти данные обрабатываются Google в рамках сервиса Firebase и регулируются <a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener">условиями конфиденциальности Google</a>. Они используются исключительно для улучшения и стабилизации приложения. Мы не продаём ваши данные и не используем их для рекламы.</div>
 
-        <h2>5. Data Sharing</h2>
-        <p>We do not sell, trade, or rent your personal data to third parties. We do not share your logbook data with anyone. The only data transmitted from the App is anonymous analytics and crash reports sent to Google Firebase, as described in Section 3.</p>
+    <h2><span class="n">5.</span> Что мы <em>не</em> делаем</h2>
+    <p>Мы не продаём персональные данные, не используем рекламные трекеры и не передаём ваши записи о рейсах, технике и сменах третьим лицам, кроме диагностической обработки, описанной в разделе 4.</p>
 
-        <h2>6. Data Retention and Deletion</h2>
-        <p>All logbook data is stored on your device and persists until you delete it. You can:</p>
-        <ul>
-            <li>Delete individual trips from the trip history screen.</li>
-            <li>Delete vehicles and trailers from the garage screen.</li>
-            <li>Export or clear the entire database via Settings.</li>
-            <li>Uninstall the App to remove all locally stored data.</li>
-        </ul>
-        <p>Firebase Analytics and Crashlytics data is retained according to <a href="https://firebase.google.com/support/privacy" target="_blank">Google's data retention policies</a>.</p>
+    <h2><span class="n">6.</span> Ваш выбор</h2>
+    <p>Вы можете отклонить необязательные разрешения (камера, геолокация, уведомления) при первом запуске или позже в системных Настройках; соответствующие функции будут ограничены. Удаление приложения стирает все локально сохранённые данные с устройства.</p>
 
-        <h2>7. Children's Privacy</h2>
-        <p>The App is not directed at children under the age of 13. We do not knowingly collect personal information from children. If you believe a child has provided us with personal data, please contact us so we can take appropriate action.</p>
+    <h2><span class="n">7.</span> Контакты</h2>
+    <p>Вопросы по Политике: <a href="mailto:germormdev@gmail.com">germormdev@gmail.com</a></p>
+  </section>
 
-        <h2>8. Your Rights</h2>
-        <p>Depending on your location, you may have rights under applicable data protection laws (such as GDPR or CCPA), including the right to access, correct, or delete your personal data. Since all logbook data is stored locally on your device and we have no access to it, you have full control over your data at all times.</p>
-        <p>For data collected by Firebase, you can opt out by disabling analytics collection or by contacting us to request deletion.</p>
+  <!-- ============ HEBREW ============ -->
+  <section class="lang" id="he" dir="rtl" lang="he">
+    <h2><span class="n">1.</span> מבוא</h2>
+    <p>מדיניות פרטיות זו מתארת אילו נתונים אפליקציית CargoLog ("האפליקציה", "אנחנו") מעבדת, כיצד הם משמשים וכיצד הם מוגנים. CargoLog היא יומן נסיעות לנהגי משאית מקצועיים, השומר נתוני נסיעות ומשמרות במכשיר שלך.</p>
 
-        <h2>9. Security</h2>
-        <p>Your logbook data is protected by your device's built-in security (screen lock, encryption). The App does not transmit your logbook data over the internet. Network communications with Firebase services use encrypted HTTPS connections.</p>
+    <h2><span class="n">2.</span> מצלמה</h2>
+    <p>האפליקציה מבקשת גישה למצלמה אך ורק לצורך זיהוי טקסט אופטי (OCR) — סריקת מספרי מכולות, חותמות ו-VIN. עיבוד הווידאו וזיהוי הטקסט מתבצעים כולם במכשיר (לא מקוון), באמצעות ספריות למידת מכונה מובנות. האפליקציה אינה מצלמת תמונות נסתרות, אינה שומרת תמונות בגלריה, ואינה מעבירה וידאו או תמונות לשרתים או לצדדים שלישיים.</p>
 
-        <h2>10. Changes to This Policy</h2>
-        <p>We may update this Privacy Policy from time to time. Changes will be posted on this page with an updated "Last updated" date. Continued use of the App after changes constitutes acceptance of the revised policy.</p>
+    <h2><span class="n">3.</span> מיקום</h2>
+    <p>האפליקציה עשויה לבקש גישה למיקום כדי לתעד את העיר והקואורדינטות שלך ביומן הנסיעות המקומי (למשל בתחילת משמרת או בסימון עצירה). המיקום משמש רק בעת שימוש פעיל בתכונה הרלוונטית ונשמר בבסיס הנתונים הפנימי במכשיר (Room). להמרת קואורדינטות לכתובת קריאה, האפליקציה עשויה להשתמש בשירות הגאוקודינג המובנה של המכשיר. נתוני המיקום אינם מועלים לשרתים שלנו ומשותפים רק כאשר אתה עצמך מייצא או שולח דוח.</p>
 
-        <h2>11. Contact Us</h2>
-        <div class="bg-orange-50 border-l-4 border-orange-500 p-4 rounded-r-lg mt-4">
-            <p class="mb-2">If you have any questions or concerns about this Privacy Policy, please contact us:</p>
-            <p><strong>Telegram:</strong> <a href="https://t.me/TripLog_app" target="_blank">t.me/TripLog_app</a><br>
-            <strong>Facebook:</strong> <a href="https://www.facebook.com/share/1BEjd4SnPZ/" target="_blank">CargoLog on Facebook</a><br>
-            <strong>Email:</strong> germormdev@gmail.com</p>
-        </div>
-        </div>
+    <h2><span class="n">4.</span> נתוני אבחון ושימוש (Firebase)</h2>
+    <p>כדי לשמור על יציבות האפליקציה ולתקן תקלות, CargoLog שולחת אוטומטית אל <strong>Firebase</strong> — שירות המופעל על ידי Google — את הדברים הבאים:</p>
+    <ul>
+      <li><strong>דוחות קריסה ואבחון</strong> (Firebase Crashlytics) — יומני שגיאות, מעקבי מחסנית, דגם המכשיר וגרסת מערכת ההפעלה, גרסת האפליקציה. זה עוזר לנו לאתר ולתקן קריסות.</li>
+      <li><strong>סטטיסטיקת שימוש אנונימית</strong> (Firebase Analytics) — אירועים מצרפיים ולא מזהים על אופן השימוש בתכונות.</li>
+    </ul>
+    <div class="note">נתונים אלה מעובדים על ידי Google כחלק משירות Firebase וכפופים <a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener">לתנאי הפרטיות של Google</a>. הם משמשים אך ורק לשיפור ולייצוב האפליקציה. איננו מוכרים את הנתונים שלך ואיננו משתמשים בהם לפרסום.</div>
 
-        <!-- ======================== RUSSIAN ======================== -->
-        <div class="lang-block" data-lang="ru">
+    <h2><span class="n">5.</span> מה אנחנו <em>לא</em> עושים</h2>
+    <p>איננו מוכרים נתונים אישיים, איננו משתמשים בעוקבי פרסום, ואיננו משתפים את רשומות הנסיעות, הרכב והמשמרות שלך עם צדדים שלישיים מעבר לעיבוד האבחוני המתואר בסעיף 4.</p>
 
-        <h1 class="text-3xl font-extrabold text-gray-900 mb-2">Политика конфиденциальности</h1>
-        <p class="text-gray-500 text-sm mb-8">CargoLog — Бортовой журнал водителя · Обновлено: 28 апреля 2026</p>
+    <h2><span class="n">6.</span> הבחירה שלך</h2>
+    <p>באפשרותך לסרב להרשאות אופציונליות (מצלמה, מיקום, התראות) בעת ההגדרה הראשונית או מאוחר יותר בהגדרות המערכת; התכונות הרלוונטיות יוגבלו בהתאם. הסרת האפליקציה מוחקת את כל הנתונים השמורים מקומית מהמכשיר.</p>
 
-        <p>CargoLog («Приложение») — приложение бортового журнала для водителей грузовиков, разработанное German («Разработчик», «мы»). Настоящая Политика конфиденциальности объясняет, какие данные собирает Приложение, как они используются и какие у вас есть права.</p>
+    <h2><span class="n">7.</span> יצירת קשר</h2>
+    <p>שאלות לגבי מדיניות זו: <a href="mailto:germormdev@gmail.com">germormdev@gmail.com</a></p>
+  </section>
 
-        <h2>1. Какие данные мы собираем</h2>
-        <table>
-            <tr><th>Тип данных</th><th>Назначение</th><th>Где хранятся</th></tr>
-            <tr><td>Записи рейсов (откуда, куда, одометр, груз, время)</td><td>Основной функционал журнала</td><td>Только на устройстве</td></tr>
-            <tr><td>Данные транспорта и прицепов (номера, тип, год)</td><td>Управление гаражом</td><td>Только на устройстве</td></tr>
-            <tr><td>Записи о заправках</td><td>Учёт топлива и отчёты</td><td>Только на устройстве</td></tr>
-            <tr><td>Имя водителя</td><td>Отображение в шапке приложения и отчётах</td><td>Только на устройстве</td></tr>
-            <tr><td>Изображения с камеры (номера контейнеров, фото грузов)</td><td>Распознавание номеров контейнеров/пломб (OCR), документирование рейсов</td><td>Только на устройстве</td></tr>
-            <tr><td>Геолокация (точная, приблизительная, фоновая)</td><td>Определение точки отправления/назначения; будущее GPS-отслеживание</td><td>Только на устройстве</td></tr>
-            <tr><td>Аналитика использования</td><td>Понимание того, как используется приложение, для его улучшения</td><td>Серверы Google (Firebase Analytics)</td></tr>
-            <tr><td>Отчёты об ошибках</td><td>Выявление и исправление ошибок</td><td>Серверы Google (Firebase Crashlytics)</td></tr>
-        </table>
+  <footer>© 2026 CargoLog · germormdev@gmail.com</footer>
+</div>
 
-        <h2>2. Данные, которые остаются на вашем устройстве</h2>
-        <p>Все данные о рейсах, транспорте, прицепах, заправках, имени водителя и фотографиях хранятся исключительно в локальной базе данных на вашем устройстве. <strong>Мы не передаём эти данные ни на какие серверы.</strong> В Приложении нет учётных записей, облачной синхронизации или удалённого хранения. Вы можете экспортировать базу данных вручную через экран Настроек.</p>
-
-        <h2>3. Сторонние сервисы</h2>
-        <p>Приложение использует следующие сторонние сервисы, которые могут собирать данные:</p>
-        <ul>
-            <li><strong>Firebase Analytics</strong> (Google) — собирает анонимные данные об использовании: просмотры экранов, длительность сессий, модель устройства, версию ОС. Персональные данные не передаются. <a href="https://firebase.google.com/support/privacy" target="_blank">Политика Firebase</a>.</li>
-            <li><strong>Firebase Crashlytics</strong> (Google) — собирает отчёты о сбоях: стектрейсы, модель устройства, версию ОС и состояние приложения. Данные из вашего журнала в отчёты не включаются. <a href="https://firebase.google.com/support/privacy" target="_blank">Политика Firebase</a>.</li>
-            <li><strong>Google ML Kit</strong> (на устройстве) — используется для распознавания текста (OCR) номеров контейнеров. Вся обработка происходит на устройстве; изображения и текст не отправляются на серверы Google.</li>
-            <li><strong>Google Play In-App Updates</strong> — проверка обновлений через Google Play.</li>
-        </ul>
-
-        <h2>4. Разрешения</h2>
-        <table>
-            <tr><th>Разрешение</th><th>Зачем нужно</th></tr>
-            <tr><td>Камера</td><td>Сканирование номеров контейнеров/пломб (OCR) и фотографирование грузов</td></tr>
-            <tr><td>Точная / приблизительная геолокация</td><td>Автозаполнение точки отправления и назначения</td></tr>
-            <tr><td>Фоновая геолокация</td><td>Будущая функция GPS-отслеживания (по умолчанию неактивна)</td></tr>
-            <tr><td>Интернет</td><td>Firebase Analytics, Crashlytics и проверка обновлений</td></tr>
-            <tr><td>Уведомления</td><td>Уведомления таймеров (ожидание, заправка, у клиента, разгрузка)</td></tr>
-            <tr><td>Вибрация</td><td>Тактильная обратная связь при проверке номера контейнера</td></tr>
-            <tr><td>Фоновый сервис</td><td>Работа таймеров при свёрнутом приложении</td></tr>
-        </table>
-
-        <h2>5. Передача данных</h2>
-        <p>Мы не продаём, не обмениваем и не сдаём в аренду ваши персональные данные третьим лицам. Мы не передаём данные вашего журнала никому. Единственные данные, которые передаются из Приложения — анонимная аналитика и отчёты об ошибках, отправляемые в Google Firebase, как описано в разделе 3.</p>
-
-        <h2>6. Хранение и удаление данных</h2>
-        <p>Все данные журнала хранятся на вашем устройстве до тех пор, пока вы их не удалите. Вы можете:</p>
-        <ul>
-            <li>Удалить отдельные рейсы из истории.</li>
-            <li>Удалить транспорт и прицепы из гаража.</li>
-            <li>Экспортировать или очистить всю базу данных через Настройки.</li>
-            <li>Удалить Приложение, чтобы удалить все локальные данные.</li>
-        </ul>
-        <p>Данные Firebase Analytics и Crashlytics хранятся в соответствии с <a href="https://firebase.google.com/support/privacy" target="_blank">политикой хранения данных Google</a>.</p>
-
-        <h2>7. Конфиденциальность детей</h2>
-        <p>Приложение не предназначено для детей младше 13 лет. Мы сознательно не собираем персональные данные детей. Если вы считаете, что ребёнок предоставил нам свои данные, свяжитесь с нами для принятия мер.</p>
-
-        <h2>8. Ваши права</h2>
-        <p>В зависимости от вашего местоположения, вы можете иметь права в соответствии с законами о защите данных (такими как GDPR или CCPA), включая право на доступ, исправление или удаление ваших данных. Поскольку все данные журнала хранятся локально на вашем устройстве и у нас нет к ним доступа, вы полностью контролируете свои данные в любое время.</p>
-        <p>Для данных, собранных Firebase, вы можете отказаться от сбора аналитики или обратиться к нам с запросом на удаление.</p>
-
-        <h2>9. Безопасность</h2>
-        <p>Данные вашего журнала защищены встроенными средствами безопасности вашего устройства (блокировка экрана, шифрование). Приложение не передаёт данные журнала через интернет. Сетевые соединения с сервисами Firebase используют зашифрованные HTTPS-соединения.</p>
-
-        <h2>10. Изменения в политике</h2>
-        <p>Мы можем время от времени обновлять эту Политику конфиденциальности. Изменения будут опубликованы на этой странице с обновлённой датой. Продолжение использования Приложения после изменений означает согласие с обновлённой политикой.</p>
-
-        <h2>11. Связаться с нами</h2>
-        <div class="bg-orange-50 border-l-4 border-orange-500 p-4 rounded-r-lg mt-4">
-            <p class="mb-2">Если у вас есть вопросы по этой Политике конфиденциальности, свяжитесь с нами:</p>
-            <p><strong>Telegram:</strong> <a href="https://t.me/TripLog_app" target="_blank">t.me/TripLog_app</a><br>
-            <strong>Facebook:</strong> <a href="https://www.facebook.com/share/1BEjd4SnPZ/" target="_blank">CargoLog в Facebook</a><br>
-            <strong>Email:</strong> germormdev@gmail.com</p>
-        </div>
-        </div>
-
-        <!-- ======================== HEBREW ======================== -->
-        <div class="lang-block" data-lang="he">
-
-        <h1 class="text-3xl font-extrabold text-gray-900 mb-2">מדיניות פרטיות</h1>
-        <p class="text-gray-500 text-sm mb-8">CargoLog — יומן נסיעות לנהגי משאיות · עדכון אחרון: 28 באפריל 2026</p>
-
-        <p>CargoLog ("האפליקציה") היא אפליקציית יומן נסיעות לנהגי משאיות שפותחה על ידי German ("המפתח", "אנחנו"). מדיניות פרטיות זו מסבירה אילו נתונים האפליקציה אוספת, כיצד הם משמשים ומהן זכויותיכם בנוגע לנתונים אלו.</p>
-
-        <h2>1. נתונים שאנו אוספים</h2>
-        <table>
-            <tr><th>סוג הנתונים</th><th>מטרה</th><th>היכן מאוחסנים</th></tr>
-            <tr><td>רשומות נסיעות (מוצא, יעד, מד-אוץ, פרטי מטען, זמנים)</td><td>פונקציונליות יומן הנסיעות</td><td>במכשיר בלבד</td></tr>
-            <tr><td>מידע על רכבים ונגררים (מספרי לוחית, סוג, שנה)</td><td>ניהול מוסך</td><td>במכשיר בלבד</td></tr>
-            <tr><td>רשומות תדלוק</td><td>מעקב דלק ודוחות</td><td>במכשיר בלבד</td></tr>
-            <tr><td>שם הנהג</td><td>הצגה בכותרת האפליקציה ובדוחות</td><td>במכשיר בלבד</td></tr>
-            <tr><td>תמונות מהמצלמה (מספרי מכולות, תמונות מטען)</td><td>זיהוי מספרי מכולות/חותמות (OCR), תיעוד נסיעות</td><td>במכשיר בלבד</td></tr>
-            <tr><td>מיקום (מדויק, משוער, רקע)</td><td>מילוי אוטומטי של מוצא/יעד; מעקב GPS עתידי</td><td>במכשיר בלבד</td></tr>
-            <tr><td>אנליטיקת שימוש</td><td>הבנת דפוסי שימוש לשיפור המוצר</td><td>שרתי Google (Firebase Analytics)</td></tr>
-            <tr><td>דוחות קריסה</td><td>זיהוי ותיקון באגים</td><td>שרתי Google (Firebase Crashlytics)</td></tr>
-        </table>
-
-        <h2>2. נתונים שנשארים במכשיר שלכם</h2>
-        <p>כל נתוני הנסיעות, פרופילי הרכבים, מידע על נגררים, רשומות תדלוק, שם הנהג והתמונות מאוחסנים אך ורק במסד נתונים מקומי במכשיר שלכם. <strong>אנחנו לא מעבירים נתונים אלו לשום שרת.</strong> באפליקציה אין חשבונות משתמש, סנכרון ענן או אחסון מרוחק. תוכלו לייצא את מסד הנתונים באופן ידני דרך מסך ההגדרות.</p>
-
-        <h2>3. שירותי צד שלישי</h2>
-        <p>האפליקציה משתמשת בשירותי צד שלישי הבאים שעשויים לאסוף נתונים:</p>
-        <ul>
-            <li><strong>Firebase Analytics</strong> (Google) — אוסף נתוני שימוש אנונימיים. <a href="https://firebase.google.com/support/privacy" target="_blank">מדיניות Firebase</a>.</li>
-            <li><strong>Firebase Crashlytics</strong> (Google) — אוסף דוחות קריסה. נתונים אישיים מיומן הנסיעות לא נכללים. <a href="https://firebase.google.com/support/privacy" target="_blank">מדיניות Firebase</a>.</li>
-            <li><strong>Google ML Kit</strong> (במכשיר) — משמש לזיהוי טקסט (OCR) של מספרי מכולות. כל העיבוד מתבצע במכשיר.</li>
-            <li><strong>Google Play In-App Updates</strong> — בדיקת עדכונים דרך Google Play.</li>
-        </ul>
-
-        <h2>4. הרשאות</h2>
-        <table>
-            <tr><th>הרשאה</th><th>למה נדרשת</th></tr>
-            <tr><td>מצלמה</td><td>סריקת מספרי מכולות/חותמות (OCR) וצילום מטענים</td></tr>
-            <tr><td>מיקום מדויק / משוער</td><td>מילוי אוטומטי של מוצא ויעד</td></tr>
-            <tr><td>מיקום ברקע</td><td>תכונת מעקב GPS עתידית (לא פעילה כברירת מחדל)</td></tr>
-            <tr><td>אינטרנט</td><td>Firebase Analytics, Crashlytics ובדיקת עדכונים</td></tr>
-            <tr><td>התראות</td><td>התראות טיימר (המתנה, תדלוק, אצל לקוח, פריקה)</td></tr>
-            <tr><td>רטט</td><td>משוב הפטי לאימות מספר מכולה</td></tr>
-            <tr><td>שירות קדמי</td><td>הפעלת טיימרים כשהאפליקציה ברקע</td></tr>
-        </table>
-
-        <h2>5. שיתוף נתונים</h2>
-        <p>אנחנו לא מוכרים, סוחרים או משכירים את הנתונים האישיים שלכם לצדדים שלישיים. אנחנו לא משתפים את נתוני היומן שלכם עם אף אחד. הנתונים היחידים שמועברים מהאפליקציה הם אנליטיקה אנונימית ודוחות קריסה הנשלחים ל-Google Firebase, כמתואר בסעיף 3.</p>
-
-        <h2>6. שמירה ומחיקת נתונים</h2>
-        <p>כל נתוני היומן מאוחסנים במכשיר שלכם ונשמרים עד שתמחקו אותם. תוכלו:</p>
-        <ul>
-            <li>למחוק נסיעות בודדות ממסך היסטוריית הנסיעות.</li>
-            <li>למחוק רכבים ונגררים ממסך המוסך.</li>
-            <li>לייצא או לנקות את כל מסד הנתונים דרך ההגדרות.</li>
-            <li>להסיר את האפליקציה כדי למחוק את כל הנתונים המקומיים.</li>
-        </ul>
-        <p>נתוני Firebase Analytics ו-Crashlytics נשמרים בהתאם ל<a href="https://firebase.google.com/support/privacy" target="_blank">מדיניות שמירת הנתונים של Google</a>.</p>
-
-        <h2>7. פרטיות ילדים</h2>
-        <p>האפליקציה אינה מיועדת לילדים מתחת לגיל 13. אנחנו לא אוספים ביודעין מידע אישי מילדים. אם אתם מאמינים שילד סיפק לנו מידע אישי, אנא צרו איתנו קשר כדי שנוכל לנקוט פעולה מתאימה.</p>
-
-        <h2>8. הזכויות שלכם</h2>
-        <p>בהתאם למיקומכם, ייתכן שיש לכם זכויות על פי חוקי הגנת מידע (כגון GDPR או CCPA), כולל הזכות לגשת, לתקן או למחוק את הנתונים האישיים שלכם. מכיוון שכל נתוני היומן מאוחסנים מקומית במכשיר שלכם ואין לנו גישה אליהם, יש לכם שליטה מלאה על הנתונים שלכם בכל עת.</p>
-        <p>לגבי נתונים שנאספו על ידי Firebase, תוכלו לבטל את איסוף האנליטיקה או לפנות אלינו בבקשה למחיקה.</p>
-
-        <h2>9. אבטחה</h2>
-        <p>נתוני היומן שלכם מוגנים על ידי אמצעי האבטחה המובנים במכשיר (נעילת מסך, הצפנה). האפליקציה לא מעבירה את נתוני היומן דרך האינטרנט. תקשורת רשת עם שירותי Firebase משתמשת בחיבורי HTTPS מוצפנים.</p>
-
-        <h2>10. שינויים במדיניות</h2>
-        <p>אנו עשויים לעדכן מדיניות פרטיות זו מעת לעת. שינויים יפורסמו בדף זה עם תאריך "עדכון אחרון" מעודכן. המשך השימוש באפליקציה לאחר שינויים מהווה הסכמה למדיניות המעודכנת.</p>
-
-        <h2>11. צרו קשר</h2>
-        <div class="bg-orange-50 border-r-4 border-orange-500 p-4 rounded-l-lg mt-4">
-            <p class="mb-2">אם יש לכם שאלות בנוגע למדיניות פרטיות זו, אנא צרו איתנו קשר:</p>
-            <p><strong>Telegram:</strong> <a href="https://t.me/TripLog_app" target="_blank">t.me/TripLog_app</a><br>
-            <strong>Facebook:</strong> <a href="https://www.facebook.com/share/1BEjd4SnPZ/" target="_blank">CargoLog ב-Facebook</a><br>
-            <strong>Email:</strong> germormdev@gmail.com</p>
-        </div>
-        </div>
-
-        </div>
-
-    </section>
-
-    <footer class="bg-gray-900 text-white py-12 mt-12">
-        <div class="container mx-auto px-6 text-center">
-            <div class="flex justify-center space-x-8 mb-6">
-                <a href="https://t.me/TripLog_app" target="_blank" class="text-gray-400 hover:text-blue-400 text-3xl transition"><i class="fa-brands fa-telegram"></i></a>
-                <a href="mailto:germormdev@gmail.com" class="text-gray-400 hover:text-red-400 text-3xl transition"><i class="fa-solid fa-envelope"></i></a>
-                <a href="https://www.facebook.com/CargoLogApp" target="_blank" class="text-gray-400 hover:text-blue-600 text-3xl transition"><i class="fa-brands fa-facebook"></i></a>
-            </div>
-            <p class="text-gray-500 text-sm">© 2026 CargoLog</p>
-        </div>
-    </footer>
-
-    <style>
-        .lang-btn:not(.active) { background: transparent; }
-        .lang-btn.active { background: #f97316; color: white !important; border-color: #f97316; }
-    </style>
-
-    <script>
-        function switchLang(lang, btn) {
-            document.querySelectorAll('.lang-block').forEach(el => el.classList.remove('active'));
-            document.querySelector('.lang-block[data-lang="' + lang + '"]').classList.add('active');
-            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            document.documentElement.lang = lang;
-            document.documentElement.dir = lang === 'he' ? 'rtl' : 'ltr';
-        }
-    </script>
+<script>
+  const tabs=document.querySelectorAll('.tab');
+  const secs=document.querySelectorAll('.lang');
+  tabs.forEach(t=>t.addEventListener('click',()=>{
+    tabs.forEach(x=>x.classList.remove('active'));
+    secs.forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById(t.dataset.l).classList.add('active');
+    document.documentElement.lang=t.dataset.l;
+  }));
+</script>
 </body>
 </html>
