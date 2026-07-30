@@ -5,9 +5,94 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CargoLog — יומן נסיעות דיגיטלי לנהגי משאיות</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 30.07.2026: палитра сайта = палитра приложения (пресет «Манила»,
+         канон domain/.../theme/ColorScheme.kt val LIGHT). Переопределяем шкалы
+         Tailwind, а не классы в разметке: так же перекрашивается и то, что
+         рисует signin.js на лету. -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              white: '#FBF7EF',          // поверхность карточек — тёплая, не белая
+              gray: {
+                50:  '#F6EFE4',          // фон страницы (background)
+                100: '#EFE4D0',          // тулбар
+                200: '#E6D9C2',
+                300: '#D8C9B0',          // border
+                400: '#A08B69',
+                500: '#7A6749',          // textSecondary
+                600: '#6B5941',
+                700: '#5A4A33',
+                800: '#43301B',          // font — основной текст
+                900: '#2E2418'           // самая тёмная сепия (кнопки, рамки)
+              },
+              orange: {
+                50:  '#FBEDE4',
+                100: '#F5DCCB',
+                200: '#EDC3A5',
+                300: '#E5A87F',
+                400: '#E8935B',          // акцент тёмных пресетов — ховер на тёмном
+                500: '#C9713F',          // АКЦЕНТ приложения
+                600: '#B05F2E',          // акцент «Крафта» — ховер на светлом
+                700: '#944E24',
+                800: '#78401E',
+                900: '#5C3218'
+              }
+            },
+            fontFamily: {
+              sans: ['Newsreader', 'Georgia', 'serif'],
+              display: ['Fraunces', 'Georgia', 'serif']
+            }
+          }
+        }
+      }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <style>
+        /* 30.07.2026: бумага вместо плоской заливки. Полосы — как разлиновка
+           бортового журнала, очень слабые, чтобы не мешать чтению. */
+        body {
+            background-color: #F6EFE4;
+            background-image:
+                repeating-linear-gradient(
+                    to bottom,
+                    rgba(122, 103, 73, 0.055) 0px,
+                    rgba(122, 103, 73, 0.055) 1px,
+                    transparent 1px,
+                    transparent 34px
+                );
+        }
+        h1, h2, h3, .font-display { font-family: 'Fraunces', Georgia, serif; letter-spacing: -0.01em; }
+        /* Заголовки секций в приложении подчёркнуты акцентом — здесь так же,
+           но линия тоньше и теплее дефолтной тейлвиндовской. */
+        .border-b-2 { border-bottom-width: 2px; }
+
+        /* Кнопки — как в приложении. Подпись на акцентной заливке ТЁМНАЯ:
+           в приложении её цвет считает ColorMath.onAccentColor по полярности,
+           и на #C9713F побеждает тёмный полюс (контраст 5.20 против ~3.4 у
+           светлого). Селектор «элемент + класс» перебивает tailwind-овский
+           .text-white по специфичности, без !important. */
+        button.bg-orange-500, a.bg-orange-500,
+        button.bg-orange-600, a.bg-orange-600,
+        input[type="submit"].bg-orange-500 {
+            color: #171310;
+            border-radius: 0.9rem;
+            box-shadow: 0 1px 0 rgba(67, 48, 27, 0.18);
+            transition: transform .12s ease, background-color .12s ease, box-shadow .12s ease;
+        }
+        button.bg-orange-500:active, a.bg-orange-500:active,
+        button.bg-orange-600:active, a.bg-orange-600:active {
+            transform: translateY(1px);
+            box-shadow: none;
+        }
+        /* Тёмная кнопка Google Play — подпись тёплая, как поверхность бумаги. */
+        a.bg-gray-900 { border-radius: 1rem; }
+
         body { -webkit-font-smoothing: antialiased; }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
@@ -54,10 +139,30 @@
     </header>
 
     <section class="container mx-auto px-6 mb-16">
-        <div id="screenshots-list" class="flex justify-start md:justify-center gap-6 overflow-x-auto hide-scrollbar pb-8 px-4" dir="ltr">
-            <img src="screen1.png" alt="Screenshot 1" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800 w-64 md:w-72 flex-shrink-0">
-            <img src="screen2.png" alt="Screenshot 2" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800 w-64 md:w-72 flex-shrink-0">
-            <img src="screen3.png" alt="Screenshot 3" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800 w-64 md:w-72 flex-shrink-0">
+        <div id="screenshots-list" class="flex justify-start gap-6 overflow-x-auto hide-scrollbar pb-8 px-4 snap-x snap-mandatory" dir="ltr">
+            <!-- fallback пока грузится Firestore: 8 кадров 2.0.0 -->
+            <img src="screen1.png" alt="תפריט" loading="lazy" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800 w-64 md:w-72 flex-shrink-0 snap-start">
+            <img src="screen2.png" alt="סוג מטען" loading="lazy" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800 w-64 md:w-72 flex-shrink-0 snap-start">
+            <img src="screen3.png" alt="פרטי מטען" loading="lazy" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800 w-64 md:w-72 flex-shrink-0 snap-start">
+            <img src="screen4.png" alt="היסטוריית נסיעות" loading="lazy" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800 w-64 md:w-72 flex-shrink-0 snap-start">
+            <img src="screen5.png" alt="יומן תדלוק" loading="lazy" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800 w-64 md:w-72 flex-shrink-0 snap-start">
+            <img src="screen6.png" alt="דוח" loading="lazy" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800 w-64 md:w-72 flex-shrink-0 snap-start">
+            <img src="screen7.png" alt="מוסך" loading="lazy" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800 w-64 md:w-72 flex-shrink-0 snap-start">
+            <img src="screen8.png" alt="ערכות נושא" loading="lazy" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800 w-64 md:w-72 flex-shrink-0 snap-start">
+        </div>
+    </section>
+
+    <!-- Ролик приложения — статический, НЕ через Firestore: loadVideos()
+         прячет секцию Videos целиком, когда для локали нет YouTube-роликов. -->
+    <section class="container mx-auto px-6 mb-16">
+        <h2 class="text-3xl font-bold text-gray-900 mb-8 pb-2 border-b-2 border-orange-500 inline-block">איך זה נראה בפעולה</h2>
+        <div class="flex flex-col items-center">
+            <video class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800 w-64 md:w-72"
+                   controls preload="metadata" playsinline poster="screen1.png">
+                <source src="cargolog-trip.mp4" type="video/mp4">
+                הדפדפן לא תומך בוידאו.
+            </video>
+            <p class="mt-4 text-sm text-gray-500 text-center max-w-md">נסיעה שלמה מהתחלה ועד הסגירה — 20 שניות, בלי הסבר קולי.</p>
         </div>
     </section>
 

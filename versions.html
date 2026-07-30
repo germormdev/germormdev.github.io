@@ -5,21 +5,109 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CargoLog — Version History</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 30.07.2026: палитра сайта = палитра приложения (пресет «Манила»,
+         канон domain/.../theme/ColorScheme.kt val LIGHT). Переопределяем шкалы
+         Tailwind, а не классы в разметке: так же перекрашивается и то, что
+         рисует signin.js на лету. -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              white: '#FBF7EF',          // поверхность карточек — тёплая, не белая
+              gray: {
+                50:  '#F6EFE4',          // фон страницы (background)
+                100: '#EFE4D0',          // тулбар
+                200: '#E6D9C2',
+                300: '#D8C9B0',          // border
+                400: '#A08B69',
+                500: '#7A6749',          // textSecondary
+                600: '#6B5941',
+                700: '#5A4A33',
+                800: '#43301B',          // font — основной текст
+                900: '#2E2418'           // самая тёмная сепия (кнопки, рамки)
+              },
+              orange: {
+                50:  '#FBEDE4',
+                100: '#F5DCCB',
+                200: '#EDC3A5',
+                300: '#E5A87F',
+                400: '#E8935B',          // акцент тёмных пресетов — ховер на тёмном
+                500: '#C9713F',          // АКЦЕНТ приложения
+                600: '#B05F2E',          // акцент «Крафта» — ховер на светлом
+                700: '#944E24',
+                800: '#78401E',
+                900: '#5C3218'
+              }
+            },
+            fontFamily: {
+              sans: ['Newsreader', 'Georgia', 'serif'],
+              display: ['Fraunces', 'Georgia', 'serif']
+            }
+          }
+        }
+      }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <style>
+        /* 30.07.2026: бумага вместо плоской заливки. Полосы — как разлиновка
+           бортового журнала, очень слабые, чтобы не мешать чтению. */
+        body {
+            background-color: #F6EFE4;
+            background-image:
+                repeating-linear-gradient(
+                    to bottom,
+                    rgba(122, 103, 73, 0.055) 0px,
+                    rgba(122, 103, 73, 0.055) 1px,
+                    transparent 1px,
+                    transparent 34px
+                );
+        }
+        h1, h2, h3, .font-display { font-family: 'Fraunces', Georgia, serif; letter-spacing: -0.01em; }
+        /* Заголовки секций в приложении подчёркнуты акцентом — здесь так же,
+           но линия тоньше и теплее дефолтной тейлвиндовской. */
+        .border-b-2 { border-bottom-width: 2px; }
+
+        /* Кнопки — как в приложении. Подпись на акцентной заливке ТЁМНАЯ:
+           в приложении её цвет считает ColorMath.onAccentColor по полярности,
+           и на #C9713F побеждает тёмный полюс (контраст 5.20 против ~3.4 у
+           светлого). Селектор «элемент + класс» перебивает tailwind-овский
+           .text-white по специфичности, без !important. */
+        button.bg-orange-500, a.bg-orange-500,
+        button.bg-orange-600, a.bg-orange-600,
+        input[type="submit"].bg-orange-500 {
+            color: #171310;
+            border-radius: 0.9rem;
+            box-shadow: 0 1px 0 rgba(67, 48, 27, 0.18);
+            transition: transform .12s ease, background-color .12s ease, box-shadow .12s ease;
+        }
+        button.bg-orange-500:active, a.bg-orange-500:active,
+        button.bg-orange-600:active, a.bg-orange-600:active {
+            transform: translateY(1px);
+            box-shadow: none;
+        }
+        /* Тёмная кнопка Google Play — подпись тёплая, как поверхность бумаги. */
+        a.bg-gray-900 { border-radius: 1rem; }
+
         body { -webkit-font-smoothing: antialiased; }
+        /* 30.07.2026: было прибито к #f97316 с белой подписью — мимо палитры
+           приложения и ниже порога контраста. Акцент #C9713F, подпись тёмной
+           сепией: полярность та же, что считает ColorMath.onAccentColor. */
         .locale-btn:not(.active) { background: transparent; }
-        .locale-btn.active { background: #f97316; color: white !important; border-color: #f97316; }
+        .locale-btn.active { background: #C9713F; color: #171310 !important; border-color: #C9713F; }
         .tab-btn:not(.active) {
             background: transparent;
-            color: #4b5563;
-            border-color: #e5e7eb;
+            color: #7A6749;
+            border-color: #D8C9B0;
         }
         .tab-btn.active {
-            background: #f97316;
-            color: white;
-            border-color: #f97316;
+            background: #C9713F;
+            color: #171310;
+            border-color: #C9713F;
         }
         .tab-pane { display: none; }
         .tab-pane.active { display: block; }
@@ -139,7 +227,7 @@
                     Edit page content
                 </h3>
                 <p class="text-xs text-gray-500 mb-4">
-                    Pick locale → fields auto-fill from Firestore. Each section saves independently.
+                    Сначала выбери язык — поля подтянутся из Firestore. Каждая секция сохраняется отдельной кнопкой Save, соседние при этом не трогаются. Названия секций совпадают с заголовками на самом сайте.
                 </p>
 
                 <!-- Locale picker — общий для всех секций -->
@@ -156,7 +244,7 @@
                 <!-- ── Section: Hero ─────────────────────────────────── -->
                 <div class="bg-gray-50 border border-gray-200 rounded-xl p-4 mb-4">
                     <div class="flex items-center justify-between mb-3">
-                        <h4 class="font-bold text-gray-900">Hero (title + subtitle)</h4>
+                        <h4 class="font-bold text-gray-900">Первый экран (заголовок и подзаголовок)<a href="index.html#top" target="_blank" class="ml-2 text-xs font-normal text-orange-600 underline">посмотреть на сайте ↗</a></h4>
                         <button type="button" data-save-section="hero"
                                 class="bg-orange-500 hover:bg-orange-600 text-white text-sm font-semibold px-4 py-1.5 rounded-lg shadow transition">
                             Save
@@ -177,7 +265,7 @@
                 <!-- ── Section: Features ─────────────────────────────── -->
                 <div class="bg-gray-50 border border-gray-200 rounded-xl p-4 mb-4">
                     <div class="flex items-center justify-between mb-3">
-                        <h4 class="font-bold text-gray-900">Features (What CargoLog does)</h4>
+                        <h4 class="font-bold text-gray-900">Блок «What CargoLog does»<a href="index.html#features" target="_blank" class="ml-2 text-xs font-normal text-orange-600 underline">посмотреть на сайте ↗</a></h4>
                         <button type="button" data-save-section="features"
                                 class="bg-orange-500 hover:bg-orange-600 text-white text-sm font-semibold px-4 py-1.5 rounded-lg shadow transition">
                             Save
@@ -194,7 +282,7 @@
                 <!-- ── Section: Reasons ──────────────────────────────── -->
                 <div class="bg-gray-50 border border-gray-200 rounded-xl p-4 mb-4">
                     <div class="flex items-center justify-between mb-3">
-                        <h4 class="font-bold text-gray-900">Why drivers choose</h4>
+                        <h4 class="font-bold text-gray-900">Блок «Why drivers choose CargoLog»<a href="index.html#reasons" target="_blank" class="ml-2 text-xs font-normal text-orange-600 underline">посмотреть на сайте ↗</a></h4>
                         <button type="button" data-save-section="reasons"
                                 class="bg-orange-500 hover:bg-orange-600 text-white text-sm font-semibold px-4 py-1.5 rounded-lg shadow transition">
                             Save
@@ -211,7 +299,7 @@
                 <!-- ── Section: Tech ─────────────────────────────────── -->
                 <div class="bg-gray-50 border border-gray-200 rounded-xl p-4 mb-4">
                     <div class="flex items-center justify-between mb-3">
-                        <h4 class="font-bold text-gray-900">Technical details</h4>
+                        <h4 class="font-bold text-gray-900">Блок «Technical Details»<a href="index.html#tech" target="_blank" class="ml-2 text-xs font-normal text-orange-600 underline">посмотреть на сайте ↗</a></h4>
                         <button type="button" data-save-section="tech"
                                 class="bg-orange-500 hover:bg-orange-600 text-white text-sm font-semibold px-4 py-1.5 rounded-lg shadow transition">
                             Save
@@ -226,7 +314,7 @@
                 <!-- ── Section: Audience ─────────────────────────────── -->
                 <div class="bg-gray-50 border border-gray-200 rounded-xl p-4 mb-4">
                     <div class="flex items-center justify-between mb-3">
-                        <h4 class="font-bold text-gray-900">Who is it for</h4>
+                        <h4 class="font-bold text-gray-900">Блок «Who is it for»<a href="index.html#audience" target="_blank" class="ml-2 text-xs font-normal text-orange-600 underline">посмотреть на сайте ↗</a></h4>
                         <button type="button" data-save-section="audience"
                                 class="bg-orange-500 hover:bg-orange-600 text-white text-sm font-semibold px-4 py-1.5 rounded-lg shadow transition">
                             Save
