@@ -644,32 +644,13 @@ function clearGitHubPat() {
 }
 
 async function loadScreenshots() {
-  const container = document.getElementById("screenshots-list");
-  if (!container) return;
-  try {
-    const snap = await getDocs(query(collection(db, "site_screenshots"), orderBy("order", "asc")));
-    if (snap.empty) {
-      // Fallback на статические screen1/2/3 если в Firestore пусто
-      container.innerHTML = `
-        <img src="screen1.png" alt="Screenshot 1" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800 w-64 md:w-72 flex-shrink-0">
-        <img src="screen2.png" alt="Screenshot 2" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800 w-64 md:w-72 flex-shrink-0">
-        <img src="screen3.png" alt="Screenshot 3" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800 w-64 md:w-72 flex-shrink-0">
-      `;
-      return;
-    }
-    const html = [];
-    snap.forEach((d) => {
-      const data = d.data();
-      const url = `${GITHUB_SCREENSHOTS_DIR}/${data.fileName}`;
-      html.push(`
-        <img src="${escapeHtml(url)}" alt="Screenshot"
-             class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800 w-64 md:w-72 flex-shrink-0">
-      `);
-    });
-    container.innerHTML = html.join("");
-  } catch (e) {
-    console.warn("loadScreenshots:", e);
-  }
+  // 30.07.2026: главная галерея статическая — кадры лежат в репозитории рядом
+  // со страницей (screen1..8.png). Раньше эта функция ВСЕГДА перезаписывала
+  // контейнер: либо записями из Firestore, либо захардкоженной тройкой
+  // screen1/2/3 — поэтому на сайте показывались три кадра, что бы ни лежало в
+  // HTML. Управление лентой из админки отключено сознательно; видео и тексты
+  // по-прежнему из Firestore.
+  return;
 }
 
 async function loadScreenshotsAdmin() {
