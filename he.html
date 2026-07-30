@@ -127,14 +127,11 @@
         #screenshots-list img { transition: transform .22s ease, box-shadow .22s ease; }
         #screenshots-list img:hover { transform: translateY(-6px); }
 
-        /* Подсказка, что лента листается вбок. */
+        /* Подсказки-градиента у правого края больше нет: она ложилась ПОВЕРХ
+           последнего кадра и читалась как замыленный скриншот. Вместо неё —
+           воздух в конце ленты, чтобы кадр не липнул к краю. */
         .shots-wrap { position: relative; }
-        .shots-wrap::after {
-            content: ""; position: absolute; inset-block: 0; inset-inline-end: 0; width: 56px;
-            pointer-events: none;
-            background: linear-gradient(to left, #F6EFE4 10%, transparent);
-        }
-        html[dir="rtl"] .shots-wrap::after { background: linear-gradient(to right, #F6EFE4 10%, transparent); }
+        #screenshots-list { padding-inline-end: 2rem; }
 
 
         /* Кнопки — как в приложении. Подпись на акцентной заливке ТЁМНАЯ:
