@@ -247,6 +247,23 @@
     </section>
 
         <!-- Видео — секция скрыта если в Firestore нет видео для текущей локали -->
+    <!-- Ролик с YouTube, статикой. Вертикальный (Shorts), поэтому телефонная
+         рамка 9:16, а не aspect-video: в горизонтальной он шёл бы с чёрными
+         полями в половину кадра. Домен nocookie — под обещание «без облака». -->
+    <section class="container mx-auto px-6 mb-16">
+        <h2 class="text-3xl font-bold text-gray-900 mb-8 pb-2 border-b-2 border-orange-500 inline-block">See it in action</h2>
+        <div class="flex flex-col items-center">
+            <div class="rounded-[2rem] overflow-hidden shadow-2xl border-[6px] border-gray-800 w-64 md:w-72"
+                 style="aspect-ratio: 9 / 16;">
+                <iframe class="w-full h-full" src="https://www.youtube-nocookie.com/embed/Bth3gelqPeg"
+                        title="CargoLog" frameborder="0" loading="lazy"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen></iframe>
+            </div>
+            <p class="mt-4 text-sm text-gray-500 text-center max-w-md">One full trip start to finish — 20 seconds, no narration.</p>
+        </div>
+    </section>
+
         <!-- Спрятана по умолчанию: показывается из signin.js, когда ролики реально пришли из Firestore. Иначе при медленной связи видна пустая полоса с заголовком. -->
     <section id="videos-section" class="hidden container mx-auto px-6 mb-16 max-w-5xl">
         <h2 class="text-3xl font-bold text-gray-900 mb-8 pb-2 border-b-2 border-orange-500 inline-block">Videos</h2>
