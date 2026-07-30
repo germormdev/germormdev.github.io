@@ -871,6 +871,9 @@ async function loadVideos() {
       if (section) section.classList.add("hidden");
       return;
     }
+    // Секция спрятана в разметке — раскрываем только когда ролики реально есть.
+    const videosSection = document.getElementById("videos-section");
+    if (videosSection) videosSection.classList.remove("hidden");
     container.innerHTML = items.map((v) => `
       <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-200">
         <div class="aspect-video mb-3 rounded-xl overflow-hidden bg-black">

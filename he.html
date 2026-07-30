@@ -245,22 +245,9 @@
         </div></div>
     </section>
 
-    <!-- Ролик приложения — статический, НЕ через Firestore: loadVideos()
-         прячет секцию Videos целиком, когда для локали нет YouTube-роликов. -->
-    <section class="container mx-auto px-6 mb-16">
-        <h2 class="text-3xl font-bold text-gray-900 mb-8 pb-2 border-b-2 border-orange-500 inline-block">איך זה נראה בפעולה</h2>
-        <div class="flex flex-col items-center">
-            <video class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800 w-64 md:w-72"
-                   controls preload="metadata" playsinline poster="screen1.png">
-                <source src="cargolog-trip.mp4" type="video/mp4">
-                הדפדפן לא תומך בוידאו.
-            </video>
-            <p class="mt-4 text-sm text-gray-500 text-center max-w-md">נסיעה שלמה מהתחלה ועד הסגירה — 20 שניות, בלי הסבר קולי.</p>
-        </div>
-    </section>
-
-    <!-- Видео — секция скрыта если в Firestore нет видео для текущей локали -->
-    <section id="videos-section" class="container mx-auto px-6 mb-16 max-w-5xl">
+        <!-- Видео — секция скрыта если в Firestore нет видео для текущей локали -->
+    <!-- Спрятана по умолчанию: показывается из signin.js, когда ролики реально пришли из Firestore. Иначе при медленной связи видна пустая полоса с заголовком. -->
+    <section id="videos-section" class="hidden container mx-auto px-6 mb-16 max-w-5xl">
         <h2 class="text-3xl font-bold text-gray-900 mb-8 pb-2 border-b-2 border-orange-500 inline-block">סרטונים</h2>
         <div id="videos-list" class="grid md:grid-cols-2 gap-6"></div>
     </section>
