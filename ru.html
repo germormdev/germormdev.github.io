@@ -127,11 +127,11 @@
         #screenshots-list img { transition: transform .22s ease, box-shadow .22s ease; }
         #screenshots-list img:hover { transform: translateY(-6px); }
 
-        /* Подсказки-градиента у правого края больше нет: она ложилась ПОВЕРХ
-           последнего кадра и читалась как замыленный скриншот. Вместо неё —
-           воздух в конце ленты, чтобы кадр не липнул к краю. */
-        .shots-wrap { position: relative; }
-        #screenshots-list { padding-inline-end: 2rem; }
+        /* Кадры лежат сеткой, а не лентой с прокруткой: у ленты крайний кадр
+           всегда обрезан краем экрана и выглядит незаконченно. Сетка переносит
+           кадры, обрезать нечего. */
+        #screenshots-list img { transition: transform .22s ease, box-shadow .22s ease; width: 100%; }
+        #screenshots-list img:hover { transform: translateY(-6px); }
 
 
         /* Кнопки — как в приложении. Подпись на акцентной заливке ТЁМНАЯ:
@@ -231,15 +231,15 @@
     </section>
 
 <section class="container mx-auto px-6 mb-16">
-        <div class="shots-wrap"><div id="screenshots-list" class="flex justify-start gap-6 overflow-x-auto hide-scrollbar pb-8 px-4 snap-x snap-mandatory">
+        <div id="screenshots-list" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6 items-start">
             <!-- Пять кадров 2.0.0, статикой: главная галерея больше не
                  перезаписывается из Firestore. -->
-            <img src="screen1.png" alt="Меню" loading="lazy" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800 w-64 md:w-72 flex-shrink-0 snap-start">
-            <img src="screen4.png" alt="История рейсов" loading="lazy" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800 w-64 md:w-72 flex-shrink-0 snap-start">
-            <img src="screen5.png" alt="Журнал заправок" loading="lazy" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800 w-64 md:w-72 flex-shrink-0 snap-start">
-            <img src="screen6.png" alt="Отчёт" loading="lazy" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800 w-64 md:w-72 flex-shrink-0 snap-start">
-            <img src="screen3.png" alt="Детали груза" loading="lazy" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800 w-64 md:w-72 flex-shrink-0 snap-start">
-        </div></div>
+            <img src="screen1.png" alt="Меню" loading="lazy" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800">
+            <img src="screen4.png" alt="История рейсов" loading="lazy" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800">
+            <img src="screen5.png" alt="Журнал заправок" loading="lazy" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800">
+            <img src="screen6.png" alt="Отчёт" loading="lazy" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800">
+            <img src="screen3.png" alt="Детали груза" loading="lazy" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800">
+        </div>
     </section>
 
         <!-- Видео — секция скрыта если в Firestore нет видео для текущей локали -->
