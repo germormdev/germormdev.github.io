@@ -123,17 +123,6 @@
             box-shadow: 0 6px 18px rgba(67, 48, 27, .10);
         }
 
-        /* Скриншоты приподнимаются под курсором. */
-        #screenshots-list img { transition: transform .22s ease, box-shadow .22s ease; }
-        #screenshots-list img:hover { transform: translateY(-6px); }
-
-        /* Кадры лежат сеткой, а не лентой с прокруткой: у ленты крайний кадр
-           всегда обрезан краем экрана и выглядит незаконченно. Сетка переносит
-           кадры, обрезать нечего. */
-        #screenshots-list img { transition: transform .22s ease, box-shadow .22s ease; width: 100%; }
-        #screenshots-list img:hover { transform: translateY(-6px); }
-
-
         /* Кнопки — как в приложении. Подпись на акцентной заливке ТЁМНАЯ:
            в приложении её цвет считает ColorMath.onAccentColor по полярности,
            и на #C9713F побеждает тёмный полюс (контраст 5.20 против ~3.4 у
@@ -158,6 +147,78 @@
         body { -webkit-font-smoothing: antialiased; }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* ==========================================================================
+           СВИСТЕЛКИ И ПЕРЕДЕЛКИ (PREMIUM EFFECTS)
+           ========================================================================== */
+
+        /* 1. Дыхание кнопки Google Play: мягкая пульсация акцентным оранжевым */
+        @keyframes soft-pulse {
+            0%, 100% { box-shadow: 0 4px 14px rgba(67, 48, 27, 0.15); }
+            50% { box-shadow: 0 8px 24px rgba(201, 113, 63, 0.35); transform: translateY(-1px); }
+        }
+        .play-btn-animated {
+            animation: soft-pulse 3s infinite ease-in-out;
+        }
+        .play-btn-animated:hover {
+            animation: none; /* При наведении работает стандартный ховер */
+        }
+
+        /* 2. Анимация штампа: удар об бумагу с отскоком */
+        @keyframes stamp-hit {
+            0% { opacity: 0; transform: scale(1.6) rotate(-20deg); }
+            40% { opacity: 1; transform: scale(0.9) rotate(-5deg); }
+            100% { opacity: 0.82; transform: scale(1) rotate(-7deg); }
+        }
+        .stamp.shown {
+            animation: stamp-hit 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        /* 3. Улучшенный глянец на скриншотах: эффект линзы и парения */
+        #screenshots-list img {
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), 
+                        box-shadow 0.4s ease, filter 0.4s ease;
+            width: 100%;
+        }
+        #screenshots-list img:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 30px rgba(67, 48, 27, 0.25);
+            filter: brightness(1.05) contrast(1.02);
+            z-index: 10;
+        }
+
+        /* 4. Магнитное подчеркивание при выборе языка */
+        nav .space-x-4 a, nav .space-x-reverse a {
+            position: relative;
+            text-decoration: none;
+            padding-bottom: 2px;
+        }
+        nav .space-x-4 a::after, nav .space-x-reverse a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 50%;
+            background-color: #C9713F; /* Твой orange-500 */
+            transition: width 0.3s ease, left 0.3s ease;
+            border-radius: 2px;
+        }
+        nav .space-x-4 a:hover::after, nav .space-x-reverse a:hover::after {
+            width: 100%;
+            left: 0;
+        }
+
+        /* 5. Каскадное появление списков (Staggered Reveal) */
+        .stagger-item {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .stagger-item.shown {
+            opacity: 1;
+            transform: translateY(0);
+        }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800" data-versions-preview="true">
@@ -423,7 +484,6 @@
 
     <script type="module" src="signin.js"></script>
     <script>
-      // Оживление без библиотек: подложка шапки на прокрутке и появление блоков.
       (function () {
         var nav = document.querySelector('nav');
         if (nav) {
@@ -433,14 +493,89 @@
           window.addEventListener('scroll', onScroll, { passive: true });
           onScroll();
         }
-        var targets = document.querySelectorAll('section, header > *');
+
+        var playBtn = document.querySelector('a.bg-gray-900');
+        if (playBtn) playBtn.classList.add('play-btn-animated');
+
+        var statNums = document.querySelectorAll('.stat-num');
+        statNums.forEach(function(el) {
+            var text = el.innerText.trim();
+            var num = parseInt(text.replace(/\D/g, '')); 
+            if (!isNaN(num)) {
+                el.dataset.target = num;
+                el.dataset.suffix = text.replace(/[0-9]/g, ''); 
+                el.innerText = '0' + el.dataset.suffix;
+            }
+        });
+
+        var staggerContainers = ['#content-features', '#content-reasons', '#content-tech'];
+        staggerContainers.forEach(function(selector) {
+            var container = document.querySelector(selector);
+            if (container) {
+                var children = container.querySelectorAll(selector === '#content-features' ? 'div' : 'li');
+                children.forEach(function(child) { child.classList.add('stagger-item'); });
+            }
+        });
+
+        function animateValue(obj, start, end, duration) {
+            var startTimestamp = null;
+            var step = function(timestamp) {
+                if (!startTimestamp) startTimestamp = timestamp;
+                var progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                var easeProgress = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+                var currentVal = Math.floor(easeProgress * (end - start) + start);
+                obj.innerHTML = currentVal + (obj.dataset.suffix || '');
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+
         if (!('IntersectionObserver' in window)) return;
         var io = new IntersectionObserver(function (entries) {
           entries.forEach(function (e) {
-            if (e.isIntersecting) { e.target.classList.add('shown'); io.unobserve(e.target); }
+            if (e.isIntersecting) {
+                var target = e.target;
+
+                if (target.classList.contains('reveal')) {
+                    target.classList.add('shown');
+                }
+
+                if (target.classList.contains('stamp')) {
+                    target.classList.add('shown');
+                }
+
+                if (target.classList.contains('stat-band')) {
+                    var nums = target.querySelectorAll('.stat-num');
+                    nums.forEach(function(numEl) {
+                        if (numEl.dataset.target) {
+                            animateValue(numEl, 0, parseInt(numEl.dataset.target), 2000);
+                            delete numEl.dataset.target; 
+                        }
+                    });
+                }
+
+                if (staggerContainers.includes('#' + target.id)) {
+                    var items = target.querySelectorAll('.stagger-item');
+                    items.forEach(function(item, index) {
+                        setTimeout(function() {
+                            item.classList.add('shown');
+                        }, index * 120);
+                    });
+                }
+
+                io.unobserve(target);
+            }
           });
         }, { rootMargin: '0px 0px -8% 0px', threshold: 0.04 });
-        targets.forEach(function (el) { el.classList.add('reveal'); io.observe(el); });
+
+        document.querySelectorAll('section, header > *, .stamp, #content-features, #content-reasons, #content-tech').forEach(function (el) {
+            if (!el.classList.contains('stagger-item') && !el.classList.contains('stamp') && !staggerContainers.includes('#' + el.id)) {
+                el.classList.add('reveal');
+            }
+            io.observe(el);
+        });
       })();
     </script>
 </body>
