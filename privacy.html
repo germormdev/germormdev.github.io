@@ -55,7 +55,7 @@
   <header>
     <div class="brand"><span class="mark">🚛</span> CargoLog</div>
     <h1>Privacy Policy</h1>
-    <div class="eff">Effective date: 29 May 2026 · Last updated: 29 May 2026</div>
+    <div class="eff">Effective date: 29 May 2026 · Last updated: 2 September 2026</div>
     <div class="tabs">
       <button class="tab active" data-l="en">English</button>
       <button class="tab" data-l="ru">Русский</button>
@@ -69,7 +69,7 @@
     <p>This Privacy Policy explains what information the CargoLog app ("the app", "we") processes, how it is used, and how it is protected. CargoLog is a logbook for professional truck drivers that stores trip and shift data on your device.</p>
 
     <h2><span class="n">2.</span> Camera</h2>
-    <p>The app requests camera access only for Optical Character Recognition (OCR) — scanning container, seal and VIN numbers. Video processing and text recognition happen entirely on your device (offline), using on-device machine-learning libraries. The app does not take hidden photos, does not save images to your gallery, and does not transmit video or photos to any server or third party.</p>
+    <p>The app requests camera access only for Optical Character Recognition (OCR) — scanning container, seal and VIN numbers. Video processing and text recognition happen entirely on your device (offline), using on-device machine-learning libraries. The app does not take hidden photos, does not read your gallery, and does not save images to it. Video is never transmitted anywhere. The frames the scanner took of a container number can leave the device only if you switch on <em>container number photos</em> in the diagnostic channel — see Section 4.</p>
 
     <h2><span class="n">3.</span> Location</h2>
     <p>The app may request location access to record your city and coordinates in the local trip log (for example, when you start a shift or mark a stop). Location is used only while you actively use the relevant feature and is stored in the app's internal on-device database (Room). To convert coordinates into a human-readable address, the app may use the device's built-in geocoding service. Location data is not uploaded to our servers and is shared only when you yourself export or send a report.</p>
@@ -81,6 +81,14 @@
       <li><strong>Anonymous usage statistics</strong> (Firebase Analytics) — aggregated, non-identifying events about how features are used.</li>
     </ul>
     <div class="note">This data is processed by Google as part of the Firebase service and is governed by <a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener">Google's privacy terms</a>. It is used solely to improve and stabilise the app. We do not sell your data and we do not use it for advertising.</div>
+
+    <p><strong>Optional diagnostic channel (off by default).</strong> Separately from Firebase, the app can send diagnostic material to a private server operated by the developer of CargoLog. It sends nothing until you switch it on, and there are three independent switches — one per kind of data:</p>
+    <ul>
+      <li><strong>Application activity logs</strong> — to see errors and failures on real phones instead of guessing from a description.</li>
+      <li><strong>The trip database</strong> — your trips, clients, addresses and odometer readings, to see what trips look like in real work and to decide what is worth changing.</li>
+      <li><strong>Container number photos</strong> — only the frames the app took itself while the camera was aimed at a container number, to teach the recognition to read dirty, dented and badly lit numbers.</li>
+    </ul>
+    <div class="note">Each kind is sent only while its own switch is on; a kind whose switch is off is never sent, and while all three are off nothing is sent at all. The app does not read your gallery and sends nothing beyond these three kinds. The material is stored on the developer's own server, is not shared with anyone, is not published and is not used for advertising; the connection is protected by a certificate issued to your phone alone. You can switch any of them off at any moment, and you can revoke the phone entirely, after which the server stops accepting anything from it. To have material that was already sent deleted, write to the address in Section 7.</div>
 
     <h2><span class="n">5.</span> What we do <em>not</em> do</h2>
     <p>We do not sell personal data, do not use advertising trackers, and do not share your trip, vehicle or shift records with third parties beyond the diagnostic processing described in Section 4.</p>
@@ -98,7 +106,7 @@
     <p>Настоящая Политика описывает, какие данные обрабатывает приложение CargoLog («приложение», «мы»), как они используются и защищаются. CargoLog — это путевой журнал для профессиональных водителей грузовиков, хранящий данные о рейсах и сменах на вашем устройстве.</p>
 
     <h2><span class="n">2.</span> Камера</h2>
-    <p>Доступ к камере запрашивается только для функции распознавания текста (OCR) — сканирования номеров контейнеров, пломб и VIN. Обработка видео и распознавание происходят полностью на устройстве (офлайн) с помощью встроенных библиотек машинного обучения. Приложение не делает скрытых снимков, не сохраняет изображения в галерею и не передаёт видео или фото на серверы или третьим лицам.</p>
+    <p>Доступ к камере запрашивается только для функции распознавания текста (OCR) — сканирования номеров контейнеров, пломб и VIN. Обработка видео и распознавание происходят полностью на устройстве (офлайн) с помощью встроенных библиотек машинного обучения. Приложение не делает скрытых снимков, не читает галерею и не сохраняет в неё изображения. Видео не передаётся никуда и никогда. Кадры, которые сканер снял с номера контейнера, могут уйти с устройства только если вы включите переключатель <em>снимки номеров контейнеров</em> в канале диагностики — см. раздел 4.</p>
 
     <h2><span class="n">3.</span> Геолокация</h2>
     <p>Приложение может запрашивать доступ к местоположению, чтобы записывать ваш город и координаты в локальный журнал поездок (например, при начале смены или отметке стоянки). Геолокация используется только во время активного использования соответствующей функции и хранится во внутренней базе данных на устройстве (Room). Для преобразования координат в адрес может использоваться встроенный геокодер устройства. Данные о местоположении не загружаются на наши серверы и передаются только тогда, когда вы сами экспортируете или отправляете отчёт.</p>
@@ -110,6 +118,14 @@
       <li><strong>Анонимная статистика использования</strong> (Firebase Analytics) — обобщённые, не идентифицирующие события о том, как используются функции.</li>
     </ul>
     <div class="note">Эти данные обрабатываются Google в рамках сервиса Firebase и регулируются <a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener">условиями конфиденциальности Google</a>. Они используются исключительно для улучшения и стабилизации приложения. Мы не продаём ваши данные и не используем их для рекламы.</div>
+
+    <p><strong>Необязательный канал диагностики (по умолчанию выключен).</strong> Отдельно от Firebase приложение может отправлять диагностический материал на частный сервер разработчика CargoLog. Пока вы его не включите, не отправляется ничего, и переключателей три — по одному на каждый вид данных:</p>
+    <ul>
+      <li><strong>Журналы работы приложения</strong> — видеть ошибки и сбои на настоящих телефонах, а не гадать по описанию.</li>
+      <li><strong>База рейсов</strong> — ваши рейсы, клиенты, адреса и показания одометра: посмотреть, как рейсы выглядят в настоящей работе, и понять, что стоит менять.</li>
+      <li><strong>Снимки номеров контейнеров</strong> — только те кадры, которые приложение сняло само при наведении камеры на номер, чтобы научить распознавание читать грязные, мятые и снятые в темноте номера.</li>
+    </ul>
+    <div class="note">Каждый вид отправляется только при включённом СВОЁМ переключателе; вид со снятым переключателем не уходит никогда, а пока сняты все три, не отправляется ничего. Приложение не читает галерею и не отправляет ничего, кроме перечисленного. Материал хранится на собственном сервере разработчика, никому не передаётся, не публикуется и не используется для рекламы; соединение защищено сертификатом, выпущенным только для вашего телефона. Выключить любой из трёх можно в любой момент, а телефон — отозвать целиком, после чего сервер перестаёт принимать от него что-либо. Об удалении уже отправленного напишите по адресу из раздела 7.</div>
 
     <h2><span class="n">5.</span> Что мы <em>не</em> делаем</h2>
     <p>Мы не продаём персональные данные, не используем рекламные трекеры и не передаём ваши записи о рейсах, технике и сменах третьим лицам, кроме диагностической обработки, описанной в разделе 4.</p>
@@ -127,7 +143,7 @@
     <p>מדיניות פרטיות זו מתארת אילו נתונים אפליקציית CargoLog ("האפליקציה", "אנחנו") מעבדת, כיצד הם משמשים וכיצד הם מוגנים. CargoLog היא יומן נסיעות לנהגי משאית מקצועיים, השומר נתוני נסיעות ומשמרות במכשיר שלך.</p>
 
     <h2><span class="n">2.</span> מצלמה</h2>
-    <p>האפליקציה מבקשת גישה למצלמה אך ורק לצורך זיהוי טקסט אופטי (OCR) — סריקת מספרי מכולות, חותמות ו-VIN. עיבוד הווידאו וזיהוי הטקסט מתבצעים כולם במכשיר (לא מקוון), באמצעות ספריות למידת מכונה מובנות. האפליקציה אינה מצלמת תמונות נסתרות, אינה שומרת תמונות בגלריה, ואינה מעבירה וידאו או תמונות לשרתים או לצדדים שלישיים.</p>
+    <p>האפליקציה מבקשת גישה למצלמה אך ורק לצורך זיהוי טקסט אופטי (OCR) — סריקת מספרי מכולות, חותמות ו-VIN. עיבוד הווידאו וזיהוי הטקסט מתבצעים כולם במכשיר (לא מקוון), באמצעות ספריות למידת מכונה מובנות. האפליקציה אינה מצלמת תמונות נסתרות, אינה קוראת את גלריית התמונות ואינה שומרת בה תמונות. וידאו אינו מועבר לשום מקום לעולם. הפריימים שהסורק צילם ממספר מכולה יכולים לצאת מהמכשיר רק אם תפעילו את המתג <em>תמונות של מספרי מכולות</em> בערוץ האבחון — ראו סעיף 4.</p>
 
     <h2><span class="n">3.</span> מיקום</h2>
     <p>האפליקציה עשויה לבקש גישה למיקום כדי לתעד את העיר והקואורדינטות שלך ביומן הנסיעות המקומי (למשל בתחילת משמרת או בסימון עצירה). המיקום משמש רק בעת שימוש פעיל בתכונה הרלוונטית ונשמר בבסיס הנתונים הפנימי במכשיר (Room). להמרת קואורדינטות לכתובת קריאה, האפליקציה עשויה להשתמש בשירות הגאוקודינג המובנה של המכשיר. נתוני המיקום אינם מועלים לשרתים שלנו ומשותפים רק כאשר אתה עצמך מייצא או שולח דוח.</p>
@@ -139,6 +155,14 @@
       <li><strong>סטטיסטיקת שימוש אנונימית</strong> (Firebase Analytics) — אירועים מצרפיים ולא מזהים על אופן השימוש בתכונות.</li>
     </ul>
     <div class="note">נתונים אלה מעובדים על ידי Google כחלק משירות Firebase וכפופים <a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener">לתנאי הפרטיות של Google</a>. הם משמשים אך ורק לשיפור ולייצוב האפליקציה. איננו מוכרים את הנתונים שלך ואיננו משתמשים בהם לפרסום.</div>
+
+    <p><strong>ערוץ אבחון אופציונלי (כבוי כברירת מחדל).</strong> בנפרד מ-Firebase, האפליקציה יכולה לשלוח חומר אבחון לשרת פרטי של המפתח של CargoLog. עד שתפעילו אותו לא נשלח דבר, ויש שלושה מתגים נפרדים — אחד לכל סוג נתונים:</p>
+    <ul>
+      <li><strong>יומני פעולת האפליקציה</strong> — לראות שגיאות ותקלות בטלפונים אמיתיים, ולא לנחש לפי תיאור.</li>
+      <li><strong>מסד הנסיעות</strong> — הנסיעות, הלקוחות, הכתובות וקריאות מד המרחק שלכם: לראות איך נסיעות נראות בעבודה אמיתית ולהבין מה כדאי לשנות.</li>
+      <li><strong>תמונות של מספרי מכולות</strong> — רק הפריימים שהאפליקציה צילמה בעצמה כשהמצלמה כוונה אל מספר מכולה, כדי ללמד את הזיהוי לקרוא מספרים מלוכלכים, מעוכים ומצולמים בחושך.</li>
+    </ul>
+    <div class="note">כל סוג נשלח רק כאשר המתג שלו דלוק; סוג שהמתג שלו כבוי לא נשלח לעולם, וכל עוד שלושת המתגים כבויים לא נשלח דבר. האפליקציה אינה קוראת את גלריית התמונות ואינה שולחת דבר מלבד המפורט. החומר נשמר בשרת של המפתח עצמו, אינו נמסר לאיש, אינו מתפרסם ואינו משמש לפרסום; החיבור מאובטח בתעודה שהונפקה לטלפון שלכם בלבד. אפשר לכבות כל אחד מהם בכל רגע, ואפשר לבטל את רישום הטלפון לגמרי, ולאחר מכן השרת מפסיק לקבל ממנו דבר. למחיקת חומר שכבר נשלח פנו לכתובת המופיעה בסעיף 7.</div>
 
     <h2><span class="n">5.</span> מה אנחנו <em>לא</em> עושים</h2>
     <p>איננו מוכרים נתונים אישיים, איננו משתמשים בעוקבי פרסום, ואיננו משתפים את רשומות הנסיעות, הרכב והמשמרות שלך עם צדדים שלישיים מעבר לעיבוד האבחוני המתואר בסעיף 4.</p>
