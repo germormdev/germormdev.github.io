@@ -245,67 +245,6 @@ async function handleSignOut() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════
-// VISIT COUNTER (v1.0.1, S28) — уникальные визиты через Firestore stats/visits
-// ═══════════════════════════════════════════════════════════════════════
-//
-// Механика:
-//  - При первом заходе с браузера (нет localStorage флага) инкрементим
-//    stats/visits.count на +1 и ставим флаг навсегда.
-//  - При повторных заходах — только читаем и показываем число, не инкрементим.
-//  - Один общий счётчик на все локали (index/ru/he делят stats/visits).
-//  - Защита в firestore.rules: update разрешён только как count+1, нельзя
-//    обнулить/записать произвольное.
-//
-// Накрутка возможна (чистка localStorage + рефреш), но для солопроекта это
-// приемлемая честная метрика "сколько уникальных браузеров видели сайт".
-
-const VISIT_LS_KEY = "cargolog_visited_v1";
-
-async function initVisitCounter() {
-  const el = document.getElementById("visit-counter");
-  if (!el) return; // счётчика нет на этой странице (например versions.html)
-
-  const ref = doc(db, "stats", "visits");
-  const alreadyVisited = localStorage.getItem(VISIT_LS_KEY) === "1";
-
-  try {
-    if (!alreadyVisited) {
-      // Первый визит с этого браузера — инкрементим.
-      const snap = await getDoc(ref);
-      if (snap.exists()) {
-        await setDoc(ref, { count: snap.data().count + 1 }, { merge: false });
-      } else {
-        // Документа ещё нет — создаём с count: 1 (разрешено правилом create).
-        await setDoc(ref, { count: 1 });
-      }
-      localStorage.setItem(VISIT_LS_KEY, "1");
-    }
-
-    // Читаем актуальное значение (после возможного инкремента) и показываем.
-    const fresh = await getDoc(ref);
-    const count = fresh.exists() ? fresh.data().count : 0;
-    renderVisitCounter(el, count);
-  } catch (e) {
-    console.warn("Visit counter failed:", e);
-    // Тихо прячем элемент если счётчик не сработал — не ломаем страницу.
-    el.classList.add("hidden");
-  }
-}
-
-function renderVisitCounter(el, count) {
-  // Формат числа с разделителями: 1234 → 1,234
-  const formatted = Number(count).toLocaleString(
-    LOCALE === "ru" ? "ru-RU" : LOCALE === "he" ? "he-IL" : "en-US"
-  );
-  const label =
-    LOCALE === "ru" ? "посещений" :
-    LOCALE === "he" ? "ביקורים" :
-    "visits";
-  el.innerHTML = `<i class="fa-solid fa-eye mr-1"></i> ${formatted} ${label}`;
-  el.classList.remove("hidden");
-}
-
-// ═══════════════════════════════════════════════════════════════════════
 // VERSIONS (existing — не трогаем, только переиспользуем)
 // ═══════════════════════════════════════════════════════════════════════
 
@@ -901,7 +840,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // Публичный контент: тексты и скриншоты
   loadSiteContent();
   loadScreenshots();
-  initVisitCounter();
 
   // Версии: если есть #versions-list-preview → 3 шт., иначе все
   if (document.getElementById("versions-list")) {
