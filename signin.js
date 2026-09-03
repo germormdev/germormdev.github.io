@@ -276,8 +276,22 @@ function utcDayKey(shiftDays) {
   return new Date(t).toISOString().slice(0, 10);
 }
 
+// СВОЯ АВТОМАТИКА — НЕ ПОСЕТИТЕЛЬ. Замер 03.09.2026: headless-пробник, гонявший
+// копию сайта на 127.0.0.1, увеличил боевой счётчик с 34 до 35 — Firestore-то
+// один и тот же. Отсекаем детерминированно: локальный хост и браузер под
+// управлением. Это НЕ фильтр ботов (их отделить нечем, см. отчёт стадии Ж),
+// а отказ считать собственные прогоны.
+function isRealVisitor() {
+  const h = location.hostname;
+  if (h === "localhost" || h === "127.0.0.1" || h === "::1" || h === "") return false;
+  if (location.protocol === "file:") return false;
+  if (navigator.webdriver === true) return false;
+  return true;
+}
+
 async function countVisit(user) {
   if (!isShowcasePage()) return;
+  if (!isRealVisitor()) return;
   if (user && ADMIN_EMAILS.includes(user.email)) return;
   try {
     if (sessionStorage.getItem(VISIT_SS_KEY) === "1") return;
@@ -320,17 +334,28 @@ async function loadVisitStats() {
     console.warn("общий счёт недоступен:", e);
   }
 
+  // ТРИ СОСТОЯНИЯ, а не два. Ноль вместо ошибки — ложное зелёное: админ увидит
+  // «сегодня 0» и решит, что никто не заходил, хотя на деле запись запрещена.
+  // Поэтому число показывается ТОЛЬКО когда посуточные записи реально есть.
   let d1 = "—", d7 = "—", d30 = "—", note = "";
   try {
     const snap = await getDocs(collection(db, "stats", "visits", "daily"));
     const byDay = {};
     snap.forEach((d) => { byDay[d.id] = d.data().count || 0; });
-    const sum = (n) => {
-      let s = 0;
-      for (let i = 0; i < n; i++) s += byDay[utcDayKey(i)] || 0;
-      return s;
-    };
-    d1 = sum(1); d7 = sum(7); d30 = sum(30);
+    if (Object.keys(byDay).length === 0) {
+      // Читать дают, а записей нет ни одной. Так выглядит правило, вставленное
+      // наполовину (read разрешили, create/update нет) или откаченное назад.
+      note = "Читать посуточные ключи дают, но ни одной записи нет. Похоже, "
+           + "правило вставлено наполовину или откачено: разрешён read, а "
+           + "create/update — нет. Общий счёт при этом идёт.";
+    } else {
+      const sum = (n) => {
+        let s = 0;
+        for (let i = 0; i < n; i++) s += byDay[utcDayKey(i)] || 0;
+        return s;
+      };
+      d1 = sum(1); d7 = sum(7); d30 = sum(30);
+    }
   } catch (e) {
     note = "Посуточная разбивка недоступна: правила Firestore ещё не пускают "
          + "stats/visits/daily. Общий счёт при этом идёт.";

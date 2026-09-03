@@ -74,6 +74,41 @@
       GA.track("store_click", { store: "rustore" });
     } else if (href === "index.html" || href === "ru.html" || href === "he.html") {
       GA.track("language_switch", { to: href === "index.html" ? "en" : href.slice(0, 2) });
+    } else if (href === "privacy.html" || href.indexOf("privacy.html") >= 0) {
+      GA.track("policy_click", {});
     }
   }, true);
+
+  // ── дошёл ли человек до сути ─────────────────────────────────────────
+  // Ровно три события и больше НИКАКИХ: шум дороже пользы.
+  document.addEventListener("DOMContentLoaded", function () {
+    // 1. досмотр до Roadmap. Наблюдатель, а не скролл-обработчик: обработчик
+    //    на каждый пиксель дороже и врёт на инерции.
+    var rm = document.getElementById("roadmap");
+    if (rm && "IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (entries) {
+        for (var i = 0; i < entries.length; i++) {
+          if (entries[i].isIntersecting) {
+            GA.track("roadmap_seen", {});
+            io.disconnect();
+            return;
+          }
+        }
+      }, { threshold: 0.3 });
+      io.observe(rm);
+    }
+
+    // 2. открытие ролика. Внутрь чужого iframe заглянуть нельзя, поэтому
+    //    ловим единственный доступный признак: окно потеряло фокус, а фокус
+    //    оказался на самом кадре ролика. Это и есть нажатие «play».
+    var seen = false;
+    window.addEventListener("blur", function () {
+      if (seen) return;
+      var a = document.activeElement;
+      if (a && a.tagName === "IFRAME" && (a.src || "").indexOf("youtube") >= 0) {
+        seen = true;
+        GA.track("video_open", {});
+      }
+    });
+  });
 })();

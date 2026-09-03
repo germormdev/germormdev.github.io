@@ -231,7 +231,19 @@ for p in LANG_PAGES:
     say(ok, "%s разметка: %s, подписи: %s"
         % (p, ",".join(marks) or "нет", ",".join(words) or "нет"))
 
-print("\n[8] gtag подключён на всех пяти страницах и РОВНО ОДИН раз")
+print("\n[8] абзац про аналитику стоит в политике на ВСЕХ трёх языках")
+POLICY_MARKS = [("en", "Google Analytics to count visits"),
+                ("ru", "чтобы считать посещения"),
+                ("he", "כדי לספור ביקורים")]
+praw = RAW.get("privacy.html")
+if praw is None:
+    say(False, "privacy.html не получена")
+else:
+    miss = [lang for lang, m in POLICY_MARKS if praw.count(m) != 1]
+    say(not miss, "языков с абзацем: %d из 3%s"
+        % (3 - len(miss), "" if not miss else "  НЕТ: " + ", ".join(miss)))
+
+print("\n[9] gtag подключён на всех пяти страницах и РОВНО ОДИН раз")
 for p in PAGES:
     raw = RAW.get(p)
     if raw is None:
@@ -244,9 +256,9 @@ for p in PAGES:
         % (p, n_tag, n_inline, "" if ok else "  <- должно быть 1 и 0"))
 
 if NO_FS:
-    print("\n[9-10] Firestore пропущен по флагу --no-firestore")
+    print("\n[10-11] Firestore пропущен по флагу --no-firestore")
 else:
-    print("\n[9] история версий: восемь выпущенных на месте, номера целы, языки полные")
+    print("\n[10] история версий: восемь выпущенных на месте, номера целы, языки полные")
     try:
         raw = urllib.request.urlopen(FS, timeout=30).read().decode()
         vh = json.loads(raw).get("documents", [])
@@ -276,7 +288,7 @@ else:
         say(not lack, "неполный набор языков: %d%s"
             % (len(lack), "" if not lack else "  -> " + ", ".join(lack)))
 
-        print("\n[10] «What's New» не пуст — свежая версия есть на всех трёх языках")
+        print("\n[11] «What's New» не пуст — свежая версия есть на всех трёх языках")
         newest = RELEASED[-1]
         have = site.get(newest, set())
         say({"en", "ru", "he"} <= have,
