@@ -97,10 +97,14 @@
                     font-size: clamp(1.6rem, 4vw, 2.2rem); color: #C9713F; line-height: 1; }
         .stat-cap { font-size: .8rem; color: #7A6749; letter-spacing: .04em; margin-top: 4px; }
 
-        .reveal { opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease; }
+        /* Видимость по умолчанию. Прятать разрешено только под .js-anim, который
+           скрипт ставит ПОСЛЕ проверки наблюдателя: нет наблюдателя — всё видно. */
+        .reveal { transition: opacity .5s ease, transform .5s ease; }
+        .js-anim .reveal { opacity: 0; transform: translateY(14px); }
         .reveal.shown { opacity: 1; transform: none; }
         @media (prefers-reduced-motion: reduce) {
-            .reveal { opacity: 1; transform: none; transition: none; }
+            .reveal, .js-anim .reveal,
+            .stagger-item, .js-anim .stagger-item { opacity: 1; transform: none; transition: none; }
         }
 
         #content-features > div {
@@ -191,9 +195,11 @@
         }
 
         .stagger-item {
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .js-anim .stagger-item {
             opacity: 0;
             transform: translateY(20px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
         }
         .stagger-item.shown {
             opacity: 1;
@@ -488,6 +494,26 @@
         var playBtn = document.querySelector('a.bg-gray-900');
         if (playBtn) playBtn.classList.add('play-btn-animated');
 
+        function animateValue(obj, start, end, duration) {
+            var startTimestamp = null;
+            var step = function(timestamp) {
+                if (!startTimestamp) startTimestamp = timestamp;
+                var progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                var easeProgress = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+                var currentVal = Math.floor(easeProgress * (end - start) + start);
+                obj.innerHTML = currentVal + (obj.dataset.suffix || '');
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        if (!('IntersectionObserver' in window)) return;
+        // С этого места и ниже — только украшение. Метку ставим здесь, а не
+        // раньше: до неё страница обязана быть видимой сама по себе.
+        document.documentElement.classList.add('js-anim');
+
         var statNums = document.querySelectorAll('.stat-num');
         statNums.forEach(function(el) {
             var text = el.innerText.trim();
@@ -507,23 +533,6 @@
                 children.forEach(function(child) { child.classList.add('stagger-item'); });
             }
         });
-
-        function animateValue(obj, start, end, duration) {
-            var startTimestamp = null;
-            var step = function(timestamp) {
-                if (!startTimestamp) startTimestamp = timestamp;
-                var progress = Math.min((timestamp - startTimestamp) / duration, 1);
-                var easeProgress = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
-                var currentVal = Math.floor(easeProgress * (end - start) + start);
-                obj.innerHTML = currentVal + (obj.dataset.suffix || '');
-                if (progress < 1) {
-                    window.requestAnimationFrame(step);
-                }
-            };
-            window.requestAnimationFrame(step);
-        }
-
-        if (!('IntersectionObserver' in window)) return;
         var io = new IntersectionObserver(function (entries) {
           entries.forEach(function (e) {
             if (e.isIntersecting) {
@@ -561,7 +570,8 @@
           });
         }, { rootMargin: '0px 0px -8% 0px', threshold: 0.04 });
 
-        document.querySelectorAll('section, header > *, .stamp, #content-features, #content-reasons, #content-tech').forEach(function (el) {
+        // Первый экран (header) не наблюдаем вовсе — он обязан быть виден сразу.
+        document.querySelectorAll('section, .stamp, #content-features, #content-reasons, #content-tech').forEach(function (el) {
             if (!el.classList.contains('stagger-item') && !el.classList.contains('stamp') && !staggerContainers.includes('#' + el.id)) {
                 el.classList.add('reveal');
             }
