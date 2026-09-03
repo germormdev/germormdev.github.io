@@ -136,10 +136,16 @@
 </head>
 <body class="bg-gray-50 text-gray-800">
 
-    <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-        <a href="index.html" class="text-2xl font-bold text-orange-500 tracking-tight">CargoLog</a>
-        <div class="flex items-center space-x-4">
-            <div id="user-badge" class="hidden text-sm"></div>
+    <!-- Шапка переносит блок входа ПОД логотип, когда места нет: basis-full до
+         sm, auto от sm. Без этого flex СЖИМАЛ логотип, текст вылезал за свой
+         бокс, и «Signed in as <длинная почта>» ложилось поверх «CargoLog»
+         (S24 в портрете, замер 04.09.2026). Прямоугольники при этом НЕ
+         пересекались — вот почему проверка по bounding box такое пропускает.
+         Длинная почта не обязана помещаться в строку: break-words. -->
+    <nav class="container mx-auto px-6 py-4 flex flex-wrap items-center justify-between gap-y-2">
+        <a href="index.html" class="shrink-0 text-2xl font-bold text-orange-500 tracking-tight">CargoLog</a>
+        <div class="flex flex-wrap items-center gap-x-4 gap-y-1 min-w-0 basis-full sm:basis-auto sm:justify-end">
+            <div id="user-badge" class="hidden text-sm min-w-0 break-words"></div>
             <button id="btn-google-signin" class="text-sm text-gray-500 hover:text-orange-500 transition">Admin login</button>
             <div class="space-x-3 text-sm font-medium">
                 <a href="index.html" class="text-gray-500 hover:text-orange-500 transition">Home</a>

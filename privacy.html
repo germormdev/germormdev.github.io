@@ -47,7 +47,9 @@
         display:grid;place-items:center;color:#FBF7EF;font-size:18px}
   h1{font-family:var(--display);font-weight:600;font-size:clamp(2rem,5vw,2.9rem);line-height:1.08;margin:.5em 0 .1em}
   .eff{color:var(--muted);font-style:italic;font-size:.95rem;margin-bottom:26px}
-  .tabs{position:sticky;top:0;z-index:5;display:flex;gap:8px;padding:14px 0;background:linear-gradient(var(--paper) 70%,transparent);
+  /* flex-wrap обязателен: три кнопки языков не помещаются в 320px и лезли за
+     край экрана (замер 04.09.2026). Тронута раскладка, не оформление. */
+  .tabs{position:sticky;top:0;z-index:5;display:flex;flex-wrap:wrap;gap:8px;padding:14px 0;background:linear-gradient(var(--paper) 70%,transparent);
         margin-bottom:8px}
   .tab{font-family:var(--display);font-weight:500;font-size:.95rem;cursor:pointer;border:1px solid var(--line);
        background:var(--card);color:var(--muted);padding:7px 16px;border-radius:999px;transition:.18s}

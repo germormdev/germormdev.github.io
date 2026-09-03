@@ -243,7 +243,28 @@ else:
     say(not miss, "языков с абзацем: %d из 3%s"
         % (3 - len(miss), "" if not miss else "  НЕТ: " + ", ".join(miss)))
 
-print("\n[9] gtag подключён на всех пяти страницах и РОВНО ОДИН раз")
+print("\n[9] шапки не наезжают сами на себя на узком экране")
+if not LOCAL:
+    say(True, "ПРОПУЩЕНО: геометрию можно снять только с --local (нужен один origin "
+              "для iframe). Это не зелёное, это «не проверялось».")
+else:
+    import head_geometry
+    _here = os.path.abspath(LOCAL)
+    _cwd = os.getcwd()
+    try:
+        rows, why = head_geometry.run(_here)
+    finally:
+        os.chdir(_cwd)
+    if rows is None:
+        say(True, "ПРОПУЩЕНО: %s. Это не зелёное, это «не проверялось»." % why)
+    else:
+        bad = [r for r in rows if r[2]]
+        say(not bad, "проверено %d сочетаний страница×ширина, с бедой: %d"
+            % (len(rows), len(bad)))
+        for page, width, trouble in bad:
+            say(False, "   %s @ %s — %s" % (page, width, trouble))
+
+print("\n[10] gtag подключён на всех пяти страницах и РОВНО ОДИН раз")
 for p in PAGES:
     raw = RAW.get(p)
     if raw is None:
@@ -256,9 +277,9 @@ for p in PAGES:
         % (p, n_tag, n_inline, "" if ok else "  <- должно быть 1 и 0"))
 
 if NO_FS:
-    print("\n[10-11] Firestore пропущен по флагу --no-firestore")
+    print("\n[11-12] Firestore пропущен по флагу --no-firestore")
 else:
-    print("\n[10] история версий: восемь выпущенных на месте, номера целы, языки полные")
+    print("\n[11] история версий: восемь выпущенных на месте, номера целы, языки полные")
     try:
         raw = urllib.request.urlopen(FS, timeout=30).read().decode()
         vh = json.loads(raw).get("documents", [])
@@ -288,7 +309,7 @@ else:
         say(not lack, "неполный набор языков: %d%s"
             % (len(lack), "" if not lack else "  -> " + ", ".join(lack)))
 
-        print("\n[11] «What's New» не пуст — свежая версия есть на всех трёх языках")
+        print("\n[12] «What's New» не пуст — свежая версия есть на всех трёх языках")
         newest = RELEASED[-1]
         have = site.get(newest, set())
         say({"en", "ru", "he"} <= have,
