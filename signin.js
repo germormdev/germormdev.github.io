@@ -403,9 +403,13 @@ async function loadSiteContent() {
   if (heroTitle && data.hero?.title_html) heroTitle.innerHTML = data.hero.title_html;
   if (heroSubtitle && data.hero?.subtitle) heroSubtitle.textContent = data.hero.subtitle;
 
+  // ПУСТОЙ массив — это НЕ содержимое. Проверка на length обязательна: без неё
+  // Firestore с пустым списком очищает контейнер, а статический заголовок над
+  // ним остаётся, и на витрине висит голый заголовок. Тот же класс дефекта, что
+  // у снятого раздела Videos и у счётчика посещений.
   // Features
   const featuresBox = document.getElementById("content-features");
-  if (featuresBox && Array.isArray(data.features)) {
+  if (featuresBox && Array.isArray(data.features) && data.features.length) {
     featuresBox.innerHTML = data.features.map((f) => `
       <div>
         <h4 class="font-bold text-xl text-gray-900 mb-2">${escapeHtml(f.title || "")}</h4>
@@ -416,7 +420,7 @@ async function loadSiteContent() {
 
   // Reasons
   const reasonsBox = document.getElementById("content-reasons");
-  if (reasonsBox && Array.isArray(data.reasons)) {
+  if (reasonsBox && Array.isArray(data.reasons) && data.reasons.length) {
     reasonsBox.innerHTML = data.reasons.map((r) => `
       <li><i class="fa-solid fa-check text-orange-500 mr-2"></i> ${escapeHtml(r)}</li>
     `).join("");
@@ -424,7 +428,7 @@ async function loadSiteContent() {
 
   // Tech
   const techBox = document.getElementById("content-tech");
-  if (techBox && Array.isArray(data.tech)) {
+  if (techBox && Array.isArray(data.tech) && data.tech.length) {
     techBox.innerHTML = data.tech.map((line) => `
       <li><i class="fa-solid fa-circle-dot text-gray-400 mr-2"></i> ${escapeHtml(line)}</li>
     `).join("");
