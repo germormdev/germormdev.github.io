@@ -175,9 +175,6 @@
                 <button data-tab="tab-screenshots" class="tab-btn border-2 px-4 py-2 rounded-full text-sm font-semibold transition">
                     Screenshots
                 </button>
-                <button data-tab="tab-videos" class="tab-btn border-2 px-4 py-2 rounded-full text-sm font-semibold transition">
-                    Videos
-                </button>
             </div>
 
             <!-- ── TAB 1: Versions ─────────────────────────────────── -->
@@ -362,61 +359,6 @@
                     <i class="fa-solid fa-circle-info mr-1"></i>
                     Files commit to <code class="text-xs bg-gray-100 px-1">screenshots/</code> in GitHub.
                     Set token first via "Set GitHub Token" button. Token requires <em>contents:write</em> scope.
-                </p>
-            </div>
-
-            <!-- ── TAB 4: Videos ───────────────────────────────────── -->
-            <div id="tab-videos" class="tab-pane">
-                <h3 class="text-lg font-bold text-gray-900 mb-3">
-                    <i class="fa-brands fa-youtube text-orange-500 mr-2"></i>
-                    Videos (YouTube embeds)
-                </h3>
-                <form id="admin-add-video-form" class="space-y-4 mb-6">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">YouTube URL or ID</label>
-                        <input type="text" name="youtube" required
-                               placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ  or  dQw4w9WgXcQ"
-                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none font-mono text-sm">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Title</label>
-                        <input type="text" name="title" required placeholder="App overview"
-                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Description (optional)</label>
-                        <textarea name="description" rows="2"
-                                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none"></textarea>
-                    </div>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Locale</label>
-                            <select name="locale" required
-                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none">
-                                <option value="en">English</option>
-                                <option value="ru">Русский</option>
-                                <option value="he">עברית</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Order</label>
-                            <input type="number" name="order" value="10" min="0" max="999"
-                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none">
-                        </div>
-                    </div>
-                    <div class="flex justify-end">
-                        <button type="submit" data-orig-label="Add video"
-                                class="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-2 rounded-lg shadow transition">
-                            Add video
-                        </button>
-                    </div>
-                </form>
-                <h4 class="text-sm font-bold text-gray-700 mb-2">Current videos (all locales)</h4>
-                <div id="admin-videos-list" class="space-y-2"></div>
-                <p class="text-xs text-gray-500 mt-3">
-                    <i class="fa-solid fa-circle-info mr-1"></i>
-                    Videos appear on <code class="text-xs bg-gray-100 px-1">index/ru/he.html</code> filtered by locale.
-                    Section is hidden if no videos for current locale.
                 </p>
             </div>
 

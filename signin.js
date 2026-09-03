@@ -78,7 +78,6 @@ const I18N = {
     not_admin: "This login is for administrators only.",
     confirm_delete_version: "Delete this version entry?",
     confirm_delete_screenshot: "Delete this screenshot? This will commit a deletion to GitHub.",
-    confirm_delete_video: "Delete this video entry?",
     confirm_delete_section: "Delete this section?",
   },
   ru: {
@@ -95,7 +94,6 @@ const I18N = {
     not_admin: "Этот вход только для администраторов.",
     confirm_delete_version: "Удалить эту запись версии?",
     confirm_delete_screenshot: "Удалить скриншот? Это сделает коммит удаления в GitHub.",
-    confirm_delete_video: "Удалить эту запись видео?",
     confirm_delete_section: "Удалить эту секцию?",
   },
   he: {
@@ -112,7 +110,6 @@ const I18N = {
     not_admin: "התחברות זו מיועדת למנהלים בלבד.",
     confirm_delete_version: "למחוק את רשומת הגרסה הזו?",
     confirm_delete_screenshot: "למחוק את הצילום? פעולה זו תיצור קומיט מחיקה ב-GitHub.",
-    confirm_delete_video: "למחוק את רשומת הסרטון?",
     confirm_delete_section: "למחוק את הסעיף הזה?",
   }
 };
@@ -849,153 +846,6 @@ function setupGitHubPatUI() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════
-// VIDEOS — Firestore: site_videos
-// ═══════════════════════════════════════════════════════════════════════
-
-async function loadVideos() {
-  const container = document.getElementById("videos-list");
-  if (!container) return;
-  try {
-    const snap = await getDocs(query(collection(db, "site_videos"), orderBy("order", "asc")));
-    const items = [];
-    snap.forEach((d) => {
-      const data = d.data();
-      if (!data.locale || data.locale === LOCALE) {
-        items.push({ id: d.id, ...data });
-      }
-    });
-    if (items.length === 0) {
-      container.innerHTML = "";
-      // Скрываем секцию целиком
-      const section = document.getElementById("videos-section");
-      if (section) section.classList.add("hidden");
-      return;
-    }
-    // Секция спрятана в разметке — раскрываем только когда ролики реально есть.
-    const videosSection = document.getElementById("videos-section");
-    if (videosSection) videosSection.classList.remove("hidden");
-    container.innerHTML = items.map((v) => `
-      <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-200">
-        <div class="aspect-video mb-3 rounded-xl overflow-hidden bg-black">
-          <iframe class="w-full h-full"
-                  src="https://www.youtube.com/embed/${escapeHtml(v.youtubeId)}"
-                  title="${escapeHtml(v.title || "")}"
-                  frameborder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowfullscreen></iframe>
-        </div>
-        <h3 class="font-bold text-lg text-gray-900">${escapeHtml(v.title || "")}</h3>
-        ${v.description ? `<p class="text-gray-600 text-sm mt-1">${escapeHtml(v.description)}</p>` : ""}
-      </div>
-    `).join("");
-  } catch (e) {
-    console.warn("loadVideos:", e);
-  }
-}
-
-async function loadVideosAdmin() {
-  const container = document.getElementById("admin-videos-list");
-  if (!container) return;
-  try {
-    const snap = await getDocs(query(collection(db, "site_videos"), orderBy("order", "asc")));
-    if (snap.empty) {
-      container.innerHTML = `<p class="text-gray-500 text-sm">No videos yet.</p>`;
-      return;
-    }
-    const html = [];
-    snap.forEach((d) => {
-      const data = d.data();
-      html.push(`
-        <div class="flex items-center gap-3 bg-gray-50 p-3 rounded-lg border">
-          <img src="https://i.ytimg.com/vi/${escapeHtml(data.youtubeId)}/mqdefault.jpg"
-               class="w-24 h-14 object-cover rounded border" alt="">
-          <div class="flex-1 text-sm">
-            <div class="font-bold">${escapeHtml(data.title || "")}</div>
-            <div class="text-xs text-gray-500">
-              ${escapeHtml(data.locale || "—")} · order ${data.order ?? "—"} · id ${escapeHtml(data.youtubeId || "")}
-            </div>
-          </div>
-          <button data-delete-video="${d.id}" class="text-red-500 hover:text-red-700 text-sm">
-            <i class="fa-solid fa-trash"></i>
-          </button>
-        </div>
-      `);
-    });
-    container.innerHTML = html.join("");
-
-    container.querySelectorAll("[data-delete-video]").forEach((btn) => {
-      btn.addEventListener("click", async (e) => {
-        const id = e.currentTarget.dataset.deleteVideo;
-        if (!confirm(t("confirm_delete_video"))) return;
-        try {
-          await deleteDoc(doc(db, "site_videos", id));
-          loadVideosAdmin();
-        } catch (err) {
-          alert("Delete failed: " + err.message);
-        }
-      });
-    });
-  } catch (e) {
-    console.warn("loadVideosAdmin:", e);
-  }
-}
-
-function setupVideoForm() {
-  const form = document.getElementById("admin-add-video-form");
-  if (!form) return;
-
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const submitBtn = form.querySelector("button[type=submit]");
-    submitBtn.disabled = true;
-    submitBtn.textContent = "Saving…";
-
-    const youtubeRaw = form.querySelector("[name=youtube]").value.trim();
-    const youtubeId  = extractYouTubeId(youtubeRaw);
-    if (!youtubeId) {
-      alert("Could not parse YouTube ID from: " + youtubeRaw);
-      submitBtn.disabled = false;
-      submitBtn.textContent = submitBtn.dataset.origLabel || "Save";
-      return;
-    }
-
-    try {
-      await addDoc(collection(db, "site_videos"), {
-        title:       form.querySelector("[name=title]").value.trim(),
-        description: form.querySelector("[name=description]").value.trim(),
-        youtubeId,
-        locale:      form.querySelector("[name=locale]").value,
-        order:       parseInt(form.querySelector("[name=order]").value, 10) || 99,
-        createdAt:   serverTimestamp(),
-        createdBy:   auth.currentUser ? auth.currentUser.email : "unknown",
-      });
-      form.reset();
-      loadVideosAdmin();
-    } catch (err) {
-      alert("Save failed: " + err.message);
-    } finally {
-      submitBtn.disabled = false;
-      submitBtn.textContent = submitBtn.dataset.origLabel || "Save";
-    }
-  });
-}
-
-// Принимает либо чистый ID (11 знаков), либо https://youtu.be/ID, либо
-// https://www.youtube.com/watch?v=ID, либо .../embed/ID
-function extractYouTubeId(input) {
-  if (!input) return null;
-  const trimmed = input.trim();
-  if (/^[\w-]{11}$/.test(trimmed)) return trimmed;
-  const m1 = trimmed.match(/youtu\.be\/([\w-]{11})/);
-  if (m1) return m1[1];
-  const m2 = trimmed.match(/[?&]v=([\w-]{11})/);
-  if (m2) return m2[1];
-  const m3 = trimmed.match(/youtube\.com\/embed\/([\w-]{11})/);
-  if (m3) return m3[1];
-  return null;
-}
-
-// ═══════════════════════════════════════════════════════════════════════
 // Admin UI gating
 // ═══════════════════════════════════════════════════════════════════════
 
@@ -1027,7 +877,6 @@ function updateAdminUI(user) {
     }
     // Подгружаем админ-списки (только на versions.html, где они есть)
     loadScreenshotsAdmin();
-    loadVideosAdmin();
   } else {
     if (adminBlock) adminBlock.classList.add("hidden");
     if (userBadge) userBadge.classList.add("hidden");
@@ -1047,13 +896,11 @@ document.addEventListener("DOMContentLoaded", () => {
   setupVersionForm();
   setupContentForm();
   setupScreenshotForm();
-  setupVideoForm();
   setupGitHubPatUI();
 
-  // Публичный контент: тексты, скриншоты, видео
+  // Публичный контент: тексты и скриншоты
   loadSiteContent();
   loadScreenshots();
-  loadVideos();
   initVisitCounter();
 
   // Версии: если есть #versions-list-preview → 3 шт., иначе все
