@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CargoLog — Version History</title>
+    <script src="analytics.js"></script>
     <meta name="description" content="CargoLog version history: what changed in each release of the logbook app for truck drivers on Android.">
     <link rel="canonical" href="https://germormdev.github.io/versions.html">
     <link rel="icon" href="favicon.ico" sizes="any">
@@ -172,6 +173,10 @@
               4. Videos   — добавить YouTube видео по локали
         ──────────────────────────────────────────────────────────── -->
         <div id="admin-block" class="hidden bg-white rounded-2xl shadow-md p-6 mb-8 border-2 border-orange-200">
+
+            <!-- Посещения. Лежит ВНУТРИ #admin-block, который скрыт до входа
+                 Google, — на витрине этих чисел нет и быть не должно. -->
+            <div id="admin-visit-stats" class="bg-gray-50 border border-gray-200 rounded-xl p-4 mb-4"></div>
 
             <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
                 <h2 class="text-xl font-bold text-gray-900">

@@ -160,10 +160,11 @@ print("=" * 74)
 print("СТОРОЖ ВИТРИНЫ — источник: %s" % (("папка " + LOCAL) if LOCAL else BASE_URL))
 print("=" * 74)
 
-docs = {}
+docs, RAW = {}, {}
 print("\n[1] страницы доступны")
 for p in PAGES:
     h = fetch(p)
+    RAW[p] = h          # сырой текст нужен проверкам РАЗМЕТКИ (счётчик, gtag)
     docs[p] = parse(h) if h else None
     say(h is not None, "%s %s" % (p, "получена" if h else "НЕ ПОЛУЧЕНА"))
 
@@ -215,10 +216,37 @@ for p in PAGES:
     say(not empty, "%s пустых заголовков: %d%s"
         % (p, len(empty), "" if not empty else "  -> " + " | ".join(empty)))
 
+print("\n[7] счётчика посещений на витрине НЕТ ни на одном языке")
+COUNTER_MARKS = ["visit-counter", "admin-visit-stats"]
+COUNTER_WORDS = ["visits", "посещен", "ביקורים"]
+for p in LANG_PAGES:
+    raw = RAW.get(p)
+    d = docs.get(p)
+    if raw is None or d is None:
+        say(False, "%s — страницы нет, проверить нечем" % p)
+        continue
+    marks = [m for m in COUNTER_MARKS if m in raw]
+    words = [w for w in COUNTER_WORDS if w in d.visible().lower()]
+    ok = not marks and not words
+    say(ok, "%s разметка: %s, подписи: %s"
+        % (p, ",".join(marks) or "нет", ",".join(words) or "нет"))
+
+print("\n[8] gtag подключён на всех пяти страницах и РОВНО ОДИН раз")
+for p in PAGES:
+    raw = RAW.get(p)
+    if raw is None:
+        say(False, "%s — страницы нет" % p)
+        continue
+    n_tag = raw.count('src="analytics.js"')
+    n_inline = raw.count("googletagmanager.com/gtag/js")
+    ok = n_tag == 1 and n_inline == 0
+    say(ok, "%s analytics.js: %d, встроенных копий gtag: %d%s"
+        % (p, n_tag, n_inline, "" if ok else "  <- должно быть 1 и 0"))
+
 if NO_FS:
-    print("\n[7-9] Firestore пропущен по флагу --no-firestore")
+    print("\n[9-10] Firestore пропущен по флагу --no-firestore")
 else:
-    print("\n[7] история версий: восемь выпущенных на месте, номера целы, языки полные")
+    print("\n[9] история версий: восемь выпущенных на месте, номера целы, языки полные")
     try:
         raw = urllib.request.urlopen(FS, timeout=30).read().decode()
         vh = json.loads(raw).get("documents", [])
@@ -248,7 +276,7 @@ else:
         say(not lack, "неполный набор языков: %d%s"
             % (len(lack), "" if not lack else "  -> " + ", ".join(lack)))
 
-        print("\n[8] «What's New» не пуст — свежая версия есть на всех трёх языках")
+        print("\n[10] «What's New» не пуст — свежая версия есть на всех трёх языках")
         newest = RELEASED[-1]
         have = site.get(newest, set())
         say({"en", "ru", "he"} <= have,

@@ -245,6 +245,116 @@ async function handleSignOut() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════
+// VISIT COUNTER — СЧЁТ ЕСТЬ, ПОКАЗА НА ВИТРИНЕ НЕТ
+// ═══════════════════════════════════════════════════════════════════════
+//
+// Возвращён 03.09.2026 после того, как его вырезали целиком. Условие: на трёх
+// языковых страницах не остаётся НИ РАЗМЕТКИ, НИ ЧИСЛА, НИ ПОДПИСИ. Числа
+// видны только в админке versions.html, за входом Google.
+//
+// Отсечка двойного счёта — sessionStorage, то есть та же вкладка за сессию
+// считается один раз. Прежний флаг жил в localStorage и считал браузер ОДИН
+// РАЗ НАВСЕГДА; с ним «за сегодня» показывал бы почти ноль, ради чего вся
+// посуточная разбивка и заводится.
+//
+// Заходы админа не считаются: инкремент идёт внутри onAuthStateChanged, когда
+// уже известно, кто пришёл.
+//
+// ⚠ ПОСУТОЧНЫЕ КЛЮЧИ ТРЕБУЮТ ПРАВИЛ FIRESTORE. Замер 03.09.2026: анонимная
+// запись в stats/visits/daily/<дата> отдаёт 403, правила такой путь не
+// покрывают. Пока правил нет, посуточная часть тихо пропускается, а общий
+// счёт работает — он идёт прежним, разрешённым путём «count + 1».
+const VISIT_SS_KEY = "cargolog_visit_counted_v2";
+
+function isShowcasePage() {
+  const p = location.pathname.replace(/\/+$/, "");
+  return p === "" || /\/(index|ru|he)\.html$/.test(p);
+}
+
+function utcDayKey(shiftDays) {
+  const t = Date.now() - (shiftDays || 0) * 86400000;
+  return new Date(t).toISOString().slice(0, 10);
+}
+
+async function countVisit(user) {
+  if (!isShowcasePage()) return;
+  if (user && ADMIN_EMAILS.includes(user.email)) return;
+  try {
+    if (sessionStorage.getItem(VISIT_SS_KEY) === "1") return;
+  } catch (e) {
+    return; // приватный режим — не считаем и не падаем
+  }
+
+  try {
+    const ref = doc(db, "stats", "visits");
+    const snap = await getDoc(ref);
+    const cur = snap.exists() ? (snap.data().count || 0) : 0;
+    await setDoc(ref, { count: cur + 1 }, { merge: false });
+    try { sessionStorage.setItem(VISIT_SS_KEY, "1"); } catch (e) {}
+  } catch (e) {
+    console.warn("visit counter:", e);
+    return;
+  }
+
+  try {
+    const dref = doc(db, "stats", "visits", "daily", utcDayKey(0));
+    const dsnap = await getDoc(dref);
+    const dcur = dsnap.exists() ? (dsnap.data().count || 0) : 0;
+    await setDoc(dref, { count: dcur + 1 }, { merge: false });
+  } catch (e) {
+    console.warn("посуточный ключ пропущен (нужны правила Firestore):", e);
+  }
+}
+
+// Числа для админки. Посуточные ключи могут быть недоступны — тогда вместо
+// разбивки честное тире, а не ноль: ноль означал бы «никто не заходил».
+async function loadVisitStats() {
+  const box = document.getElementById("admin-visit-stats");
+  if (!box) return;
+
+  let total = "—";
+  try {
+    const snap = await getDoc(doc(db, "stats", "visits"));
+    total = snap.exists() ? (snap.data().count ?? 0) : 0;
+  } catch (e) {
+    console.warn("общий счёт недоступен:", e);
+  }
+
+  let d1 = "—", d7 = "—", d30 = "—", note = "";
+  try {
+    const snap = await getDocs(collection(db, "stats", "visits", "daily"));
+    const byDay = {};
+    snap.forEach((d) => { byDay[d.id] = d.data().count || 0; });
+    const sum = (n) => {
+      let s = 0;
+      for (let i = 0; i < n; i++) s += byDay[utcDayKey(i)] || 0;
+      return s;
+    };
+    d1 = sum(1); d7 = sum(7); d30 = sum(30);
+  } catch (e) {
+    note = "Посуточная разбивка недоступна: правила Firestore ещё не пускают "
+         + "stats/visits/daily. Общий счёт при этом идёт.";
+  }
+
+  const cell = (label, value) => `
+    <div class="text-center">
+      <div class="text-2xl font-bold text-gray-900">${escapeHtml(String(value))}</div>
+      <div class="text-xs text-gray-500 mt-1">${escapeHtml(label)}</div>
+    </div>`;
+
+  box.innerHTML = `
+    <div class="grid grid-cols-4 gap-3 mb-2">
+      ${cell("всего", total)}${cell("сегодня", d1)}${cell("7 дней", d7)}${cell("30 дней", d30)}
+    </div>
+    <p class="text-xs text-gray-500">
+      Считаются только заходы, где отработал скрипт: боты и показ из кэша от
+      живого читателя не отличаются. Сутки — UTC, потому что дату пишет браузер
+      посетителя. Свои заходы не в счёте.
+      ${note ? `<br><span class="text-orange-600">${escapeHtml(note)}</span>` : ""}
+    </p>`;
+}
+
+// ═══════════════════════════════════════════════════════════════════════
 // VERSIONS (existing — не трогаем, только переиспользуем)
 // ═══════════════════════════════════════════════════════════════════════
 
@@ -793,6 +903,7 @@ function setupGitHubPatUI() {
 // ═══════════════════════════════════════════════════════════════════════
 
 function updateAdminUI(user) {
+  if (user && ADMIN_EMAILS.includes(user.email)) loadVisitStats();
   const adminBlock = document.getElementById("admin-block");
   const userBadge = document.getElementById("user-badge");
   // v1.0.1 (S28): кнопка "Admin login" в nav versions.html — прячем когда
@@ -857,5 +968,13 @@ document.addEventListener("DOMContentLoaded", () => {
       const preview = document.body.dataset.versionsPreview === "true";
       loadVersions(preview ? 3 : null);
     }
+    // Аналитика и счёт узнают, кто пришёл, ТОЛЬКО здесь: до этого момента
+    // отличить админа от гостя нечем, а свои заходы считать нельзя.
+    const admin = !!(user && ADMIN_EMAILS.includes(user.email));
+    if (window.CargoLogGA) {
+      if (admin) window.CargoLogGA.markAdmin();
+      window.CargoLogGA.ready();
+    }
+    countVisit(user);
   });
 });
