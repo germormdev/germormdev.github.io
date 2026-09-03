@@ -4,6 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CargoLog — יומן נסיעות דיגיטלי לנהגי משאיות</title>
+    <meta name="description" content="יומן נסיעות חינמי לנהגי משאית: נסיעות, משמרות, תדלוקים, מטענים ומכולות. עובד אופליין, בלי הרשמה ובלי פרסומות. אנדרואיד, 29 שפות.">
+    <link rel="canonical" href="https://germormdev.github.io/he.html">
+    <link rel="alternate" hreflang="en" href="https://germormdev.github.io/">
+    <link rel="alternate" hreflang="ru" href="https://germormdev.github.io/ru.html">
+    <link rel="alternate" hreflang="he" href="https://germormdev.github.io/he.html">
+    <link rel="alternate" hreflang="x-default" href="https://germormdev.github.io/">
+    <link rel="icon" href="favicon.ico" sizes="any">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="CargoLog">
+    <meta property="og:title" content="CargoLog — יומן נסיעות דיגיטלי לנהגי משאיות">
+    <meta property="og:description" content="יומן נסיעות חינמי לנהגי משאית: נסיעות, משמרות, תדלוקים, מטענים ומכולות. עובד אופליין, בלי הרשמה ובלי פרסומות. אנדרואיד, 29 שפות.">
+    <meta property="og:url" content="https://germormdev.github.io/he.html">
+    <meta property="og:image" content="https://germormdev.github.io/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="CargoLog — יומן נסיעות דיגיטלי, מסכי האפליקציה">
+    <meta property="og:locale" content="he_IL">
+    <meta property="og:locale:alternate" content="en_US">
+    <meta property="og:locale:alternate" content="ru_RU">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="CargoLog — יומן נסיעות דיגיטלי לנהגי משאיות">
+    <meta name="twitter:description" content="יומן נסיעות חינמי לנהגי משאית: נסיעות, משמרות, תדלוקים, מטענים ומכולות. עובד אופליין, בלי הרשמה ובלי פרסומות. אנדרואיד, 29 שפות.">
+    <meta name="twitter:image" content="https://germormdev.github.io/og-image.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- 30.07.2026: פלטת האתר = פלטת האפליקציה (פריסט "מנילה",
          קנון domain/.../theme/ColorScheme.kt val LIGHT). אנחנו דורסים את הסולמות של
@@ -260,7 +284,6 @@
             </a>
         </div>
 
-        <p id="visit-counter" class="hidden mt-4 text-sm text-gray-400"></p>
 
         <p class="mt-8 text-sm text-gray-500">Android 7.0+ • ~15 MB • חינם</p>
         <div class="mt-8 flex justify-center">
@@ -310,11 +333,11 @@
 
 <section class="container mx-auto px-6 mb-16">
         <div id="screenshots-list" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6 items-start">
-            <img src="screen1.png" alt="תפריט" loading="lazy" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800">
-            <img src="screen4.png" alt="היסטוריית נסיעות" loading="lazy" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800">
-            <img src="screen5.png" alt="יומן תדלוק" loading="lazy" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800">
-            <img src="screen6.png" alt="דוח" loading="lazy" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800">
-            <img src="screen3.png" alt="פרטי מטען" loading="lazy" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800">
+            <img src="screen1.png" alt="תפריט" loading="lazy" width="1080" height="1920" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800">
+            <img src="screen4.png" alt="היסטוריית נסיעות" loading="lazy" width="1080" height="1920" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800">
+            <img src="screen5.png" alt="יומן תדלוק" loading="lazy" width="1080" height="1920" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800">
+            <img src="screen6.png" alt="דוח" loading="lazy" width="1080" height="1920" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800">
+            <img src="screen3.png" alt="פרטי מטען" loading="lazy" width="1080" height="1920" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800">
         </div>
     </section>
 
@@ -473,7 +496,6 @@
             </div>
             <p class="text-gray-500 text-sm">© 2026 CargoLog. נוצר על ידי נהג עבור נהגים.</p>
             <div class="mt-4">
-                <button id="btn-google-signin" class="text-xs text-gray-600 hover:text-gray-400 transition">Admin</button>
             </div>
             <div id="auth-status" class="hidden max-w-md mx-auto mt-4"></div>
         </div>

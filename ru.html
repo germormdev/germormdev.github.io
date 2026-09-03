@@ -4,6 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CargoLog — Цифровой бортовой журнал для водителей грузовиков</title>
+    <meta name="description" content="Бесплатный бортовой журнал для водителей грузовиков: рейсы, смены, заправки, грузы и контейнеры. Работает офлайн, без регистрации и рекламы. 29 языков.">
+    <link rel="canonical" href="https://germormdev.github.io/ru.html">
+    <link rel="alternate" hreflang="en" href="https://germormdev.github.io/">
+    <link rel="alternate" hreflang="ru" href="https://germormdev.github.io/ru.html">
+    <link rel="alternate" hreflang="he" href="https://germormdev.github.io/he.html">
+    <link rel="alternate" hreflang="x-default" href="https://germormdev.github.io/">
+    <link rel="icon" href="favicon.ico" sizes="any">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="CargoLog">
+    <meta property="og:title" content="CargoLog — Цифровой бортовой журнал для водителей грузовиков">
+    <meta property="og:description" content="Бесплатный бортовой журнал для водителей грузовиков: рейсы, смены, заправки, грузы и контейнеры. Работает офлайн, без регистрации и рекламы. 29 языков.">
+    <meta property="og:url" content="https://germormdev.github.io/ru.html">
+    <meta property="og:image" content="https://germormdev.github.io/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="CargoLog — цифровой бортовой журнал водителя, экраны приложения">
+    <meta property="og:locale" content="ru_RU">
+    <meta property="og:locale:alternate" content="en_US">
+    <meta property="og:locale:alternate" content="he_IL">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="CargoLog — Цифровой бортовой журнал для водителей грузовиков">
+    <meta name="twitter:description" content="Бесплатный бортовой журнал для водителей грузовиков: рейсы, смены, заправки, грузы и контейнеры. Работает офлайн, без регистрации и рекламы. 29 языков.">
+    <meta name="twitter:image" content="https://germormdev.github.io/og-image.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- 30.07.2026: палитра сайта = палитра приложения (пресет «Манила»,
          канон domain/.../theme/ColorScheme.kt val LIGHT). Переопределяем шкалы
@@ -280,7 +304,6 @@
             </a>
         </div>
 
-        <p id="visit-counter" class="hidden mt-4 text-sm text-gray-400"></p>
 
         <p class="mt-8 text-sm text-gray-500">Android 7.0+ • ~15 МБ • Бесплатно</p>
         <div class="mt-8 flex justify-center">
@@ -332,11 +355,11 @@
         <div id="screenshots-list" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6 items-start">
             <!-- Пять кадров 2.0.0, статикой: главная галерея больше не
                  перезаписывается из Firestore. -->
-            <img src="screen1.png" alt="Меню" loading="lazy" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800">
-            <img src="screen4.png" alt="История рейсов" loading="lazy" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800">
-            <img src="screen5.png" alt="Журнал заправок" loading="lazy" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800">
-            <img src="screen6.png" alt="Отчёт" loading="lazy" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800">
-            <img src="screen3.png" alt="Детали груза" loading="lazy" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800">
+            <img src="screen1.png" alt="Меню" loading="lazy" width="1080" height="1920" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800">
+            <img src="screen4.png" alt="История рейсов" loading="lazy" width="1080" height="1920" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800">
+            <img src="screen5.png" alt="Журнал заправок" loading="lazy" width="1080" height="1920" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800">
+            <img src="screen6.png" alt="Отчёт" loading="lazy" width="1080" height="1920" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800">
+            <img src="screen3.png" alt="Детали груза" loading="lazy" width="1080" height="1920" class="rounded-[2rem] shadow-2xl border-[6px] border-gray-800">
         </div>
     </section>
 
@@ -499,7 +522,6 @@
             </div>
             <p class="text-gray-500 text-sm">© 2026 CargoLog. Создано водителем для водителей.</p>
             <div class="mt-4">
-                <button id="btn-google-signin" class="text-xs text-gray-600 hover:text-gray-400 transition">Admin</button>
             </div>
             <div id="auth-status" class="hidden max-w-md mx-auto mt-4"></div>
         </div>
