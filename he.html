@@ -217,7 +217,7 @@
             יומן נסיעות דיגיטלי <br><span class="text-orange-500">לנהגי משאיות</span>
         </h1>
         <p id="content-hero-subtitle" class="text-lg md:text-xl text-gray-600 mb-10 max-w-2xl mx-auto">
-            אפליקציית יומן נסיעות חינמית. נסיעות, משמרות, תדלוקים, מטענים ומכולות. עובד אופליין. בלי הרשמה. בלי ענן. בלי פרסומות. המידע שלך נשאר בטלפון.
+            אפליקציית יומן נסיעות חינמית. נסיעות, משמרות, תדלוקים, מטענים ומכולות. עובד אופליין. בלי הרשמה. בלי פרסומות. המידע נשאר בטלפון ולא נשלח לשום מקום עד שתפעילו זאת בעצמכם.
         </p>
 
         <div class="max-w-2xl mx-auto flex flex-wrap justify-center gap-4">
@@ -260,11 +260,24 @@
         <div class="mt-8 flex justify-center">
             <div class="stamp">
                 <span class="stamp-main">אופליין</span>
-                <span class="stamp-sub">בלי ענן · בלי פרסומות</span>
+                <span class="stamp-sub">בלי פרסומות · במכשיר</span>
             </div>
         </div>
 
     </header>
+
+    <section class="container mx-auto px-6 mb-14 max-w-3xl">
+        <div class="bg-white/70 border border-gray-200 rounded-2xl p-6">
+            <h2 class="text-xl font-bold text-gray-900 mb-3"><i class="fa-solid fa-sliders text-orange-500 ml-2"></i>מה יכול לצאת מהטלפון — ורק אם תפעילו זאת בעצמכם</h2>
+            <p class="text-gray-700 mb-4">CargoLog עובדת בעצמה ואינה שולחת דבר מיוזמתה. קיים ערוץ אבחון אל שרת פרטי של המפתח, כדי לבדוק תקלות על נתונים אמיתיים ולא לנחש לפי תיאור. יש בו שלושה מתגים נפרדים, וכל השלושה כבויים עד שתפעילו אותם:</p>
+            <ul class="space-y-2 text-gray-700 mb-4">
+                <li><i class="fa-solid fa-file-lines text-gray-400 ml-2"></i> <strong>יומני פעולת האפליקציה</strong> — לראות שגיאות ותקלות בטלפונים אמיתיים</li>
+                <li><i class="fa-solid fa-database text-gray-400 ml-2"></i> <strong>מסד הנסיעות</strong> — לראות איך נסיעות נראות בעבודה אמיתית</li>
+                <li><i class="fa-solid fa-camera text-gray-400 ml-2"></i> <strong>תמונות של מספרי מכולות</strong> — ללמד את הזיהוי לקרוא מספרים מלוכלכים ומעוכים</li>
+            </ul>
+            <p class="text-gray-600 text-sm">כל מתג פועל בנפרד וניתן לכבות כל אחד מהם בכל רגע; כל עוד שלושתם כבויים, לא נשלח דבר. פירוט מלא ב<a href="privacy.html" class="text-orange-600 hover:underline">מדיניות הפרטיות</a>.</p>
+        </div>
+    </section>
 
         <section class="stat-band py-8 mb-14">
         <div class="container mx-auto px-6">
@@ -279,7 +292,7 @@
                 </div>
                 <div>
                     <div class="stat-num">0</div>
-                    <div class="stat-cap">ענן</div>
+                    <div class="stat-cap">נשלח כברירת מחדל</div>
                 </div>
                 <div>
                     <div class="stat-num">100%</div>
@@ -343,7 +356,7 @@
                         <li><i class="fa-solid fa-check text-orange-500 ml-2"></i> <strong>מהיר</strong> — מתוכנן להזנת נתונים מהירה</li>
                         <li><i class="fa-solid fa-check text-orange-500 ml-2"></i> <strong>29 שפות</strong> — כמעט כל אירופה</li>
                         <li><i class="fa-solid fa-check text-orange-500 ml-2"></i> <strong>חינם</strong> — כל הפיצ׳רים הבסיסיים חינם</li>
-                        <li><i class="fa-solid fa-check text-orange-500 ml-2"></i> <strong>פרטיות</strong> — הנתונים לעולם לא עוזבים את הטלפון</li>
+                        <li><i class="fa-solid fa-check text-orange-500 ml-2"></i> <strong>פרטיות</strong> — הנתונים נשארים בטלפון; ערוץ האבחון כבוי עד שתפעילו אותו</li>
                     </ul>
                 </div>
                 <div>
@@ -354,6 +367,7 @@
                         <li><i class="fa-solid fa-wifi text-gray-400 ml-2"></i> אופליין — עובד בלי אינטרנט</li>
                         <li><i class="fa-solid fa-database text-gray-400 ml-2"></i> נתונים מאוחסנים מקומית במכשיר</li>
                         <li><i class="fa-solid fa-chart-line text-gray-400 ml-2"></i> אופציונלי: Firebase Analytics (אנונימי)</li>
+                        <li><i class="fa-solid fa-sliders text-gray-400 ml-2"></i> אופציונלי: ערוץ אבחון — שלושה מתגים (יומני פעולה / מסד הנסיעות / תמונות מספרי מכולות), כולם כבויים כברירת מחדל</li>
                     </ul>
                 </div>
             </div>
@@ -420,7 +434,7 @@
                     <li><i class="fa-solid fa-gauge-high text-orange-500 ml-2"></i> לוח בקרה למוקדן — כל המשאיות, הנסיעות והנהגים במקום אחד</li>
                     <li><i class="fa-solid fa-tower-broadcast text-orange-500 ml-2"></i> עדכונים בזמן אמת מנהגים בשטח, גם בחיבור חלש</li>
                     <li><i class="fa-solid fa-chart-column text-orange-500 ml-2"></i> דוחות וסטטיסטיקות צי — קילומטראז', דלק ומטענים בכל החברה</li>
-                    <li><i class="fa-solid fa-server text-orange-500 ml-2"></i> המידע נשאר שלכם — על התשתית שלכם, ללא ענן צד שלישי</li>
+                    <li><i class="fa-solid fa-server text-orange-500 ml-2"></i> המידע נשאר שלכם — גרסת הצי רצה על התשתית שלכם, ללא ענן צד שלישי</li>
                     <li><i class="fa-solid fa-signature text-orange-500 ml-2"></i> אישור מסירה עם חתימת הנהג</li>
                 </ul>
                 <a href="mailto:germormdev@gmail.com?subject=CargoLog%20for%20Fleets" class="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-7 rounded-full transition">

@@ -239,7 +239,7 @@
         </h1>
         <!-- Hero subtitle — редактируемый через site_content/{locale}.hero.subtitle -->
         <p id="content-hero-subtitle" class="text-lg md:text-xl text-gray-600 mb-10 max-w-2xl mx-auto">
-            Free truck driver logbook app. Track trips, shifts, refueling, cargo, and containers. Works offline. No registration. No cloud. No ads. Your data stays on your phone.
+            Free truck driver logbook app. Track trips, shifts, refueling, cargo, and containers. Works offline. No registration. No ads. Your data stays on your phone, and nothing is sent anywhere unless you switch it on yourself.
         </p>
 
         <div class="max-w-2xl mx-auto flex flex-wrap justify-center gap-4">
@@ -282,7 +282,7 @@
         <div class="mt-8 flex justify-center">
             <div class="stamp">
                 <span class="stamp-main">OFFLINE</span>
-                <span class="stamp-sub">NO CLOUD · NO ADS</span>
+                <span class="stamp-sub">NO ADS · ON-DEVICE</span>
             </div>
         </div>
 
@@ -290,6 +290,19 @@
 
     <!-- Скриншоты — динамический контейнер. Если в Firestore пусто, signin.js
          показывает fallback (screen1/2/3.png). -->
+    <section class="container mx-auto px-6 mb-14 max-w-3xl">
+        <div class="bg-white/70 border border-gray-200 rounded-2xl p-6">
+            <h2 class="text-xl font-bold text-gray-900 mb-3"><i class="fa-solid fa-sliders text-orange-500 mr-2"></i>What can leave the phone — and only if you switch it on</h2>
+            <p class="text-gray-700 mb-4">CargoLog works on its own and sends nothing by itself. There is a diagnostic channel to a private server run by the developer, so that failures can be looked at on real data instead of guessed from a description. It has three independent switches, and all three are off until you turn them on:</p>
+            <ul class="space-y-2 text-gray-700 mb-4">
+                <li><i class="fa-solid fa-file-lines text-gray-400 mr-2"></i> <strong>Application activity logs</strong> — to see errors and failures on real phones</li>
+                <li><i class="fa-solid fa-database text-gray-400 mr-2"></i> <strong>The trip database</strong> — to see what trips look like in real work</li>
+                <li><i class="fa-solid fa-camera text-gray-400 mr-2"></i> <strong>Container number photos</strong> — to teach the scanner to read dirty and dented numbers</li>
+            </ul>
+            <p class="text-gray-600 text-sm">Each switch works on its own and can be switched off at any moment; while all three are off, nothing is sent at all. Full detail in the <a href="privacy.html" class="text-orange-600 hover:underline">Privacy Policy</a>.</p>
+        </div>
+    </section>
+
         <section class="stat-band py-8 mb-14">
         <div class="container mx-auto px-6">
             <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center max-w-3xl mx-auto">
@@ -303,7 +316,7 @@
                 </div>
                 <div>
                     <div class="stat-num">0</div>
-                    <div class="stat-cap">cloud</div>
+                    <div class="stat-cap">sent by default</div>
                 </div>
                 <div>
                     <div class="stat-num">100%</div>
@@ -376,7 +389,7 @@
                         <li><i class="fa-solid fa-check text-orange-500 mr-2"></i> <strong>Fast</strong> — designed for quick input at the dock</li>
                         <li><i class="fa-solid fa-check text-orange-500 mr-2"></i> <strong>29 languages</strong> — most of Europe covered</li>
                         <li><i class="fa-solid fa-check text-orange-500 mr-2"></i> <strong>Free</strong> — core features are and will stay free</li>
-                        <li><i class="fa-solid fa-check text-orange-500 mr-2"></i> <strong>Privacy first</strong> — your data never leaves your phone</li>
+                        <li><i class="fa-solid fa-check text-orange-500 mr-2"></i> <strong>Privacy first</strong> — your data stays on the phone; the diagnostic channel is off until you switch it on</li>
                     </ul>
                 </div>
                 <div>
@@ -388,6 +401,7 @@
                         <li><i class="fa-solid fa-wifi text-gray-400 mr-2"></i> Offline-first — works without internet</li>
                         <li><i class="fa-solid fa-database text-gray-400 mr-2"></i> Data stored locally on device</li>
                         <li><i class="fa-solid fa-chart-line text-gray-400 mr-2"></i> Optional: Firebase Analytics (anonymous)</li>
+                        <li><i class="fa-solid fa-sliders text-gray-400 mr-2"></i> Optional: diagnostic channel — three switches (activity logs / trip database / container number photos), all off by default</li>
                     </ul>
                 </div>
             </div>
@@ -455,7 +469,7 @@
                     <li><i class="fa-solid fa-gauge-high text-orange-500 mr-2"></i> Dispatcher dashboard — all trucks, trips and drivers in one place</li>
                     <li><i class="fa-solid fa-tower-broadcast text-orange-500 mr-2"></i> Real-time updates from drivers in the field, even on poor connections</li>
                     <li><i class="fa-solid fa-chart-column text-orange-500 mr-2"></i> Fleet reports & statistics — mileage, fuel and cargo across the company</li>
-                    <li><i class="fa-solid fa-server text-orange-500 mr-2"></i> Your data stays yours — runs on your own infrastructure, no third-party cloud</li>
+                    <li><i class="fa-solid fa-server text-orange-500 mr-2"></i> Your data stays yours — the fleet version runs on your own infrastructure, no third-party cloud</li>
                     <li><i class="fa-solid fa-signature text-orange-500 mr-2"></i> Proof of delivery with driver signatures</li>
                 </ul>
                 <a href="mailto:germormdev@gmail.com?subject=CargoLog%20for%20Fleets" class="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-7 rounded-full transition">

@@ -237,7 +237,7 @@
             Цифровой бортовой журнал <br><span class="text-orange-500">для водителей грузовиков</span>
         </h1>
         <p id="content-hero-subtitle" class="text-lg md:text-xl text-gray-600 mb-10 max-w-2xl mx-auto">
-            Бесплатное приложение бортового журнала. Рейсы, смены, заправки, грузы и контейнеры. Работает офлайн. Без регистрации. Без облака. Без рекламы. Ваши данные остаются на телефоне.
+            Бесплатное приложение бортового журнала. Рейсы, смены, заправки, грузы и контейнеры. Работает офлайн. Без регистрации. Без рекламы. Данные остаются на телефоне и никуда не уходят, пока вы сами не включите отправку.
         </p>
 
         <div class="max-w-2xl mx-auto flex flex-wrap justify-center gap-4">
@@ -280,11 +280,24 @@
         <div class="mt-8 flex justify-center">
             <div class="stamp">
                 <span class="stamp-main">ОФЛАЙН</span>
-                <span class="stamp-sub">БЕЗ ОБЛАКА · БЕЗ РЕКЛАМЫ</span>
+                <span class="stamp-sub">БЕЗ РЕКЛАМЫ · НА ТЕЛЕФОНЕ</span>
             </div>
         </div>
 
     </header>
+
+    <section class="container mx-auto px-6 mb-14 max-w-3xl">
+        <div class="bg-white/70 border border-gray-200 rounded-2xl p-6">
+            <h2 class="text-xl font-bold text-gray-900 mb-3"><i class="fa-solid fa-sliders text-orange-500 mr-2"></i>Что может уйти с телефона — и только если вы сами включите</h2>
+            <p class="text-gray-700 mb-4">CargoLog работает сам по себе и ничего не отправляет по своей воле. Есть канал диагностики на частный сервер разработчика — чтобы разбирать сбои на настоящих данных, а не гадать по описанию. У него три независимых переключателя, и все три выключены, пока вы их не включите:</p>
+            <ul class="space-y-2 text-gray-700 mb-4">
+                <li><i class="fa-solid fa-file-lines text-gray-400 mr-2"></i> <strong>Журналы работы приложения</strong> — видеть ошибки и сбои на настоящих телефонах</li>
+                <li><i class="fa-solid fa-database text-gray-400 mr-2"></i> <strong>База рейсов</strong> — посмотреть, как рейсы выглядят в настоящей работе</li>
+                <li><i class="fa-solid fa-camera text-gray-400 mr-2"></i> <strong>Снимки номеров контейнеров</strong> — научить распознавание читать грязные и мятые номера</li>
+            </ul>
+            <p class="text-gray-600 text-sm">Каждый переключатель работает сам по себе, выключить любой можно в любой момент; пока сняты все три, не отправляется ничего. Подробно — в <a href="privacy.html" class="text-orange-600 hover:underline">Политике конфиденциальности</a>.</p>
+        </div>
+    </section>
 
         <section class="stat-band py-8 mb-14">
         <div class="container mx-auto px-6">
@@ -299,7 +312,7 @@
                 </div>
                 <div>
                     <div class="stat-num">0</div>
-                    <div class="stat-cap">облака</div>
+                    <div class="stat-cap">уходит по умолчанию</div>
                 </div>
                 <div>
                     <div class="stat-num">100%</div>
@@ -370,7 +383,7 @@
                         <li><i class="fa-solid fa-check text-orange-500 mr-2"></i> <strong>Быстро</strong> — спроектировано для ввода стоя на погрузке</li>
                         <li><i class="fa-solid fa-check text-orange-500 mr-2"></i> <strong>29 языков</strong> — почти вся Европа</li>
                         <li><i class="fa-solid fa-check text-orange-500 mr-2"></i> <strong>Бесплатно</strong> — все основные функции бесплатны</li>
-                        <li><i class="fa-solid fa-check text-orange-500 mr-2"></i> <strong>Конфиденциальность</strong> — данные никогда не покидают телефон</li>
+                        <li><i class="fa-solid fa-check text-orange-500 mr-2"></i> <strong>Конфиденциальность</strong> — данные лежат на телефоне; канал диагностики выключен, пока вы его не включите</li>
                     </ul>
                 </div>
                 <div>
@@ -381,6 +394,7 @@
                         <li><i class="fa-solid fa-wifi text-gray-400 mr-2"></i> Офлайн — работает без интернета</li>
                         <li><i class="fa-solid fa-database text-gray-400 mr-2"></i> Данные хранятся локально на устройстве</li>
                         <li><i class="fa-solid fa-chart-line text-gray-400 mr-2"></i> Опционально: Firebase Analytics и Crashlytics (анонимно)</li>
+                        <li><i class="fa-solid fa-sliders text-gray-400 mr-2"></i> Опционально: канал диагностики — три переключателя (журналы / база рейсов / снимки номеров контейнеров), по умолчанию выключены все три</li>
                     </ul>
                 </div>
             </div>
@@ -447,7 +461,7 @@
                     <li><i class="fa-solid fa-gauge-high text-orange-500 mr-2"></i> Панель диспетчера — все грузовики, рейсы и водители в одном месте</li>
                     <li><i class="fa-solid fa-tower-broadcast text-orange-500 mr-2"></i> Обновления от водителей в реальном времени, даже на слабой связи</li>
                     <li><i class="fa-solid fa-chart-column text-orange-500 mr-2"></i> Отчёты и статистика по автопарку — пробег, топливо и грузы по всей компании</li>
-                    <li><i class="fa-solid fa-server text-orange-500 mr-2"></i> Данные остаются вашими — на вашей инфраструктуре, без сторонних облаков</li>
+                    <li><i class="fa-solid fa-server text-orange-500 mr-2"></i> Данные остаются вашими — версия для автопарка работает на вашей инфраструктуре, без сторонних облаков</li>
                     <li><i class="fa-solid fa-signature text-orange-500 mr-2"></i> Подтверждение доставки с подписью водителя</li>
                 </ul>
                 <a href="mailto:germormdev@gmail.com?subject=CargoLog%20для%20автопарка" class="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-7 rounded-full transition">
