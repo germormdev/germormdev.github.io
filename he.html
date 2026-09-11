@@ -408,33 +408,29 @@
     </section>
 
     <!-- Партнёры. Стоит ПОСЛЕ полного рассказа о приложении и ДО «מה חדש».
-         ЦВЕТА И ЛОГОТИП — ЕГО, синий задан точным hex (палитра сайта переопределена
-         под «Манилу»). Логотип КОПИЕЙ в partners/. RTL: поля зеркалятся вручную,
-         как во всей этой странице — sm:text-right. -->
-    <section class="text-white py-14" style="background:linear-gradient(135deg,#2196f3,#0d47a1)">
+         ФОН, ШРИФТЫ И КНОПКА — НАШИ, сайтовые (решение German 11.09.2026: синяя
+         полоса в цветах партнёра была не в тему). Фирменное у партнёра остаётся
+         ТОЛЬКО в самом ролике. RTL: выравнивание зеркалится вручную — md:text-right. -->
+    <section class="bg-gray-50 py-16 border-t border-gray-200">
         <div class="container mx-auto px-6 max-w-4xl">
-            <p class="text-xs font-semibold tracking-widest uppercase mb-6" style="color:rgba(255,255,255,.72)">השותפים שלנו</p>
-            <div class="flex flex-col md:flex-row items-center gap-7">
+            <h2 class="text-3xl font-bold text-gray-900 mb-8 pb-2 border-b-2 border-orange-500 inline-block">השותפים שלנו</h2>
+            <div class="flex flex-col md:flex-row items-center gap-8">
                 <!-- Ролик партнёра. autoplay требует muted, playsinline обязателен для iOS.
                      RTL: выравнивание зеркалится вручную — md:text-right, md:justify-end. -->
                 <a href="https://profi-nav.co.il/" target="_blank" rel="noopener"
-                   class="block w-full md:w-1/2 shrink-0 rounded-2xl overflow-hidden shadow-2xl">
+                   class="block w-full md:w-1/2 shrink-0 rounded-2xl overflow-hidden shadow-lg">
                     <video class="block w-full h-auto" style="aspect-ratio:16/9;max-width:100%"
                            autoplay muted loop playsinline preload="metadata"
                            poster="partners/profi-banner-poster.jpg">
                         <source src="partners/profi-banner.mp4" type="video/mp4">
-                        <img src="partners/profi-banner-poster.jpg" alt="PROFI" class="block w-full h-auto">
+                        <img src="partners/profi-banner-poster.jpg" alt="PROFII" class="block w-full h-auto">
                     </video>
                 </a>
                 <div class="w-full md:flex-1 min-w-0 text-center md:text-right">
-                    <div class="flex items-center justify-center md:justify-end gap-3 mb-2">
-                        <img src="partners/profi-logo.png" alt="" width="192" height="192" loading="lazy" decoding="async"
-                             class="rounded-xl shadow" style="width:44px;height:44px">
-                        <span class="text-2xl font-bold">PROFI</span>
-                    </div>
-                    <p class="leading-relaxed mb-5" style="color:rgba(255,255,255,.92)">ניווט חכם למשאיות בישראל — גשרים נמוכים, נתיבי תחבורה ציבורית, מוקדי תאונות ומסלולי משאיות: מה ש-Waze ו-Google מתעלמים ממנו. נעשה על ידי נהג, עבור נהגים.</p>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-2">PROFII</h3>
+                    <p class="text-lg text-gray-700 leading-relaxed mb-6">ניווט חכם למשאיות בישראל — גשרים נמוכים, נתיבי תחבורה ציבורית, מוקדי תאונות ומסלולי משאיות: מה ש-Waze ו-Google מתעלמים ממנו. נעשה על ידי נהג, עבור נהגים.</p>
                     <a href="https://profi-nav.co.il/" target="_blank" rel="noopener"
-                       class="inline-flex items-center gap-2 bg-white font-semibold py-3 px-7 rounded-full shadow-lg transition hover:shadow-xl" style="color:#0d47a1">
+                       class="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-7 rounded-full transition">
                         מעבר לאתר <i class="fa-solid fa-arrow-up-right-from-square text-sm"></i>
                     </a>
                 </div>
