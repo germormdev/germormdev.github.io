@@ -76,6 +76,9 @@
       GA.track("language_switch", { to: href === "index.html" ? "en" : href.slice(0, 2) });
     } else if (href === "privacy.html" || href.indexOf("privacy.html") >= 0) {
       GA.track("policy_click", {});
+    } else if (href.indexOf("profi-nav.co.il") >= 0) {
+      // Баннер партнёра: без этого события нечем ответить, работает он или зря стоит.
+      GA.track("partner_click", { partner: "profi-nav" });
     }
   }, true);
 
