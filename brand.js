@@ -20,8 +20,10 @@
  *
  * ⛔ ЧЕГО В ТЕКСТЕ НЕТ И БЫТЬ НЕ ДОЛЖНО: «заставили», «потребовали», «пришлось»,
  * чужой фирмы, страны, отрасли, намёка на конфликт. Ничего этого не было.
- * ⛔ ЗНАЧКА В ТЕКСТЕ ТОЖЕ НЕТ (решение German 13.09.2026): значок не меняется,
- * и упоминать его — значит поднимать вопрос, которого нет.
+ * ⛔ ЗНАЧОК НАЗЫВАЕТСЯ И ТУТ ЖЕ ОТРИЦАЕТСЯ (решение German 13.09.2026, разворот
+ * прежнего): водитель ищет приложение по значку, и молчание про значок он
+ * прочтёт как «значок тоже поменяется». Поэтому упоминание ОБЯЗАНО быть — и
+ * обязано стоять рядом со словами «останется прежним». Держит укус.
  *
  * ⛔ ЧЕГО ЭТОТ ФАЙЛ НЕ ДЕЛАЕТ. Не трогает текст страниц, <title>, историю версий
  * и ссылки в магазины: записи вышли под именем CargoLog — это правда, а ссылки
@@ -46,9 +48,9 @@
       body: 'In the next release ' + OLD_NAME + ' will be called ' + NEW_NAME +
             ' — like a bride after the wedding: a new name on the passport, the ' +
             'same person, the same passport number. There is nothing for you to ' +
-            'do: the app updates itself, and all your trips and settings stay ' +
-            'exactly where they are. Only the name changes — the same app and the ' +
-            'same developer.'
+            'do: the app updates itself, all your trips and settings stay exactly ' +
+            'where they are, and the icon on your screen stays the same. Only the ' +
+            'name changes — the same app and the same developer.'
     },
     ru: {
       was: 'раньше ' + OLD_NAME,
@@ -56,16 +58,18 @@
       body: 'В следующем выпуске ' + OLD_NAME + ' станет называться ' + NEW_NAME +
             ' — как барышня после свадьбы: имя в паспорте новое, человек тот же, ' +
             'номер паспорта тот же. Делать ничего не нужно: приложение обновится ' +
-            'само, все рейсы и настройки останутся на месте. Меняется только имя — ' +
-            'приложение то же самое и разработчик тот же.'
+            'само, все рейсы и настройки останутся на месте, а значок на экране ' +
+            'останется прежним. Меняется только имя — приложение то же самое и ' +
+            'разработчик тот же.'
     },
     he: {
       was: 'לשעבר ' + OLD_NAME,
       title: 'בקרוב נחליף שם משפחה.',
       body: 'במהדורה הבאה ' + OLD_NAME + ' ייקרא ' + NEW_NAME +
             ' — כמו כלה אחרי החתונה: שם חדש בתעודה, אותו אדם, אותו מספר תעודה. ' +
-            'אין צורך לעשות דבר: האפליקציה תתעדכן מעצמה, וכל הנסיעות וההגדרות ' +
-            'יישארו במקומן. רק השם משתנה — אותה אפליקציה ואותו מפתח.'
+            'אין צורך לעשות דבר: האפליקציה תתעדכן מעצמה, כל הנסיעות וההגדרות ' +
+            'יישארו במקומן, והסמל במסך יישאר אותו סמל. רק השם משתנה — אותה ' +
+            'אפליקציה ואותו מפתח.'
     }
   };
 
@@ -108,8 +112,14 @@
     var bar = document.createElement('div');
     bar.id = 'brand-banner';
     bar.setAttribute('role', 'note');
-    bar.style.cssText = 'background:#fff7ed;border-bottom:1px solid #fed7aa;' +
-                        'color:#7c2d12;padding:14px 18px;font-size:15px;line-height:1.5;';
+    // ⛔ ЦВЕТ БЕРЁТСЯ ГОТОВОЙ ТЁМНОЙ ПАРОЙ САЙТА — КЛАССАМИ, А НЕ ЧИСЛАМИ.
+    // `bg-gray-900 text-white` уже стоит на подвале, на карточке «Для
+    // транспортных компаний» и на обеих кнопках магазинов; сами цвета живут в
+    // tailwind.config каждой страницы (gray.900 и white). Скопируй я их числом —
+    // перекраска палитры однажды обошла бы баннер стороной.
+    bar.className = 'bg-gray-900 text-white';
+    // Отступы, кегль и межстрочный — как были; своего тут ничего.
+    bar.style.cssText = 'padding:14px 18px;font-size:15px;line-height:1.5;';
     var inner = document.createElement('div');
     inner.style.cssText = 'max-width:880px;margin:0 auto;';
     var strong = document.createElement('strong');
