@@ -1,11 +1,16 @@
 # -*- coding: utf-8 -*-
-"""СТОРОЖ ВИТРИНЫ CargoLog. Только читает, ничего не правит.
+"""СТОРОЖ ВИТРИНЫ VecturaBook. Только читает, ничего не правит.
 
 Гонять ПОСЛЕ каждой ручной вставки в админку и ПЕРЕД любой правкой витрины.
 
     python site_check.py                 # боевой сайт + Firestore
     python site_check.py --local .       # страницы из папки (перед пушем)
     python site_check.py --no-firestore  # без обращения к Firestore
+    python site_check.py --fs-json F     # история версий из снимка (зубы в bite_site_check.py)
+    python site_check.py --released F    # список выпущенного не из дерева CargoLog
+
+Выпущенные версии берутся из published_version_names.txt дерева CargoLog (его
+дописывает каждый выпуск) — зашитый список молча кончился на 2.3.0 (14.09.2026).
 
 Выход 0 — всё зелено, 2 — есть красное. Каждая проверка печатает СВОЮ строку:
 молчание при беде выглядит как молчание при чистоте, поэтому строки печатаются
@@ -20,14 +25,43 @@
 import io, json, os, re, sys, urllib.request
 from html.parser import HTMLParser
 
-BASE_URL = "https://germormdev.github.io/"
+BASE_URL = "https://vecturabook.com/"
 PAGES = ["index.html", "ru.html", "he.html", "privacy.html", "versions.html"]
 LANG_PAGES = ["index.html", "ru.html", "he.html"]
 VIDEO = "Bth3gelqPeg"
 FS = ("https://firestore.googleapis.com/v1/projects/cargolog-28bdd"
       "/databases/(default)/documents/version_history?pageSize=300&key="
       "AIzaSyBgS40KxwWoSn3vcL_k-m9C__qpIciS3nI")
-RELEASED = ["2.0.0", "2.0.1", "2.1.0", "2.1.1", "2.1.2", "2.1.3", "2.2.0", "2.3.0"]
+#: Нижняя граница: эти выпуски были на сайте всегда. Всё новее читается из дерева CargoLog.
+FLOOR = ["2.0.0", "2.0.1", "2.1.0", "2.1.1", "2.1.2", "2.1.3", "2.2.0", "2.3.0"]
+LANGS = ("en", "ru", "he")
+#: Последний выпуск под именем CargoLog; прежние записи истории не переписываются.
+RENAMED_AFTER = "2.4.2"
+NEW_NAME = "VecturaBook"
+
+
+def arg(name):
+    return sys.argv[sys.argv.index(name) + 1] if name in sys.argv else None
+
+
+def version_key(v):
+    return tuple(int(x) for x in v.split("."))
+
+
+def released_versions():
+    """(версии по возрастанию, откуда взяты или None, если список не прочитан)."""
+    tree = os.environ.get("CARGOLOG_TREE", "F:/Bortovok")
+    path = arg("--released") or os.path.join(tree, "published_version_names.txt")
+    try:
+        lines = io.open(path, encoding="utf-8").read().splitlines()
+    except OSError:
+        return sorted(FLOOR, key=version_key), None
+    named = {l.strip() for l in lines if re.match(r"^\d+\.\d+\.\d+$", l.strip())}
+    newer = {v for v in named if version_key(v) >= version_key(FLOOR[0])}
+    return sorted(set(FLOOR) | newer, key=version_key), path
+
+
+RELEASED, RELEASED_FROM = released_versions()
 
 # Обещания, которых на витрине быть НЕ ДОЛЖНО. Ключ — что именно нарушено.
 FORBIDDEN = [
@@ -156,6 +190,85 @@ def parse(html):
     return d
 
 
+class Cut(HTMLParser):
+    """Режет документ на куски по заголовкам и считает в каждом блочные узлы.
+
+    Если заданы языковые секции (<section class="lang" id=...>), куски и текст копятся
+    ВНУТРИ своей секции: политика — один файл на три языка, и счёт по файлу не видел,
+    что абзац лежит не в своём языке (German нашёл глазами 13.09.2026).
+    """
+
+    COUNTED = ("p", "li", "div", "a", "img", "iframe", "h3")
+
+    def __init__(self, heads, by_section):
+        super().__init__(convert_charrefs=True)
+        self.heads, self.by_section = heads, by_section
+        self.sec, self.depth = (None if by_section else "page"), 0
+        self.parts = {} if by_section else {"page": []}
+        self.texts = {} if by_section else {"page": []}
+        self.cur, self.level, self.buf = None, None, ""
+
+    def handle_starttag(self, tag, attrs):
+        a = dict(attrs)
+        if self.by_section and tag == "section":
+            if "lang" in (a.get("class") or "").split() and self.sec is None:
+                self.sec, self.depth = a.get("id"), 1
+                self.parts[self.sec], self.texts[self.sec], self.cur = [], [], None
+            elif self.sec is not None:
+                self.depth += 1
+            return
+        if self.sec is None:
+            return
+        if tag in self.heads:
+            self.level, self.buf = tag, ""
+        elif self.cur is not None and tag in self.COUNTED:
+            self.cur[tag] += 1
+
+    def handle_startendtag(self, tag, attrs):
+        if self.sec is not None and self.cur is not None and tag in self.COUNTED:
+            self.cur[tag] += 1
+
+    def handle_endtag(self, tag):
+        if self.by_section and tag == "section" and self.sec is not None:
+            self.depth -= 1
+            if self.depth == 0:
+                self.sec, self.cur = None, None
+            return
+        if self.sec is not None and tag == self.level:
+            self.cur = {t: 0 for t in self.COUNTED}
+            self.parts[self.sec].append((" ".join(self.buf.split()), self.cur))
+            self.level = None
+
+    def handle_data(self, data):
+        if self.sec is None:
+            return
+        if self.level:
+            self.buf += data
+        self.texts[self.sec].append(data)
+
+
+def cut(html, heads, by_section):
+    c = Cut(heads, by_section)
+    c.feed(html)
+    return c
+
+
+def shape(parts):
+    """Форма куска без слов: число разделов и узлы в каждом. Слова у языков разные, форма — одна."""
+    return [tuple(sorted(counts.items())) for _title, counts in parts]
+
+
+def first_mismatch(shapes):
+    """(номер раздела с 1, {язык: счёт}) первого расхождения формы или None."""
+    langs = list(shapes)
+    if len({len(shapes[l]) for l in langs}) > 1:
+        return 0, {l: len(shapes[l]) for l in langs}
+    for i in range(len(shapes[langs[0]])):
+        if len({shapes[l][i] for l in langs}) > 1:
+            return i + 1, {l: dict(shapes[l][i]) for l in langs}
+    return None
+
+
 print("=" * 74)
 print("СТОРОЖ ВИТРИНЫ — источник: %s" % (("папка " + LOCAL) if LOCAL else BASE_URL))
 print("=" * 74)
@@ -239,14 +352,49 @@ praw = RAW.get("privacy.html")
 if praw is None:
     say(False, "privacy.html не получена")
 else:
-    miss = [lang for lang, m in POLICY_MARKS if praw.count(m) != 1]
-    say(not miss, "языков с абзацем: %d из 3%s"
-        % (3 - len(miss), "" if not miss else "  НЕТ: " + ", ".join(miss)))
+    # ⛔ ПО СЕКЦИЯМ, А НЕ ПО ФАЙЛУ: ровно на счёте по файлу все три перевода однажды
+    # лежали в английской секции, а сторож отвечал «3 из 3».
+    secs = {s: " ".join(" ".join(t).split()) for s, t in cut(praw, ("h2",), True).texts.items()}
+    miss = [lang for lang, m in POLICY_MARKS if secs.get(lang, "").count(m) != 1]
+    stray = ["%s в секции %s" % (lang, s) for lang, m in POLICY_MARKS for s in secs if s != lang and m in secs[s]]
+    say(not miss and not stray, "языков с абзацем в СВОЕЙ секции: %d из 3%s%s"
+        % (3 - len(miss), "" if not miss else "  НЕТ: " + ", ".join(miss),
+           "" if not stray else "  ЧУЖОЕ МЕСТО: " + ", ".join(stray)))
+
+print("\n[8.1] политика: языковые секции одной формы — разделы и узлы в каждом")
+if praw is None:
+    say(False, "privacy.html не получена")
+else:
+    parts = cut(praw, ("h2",), True).parts
+    missing = [l for l in LANGS if l not in parts]
+    if missing:
+        say(False, "нет языковых секций: %s" % ", ".join(missing))
+    else:
+        bad = first_mismatch({l: shape(parts[l]) for l in LANGS})
+        say(bad is None, "разделов: %s%s" % (
+            " · ".join("%s=%d" % (l, len(parts[l])) for l in LANGS),
+            "" if bad is None else "  РАЗЪЕХАЛОСЬ в разделе %d: %s" % bad))
+
+print("\n[8.2] языковые страницы одной формы — разделы и узлы в каждом")
+page_parts = {}
+for lang, p in zip(LANGS, LANG_PAGES):
+    raw = RAW.get(p)
+    if raw is not None:
+        page_parts[lang] = cut(raw, ("h1", "h2"), False).parts["page"]
+if len(page_parts) < 3:
+    say(False, "языковых страниц получено %d из 3" % len(page_parts))
+else:
+    bad = first_mismatch({l: shape(page_parts[l]) for l in LANGS})
+    say(bad is None, "разделов: %s%s" % (
+        " · ".join("%s=%d" % (l, len(page_parts[l])) for l in LANGS),
+        "" if bad is None else "  РАЗЪЕХАЛОСЬ в разделе %d: %s" % bad))
 
 print("\n[9] шапки не наезжают сами на себя на узком экране")
 if not LOCAL:
     say(True, "ПРОПУЩЕНО: геометрию можно снять только с --local (нужен один origin "
               "для iframe). Это не зелёное, это «не проверялось».")
+elif "--no-geometry" in sys.argv:
+    say(True, "ПРОПУЩЕНО по флагу --no-geometry (зубы разметки). Это не зелёное, это «не проверялось».")
 else:
     import head_geometry
     _here = os.path.abspath(LOCAL)
@@ -279,10 +427,24 @@ for p in PAGES:
 if NO_FS:
     print("\n[11-12] Firestore пропущен по флагу --no-firestore")
 else:
-    print("\n[11] история версий: восемь выпущенных на месте, номера целы, языки полные")
+    print("\n[11] история версий: все выпущенные на месте, номера целы, языки полные")
+    say(RELEASED_FROM is not None,
+        "список выпущенного: %s — %d версий, свежая %s" % (RELEASED_FROM, len(RELEASED), RELEASED[-1])
+        if RELEASED_FROM else "список выпущенного НЕ ПРОЧИТАН (published_version_names.txt дерева "
+        "CargoLog или --released) — версии новее %s сторож не видит" % FLOOR[-1])
+    snapshot = arg("--fs-json")
     try:
-        raw = urllib.request.urlopen(FS, timeout=30).read().decode()
-        vh = json.loads(raw).get("documents", [])
+        if snapshot:
+            vh = json.loads(io.open(snapshot, encoding="utf-8").read()).get("documents", [])
+        else:
+            vh, token = [], ""
+            while True:
+                page = json.loads(urllib.request.urlopen(
+                    FS + ("&pageToken=" + token if token else ""), timeout=30).read().decode())
+                vh += page.get("documents", [])
+                token = page.get("nextPageToken", "")
+                if not token:
+                    break
     except Exception as e:
         vh = None
         say(False, "Firestore недоступен: %s" % str(e)[:70])
@@ -308,6 +470,20 @@ else:
                 for v in RELEASED if v in site and {"en", "ru", "he"} - site[v]]
         say(not lack, "неполный набор языков: %d%s"
             % (len(lack), "" if not lack else "  -> " + ", ".join(lack)))
+
+        print("\n[11.1] записи после переименования начинаются именем %s" % NEW_NAME)
+        # Анонс в Телеграм публикует поле changes как есть — старое имя в новой записи уйдёт людям.
+        late = []
+        for doc in vh:
+            f = doc.get("fields", {})
+            v = (f.get("version", {}).get("stringValue") or "").strip()
+            if SEM.match(v) and version_key(v) > version_key(RENAMED_AFTER):
+                head = (f.get("changes", {}).get("stringValue") or "").lstrip()
+                if not head.startswith(NEW_NAME):
+                    late.append("%s(%s): %s" % (v, (f.get("locale", {}).get("stringValue") or "?"),
+                                                head.split("\n")[0][:40]))
+        say(not late, "записей новее %s не с %s: %d%s"
+            % (RENAMED_AFTER, NEW_NAME, len(late), "" if not late else "  -> " + "; ".join(sorted(late))))
 
         print("\n[12] «What's New» не пуст — свежая версия есть на всех трёх языках")
         newest = RELEASED[-1]
