@@ -40,12 +40,16 @@ def doc(version, locale, changes):
                        "changes": {"stringValue": changes}}}
 
 
-def run_check(site, snap, released):
+def run_check(site, snap, released, not_released=""):
     work = tempfile.mkdtemp(prefix="bite-site-")
     snap_path = os.path.join(work, "fs.json")
     io.open(snap_path, "w", encoding="utf-8").write(json.dumps(snap, ensure_ascii=False))
+    # Список не выходивших — свой у стенда: живой (2.4.0) не должен решать за зубы.
+    skip_path = os.path.join(work, "not_released.txt")
+    io.open(skip_path, "w", encoding="utf-8").write(not_released)
     out = subprocess.run([sys.executable, os.path.join(HERE, "site_check.py"), "--local", site,
-                          "--no-geometry", "--fs-json", snap_path, "--released", released],
+                          "--no-geometry", "--fs-json", snap_path, "--released", released,
+                          "--not-released", skip_path],
                          stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                          env=dict(os.environ, PYTHONIOENCODING="utf-8"))
     shutil.rmtree(work, ignore_errors=True)
@@ -161,6 +165,28 @@ def main():
     # H. список выпущенного не прочитан
     judge("H. список выпущенного недоступен", *run_check(site, live, os.path.join(work, "нет-такого.txt")),
           "НЕ ПРОЧИТАН")
+
+    # I-L. Номер — не выпуск (слово German 14.09.2026: 2.4.0 отклонена до выпуска, записи нет законно).
+    numbered = os.path.join(work, "published-skip.txt")
+    io.open(numbered, "w", encoding="utf-8").write("\n".join(listed + ["9.9.8"]) + "\n")
+    skip = "9.9.8\tстенд: отклонена до выпуска\n"
+    code, red = run_check(site, live, numbered, skip)
+    silent = code == 0 and not red
+    verdicts.append(silent)
+    print(("  OK     | " if silent else "  ПРОВАЛ | ") + "укус «I. отклонённая 9.9.8 без записи» — сторож МОЛЧИТ"
+          + ("" if silent else " — код %d, красное: %s" % (code, red)))
+    judge("J. 9.9.8 не в списке не выходивших — записи требует", *run_check(site, live, numbered, ""),
+          "НЕТ: 9.9.8")
+    snap = copy.deepcopy(live)
+    snap["documents"].append(doc("9.9.8", "en", "VecturaBook 9.9.8 — стенд"))
+    judge("K. о не выходившей 9.9.8 есть запись", *run_check(site, snap, numbered, skip),
+          "о не выходивших версиях: 1")
+    judge("L. строка списка без причины", *run_check(site, live, numbered, "9.9.8\n"),
+          "БЕЗ ВЕРСИИ ИЛИ ПРИЧИНЫ")
+    snap = copy.deepcopy(live)
+    snap["documents"] = [d for d in snap["documents"] if d["fields"]["version"]["stringValue"] != older]
+    judge("B2. убрана запись о ВЫПУЩЕННОЙ %s при списке не выходивших" % older,
+          *run_check(site, snap, numbered, skip), "НЕТ: " + older)
 
     code, red = run_check(site, live, released)
     after = code == 0 and not red

@@ -8,9 +8,12 @@
     python site_check.py --no-firestore  # без обращения к Firestore
     python site_check.py --fs-json F     # история версий из снимка (зубы в bite_site_check.py)
     python site_check.py --released F    # список выпущенного не из дерева CargoLog
+    python site_check.py --not-released F  # список не выходивших версий не из этой папки
 
-Выпущенные версии берутся из published_version_names.txt дерева CargoLog (его
+Номера версий берутся из published_version_names.txt дерева CargoLog (его
 дописывает каждый выпуск) — зашитый список молча кончился на 2.3.0 (14.09.2026).
+⛔ Номер — ещё не выпуск: отклонённые и пропущенные версии названы в
+not_released_versions.txt с причиной, и записи для них сторож не требует.
 
 Выход 0 — всё зелено, 2 — есть красное. Каждая проверка печатает СВОЮ строку:
 молчание при беде выглядит как молчание при чистоте, поэтому строки печатаются
@@ -61,7 +64,30 @@ def released_versions():
     return sorted(set(FLOOR) | newer, key=version_key), path
 
 
-RELEASED, RELEASED_FROM = released_versions()
+def not_released():
+    """({версия: причина}, битые строки, откуда или None). Номер есть, версия людям не выходила."""
+    path = arg("--not-released") or os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                                  "not_released_versions.txt")
+    try:
+        lines = io.open(path, encoding="utf-8").read().splitlines()
+    except OSError:
+        return {}, [], None
+    found, broken = {}, []
+    for line in lines:
+        if not line.strip() or line.lstrip().startswith("#"):
+            continue
+        version, _, why = line.partition("\t")
+        if not re.match(r"^\d+\.\d+\.\d+$", version.strip()) or not why.strip():
+            broken.append(line.strip()[:40])
+        else:
+            found[version.strip()] = why.strip()
+    return found, broken, path
+
+
+NUMBERED, RELEASED_FROM = released_versions()
+NOT_RELEASED, NOT_RELEASED_BROKEN, NOT_RELEASED_FROM = not_released()
+# Выпущенное = пронумерованное минус не выходившее: разрыв в ряду номеров законен.
+RELEASED = [v for v in NUMBERED if v not in NOT_RELEASED]
 
 # Обещания, которых на витрине быть НЕ ДОЛЖНО. Ключ — что именно нарушено.
 FORBIDDEN = [
@@ -432,6 +458,11 @@ else:
         "список выпущенного: %s — %d версий, свежая %s" % (RELEASED_FROM, len(RELEASED), RELEASED[-1])
         if RELEASED_FROM else "список выпущенного НЕ ПРОЧИТАН (published_version_names.txt дерева "
         "CargoLog или --released) — версии новее %s сторож не видит" % FLOOR[-1])
+    say(NOT_RELEASED_FROM is not None and not NOT_RELEASED_BROKEN,
+        "не выходившие версии: %s — %s%s" % (
+            NOT_RELEASED_FROM, ", ".join(sorted(NOT_RELEASED, key=version_key)) or "нет",
+            "" if not NOT_RELEASED_BROKEN else "  СТРОКИ БЕЗ ВЕРСИИ ИЛИ ПРИЧИНЫ: " + "; ".join(NOT_RELEASED_BROKEN))
+        if NOT_RELEASED_FROM else "список не выходивших версий НЕ ПРОЧИТАН (not_released_versions.txt)")
     snapshot = arg("--fs-json")
     try:
         if snapshot:
@@ -464,6 +495,9 @@ else:
         say(not miss, "выпущенных версий на сайте: %d из %d%s"
             % (len(RELEASED) - len(miss), len(RELEASED),
                "" if not miss else "  НЕТ: " + ", ".join(miss)))
+        ghost = sorted((v for v in NOT_RELEASED if v in site), key=version_key)
+        say(not ghost, "записей о не выходивших версиях: %d%s"
+            % (len(ghost), "" if not ghost else "  -> " + ", ".join(ghost)))
         say(not broken, "битых номеров: %d%s"
             % (len(broken), "" if not broken else "  -> " + ", ".join(sorted(set(broken)))))
         lack = ["%s(%s)" % (v, ",".join(sorted({"en", "ru", "he"} - site[v])))
