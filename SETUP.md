@@ -55,7 +55,7 @@
 
 ### Как ввести его в админке:
 
-1. Зайти на https://germormdev.github.io/versions.html
+1. Зайти на https://vecturabook.com/versions.html
 2. Войти через Google своим админ-email
 3. В блоке Admin справа сверху — кнопка **Set GitHub Token**
 4. Вставить токен, OK

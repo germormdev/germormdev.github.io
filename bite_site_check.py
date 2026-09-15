@@ -162,6 +162,12 @@ def main():
         text[:p] + text[text.index("</p>", p) + 4:])
     judge("G. на ru.html нет абзаца", *run_check(site_g, live, released), "РАЗЪЕХАЛОСЬ в разделе")
 
+    # M. на русской странице вернулась мёртвая ссылка телеграма
+    site_m = copy_site()
+    edit(site_m, "ru.html", "https://t.me/VecturaBook", "https://t.me/TripLog_app")
+    judge("M. мёртвый t.me/TripLog_app на ru.html", *run_check(site_m, live, released), "МЁРТВЫЙ АДРЕС")
+    shutil.rmtree(site_m, ignore_errors=True)
+
     # H. список выпущенного не прочитан
     judge("H. список выпущенного недоступен", *run_check(site, live, os.path.join(work, "нет-такого.txt")),
           "НЕ ПРОЧИТАН")

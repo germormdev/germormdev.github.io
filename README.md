@@ -1,6 +1,6 @@
 # CargoLog — сайт
 
-GitHub Pages, ветка `main`, домен `germormdev.github.io`.
+GitHub Pages, ветка `main`, домен `vecturabook.com` (репозиторий `germormdev.github.io`; старый адрес github.io мёртв и только перекидывает).
 Пять страниц: `index.html` (EN), `ru.html`, `he.html`, `privacy.html`, `versions.html`.
 
 ---

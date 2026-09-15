@@ -714,7 +714,7 @@ function parseLines(text) {
 //
 // Firestore document: { fileName, githubPath, sha, order, createdAt, createdBy }
 // Файл лежит в GitHub: screenshots/{fileName}
-// На фронте URL: https://germormdev.github.io/screenshots/{fileName}
+// На фронте URL: https://vecturabook.com/screenshots/{fileName}
 // ═══════════════════════════════════════════════════════════════════════
 
 function getGitHubPat() {

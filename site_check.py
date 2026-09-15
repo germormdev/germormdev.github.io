@@ -346,6 +346,15 @@ for p in PAGES:
     found = sorted({why for w, why in FORBIDDEN if w.lower() in low})
     say(not found, "%s %s" % (p, "чисто" if not found else "ВЕРНУЛОСЬ: " + "; ".join(found)))
 
+print("\n[5.1] мёртвых адресов нет: сайт на vecturabook.com, телеграм t.me/VecturaBook (15.09.2026)")
+DEAD_ADDRESSES = ["germormdev.github.io", "TripLog_app"]
+for p in PAGES:
+    raw = RAW.get(p)
+    if raw is None:
+        continue
+    found = [a for a in DEAD_ADDRESSES if a.lower() in raw.lower()]
+    say(not found, "%s %s" % (p, "чисто" if not found else "МЁРТВЫЙ АДРЕС: " + ", ".join(found)))
+
 print("\n[6] ни одного заголовка без содержимого")
 for p in PAGES:
     d = docs.get(p)
