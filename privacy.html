@@ -80,7 +80,7 @@
   <header>
     <a id="brand" class="brand" href="index.html" aria-label="VecturaBook — home page"><img class="mark" src="apple-touch-icon.png" width="34" height="34" alt=""> VecturaBook</a>
     <h1>Privacy Policy</h1>
-    <div class="eff">Effective date: 29 May 2026 · Last updated: 28 September 2026</div>
+    <div class="eff">Effective date: 29 May 2026 · Last updated: 4 October 2026</div>
     <div class="tabs">
       <button class="tab active" data-l="en">English</button>
       <button class="tab" data-l="ru">Русский</button>
@@ -97,7 +97,10 @@
     <p>The app requests camera access only for Optical Character Recognition (OCR) — scanning container, seal and VIN numbers. Video processing and text recognition happen entirely on your device (offline), using on-device machine-learning libraries. The app does not take hidden photos, does not read your gallery, and does not save images to it. Video is never transmitted anywhere. The frames the scanner took of a container number can leave the device only if you switch on <em>container number photos</em> in the diagnostic channel — see Section 4.</p>
 
     <h2><span class="n">3.</span> Location</h2>
-    <p>The app can ask for location access to suggest where you are — the city, or the place of a stop — so that you do not have to type it in. The position is used at that moment only: the app stores no coordinates. What it stores is what you enter or confirm — addresses of departure and arrival, stops, times and odometer readings. <strong>Location data that you enter or save in the app is part of the trip database</strong>, and that database lives on your device. It can leave the phone only through the diagnostic channel described in Section 4, and only while the <em>trip database</em> switch is on; that switch is off until you turn it on. Nothing is sent by itself, and a report goes out only when you export or send it yourself.</p>
+    <p>The app can ask for location access to suggest where you are — the city, or the address of a place such as a parking stop — so that you do not have to type it in. The position is read only at the moment you use such a feature; the app does not record a route. What it stores is what you enter or confirm — addresses of departure and arrival, stops, times and odometer readings.</p>
+    <p>One case is stated plainly: if you tap the location button on the parking-stop screen and the phone cannot turn your position into a street address, the app puts the coordinates themselves into the address field as text — for example “GPS 32.08040, 34.78180”, accurate to about one metre. You see this text and can correct or replace it before saving. Once saved, it is part of the trip record like any other address: it lives on your device and leaves it only through the optional routes described in Sections 4 and 5.</p>
+    <p>Location data that you enter or save in the app is part of the trip database, and that database lives on your device. It can leave the phone only through the diagnostic channel described in Section 4, and only while the trip database switch is on; that switch is off until you turn it on. A report goes out only when you export or send it yourself.</p>
+    
 
     <h2><span class="n">4.</span> Diagnostics &amp; usage data (Firebase)</h2>
     <p>To keep the app stable and fix problems, VecturaBook automatically sends the following to <strong>Firebase</strong>, a service operated by Google:</p>
@@ -118,10 +121,12 @@
     <p><strong>This website.</strong> The site you are reading now uses Google Analytics to count visits and to see which pages people open. It records the page, the language and the clicks on the store buttons; IP addresses are anonymised, advertising signals are switched off, and nothing here identifies you personally. The app and the site are separate things — this paragraph is about the site only.</p>
 
     <h2><span class="n">5.</span> Sync with your web account (opt-in)</h2>
-    <p>If you link your phone to your account at my.vecturabook.com — by scanning a QR code shown on a computer, through a browser on the phone itself, or by entering a code by hand — the app starts sending your truck and trailer records, trips, shifts, refuels, clients, addresses and places to our own server. This is what lets the same data show up in your web account and on your other linked devices.</p>
+    <p>If you link your phone to your account at my.vecturabook.com — by scanning a QR code shown on a computer, through a browser on the phone itself, or by entering a code by hand — the app starts sending your truck and trailer records, trips, shifts, refuels, clients, addresses and places to our own server, and receiving them from it. This is what lets the same data show up in your web account and on your other linked devices.</p>
+    <p>New records are synchronised between devices. Edits to trips, shifts and refuels, and deletions of records, made on the phone are sent to the server. When you delete a record, a deletion mark is sent, and the record is deleted from the server, from your other linked devices and from your web account. A deletion works in the other direction too: a record you delete in the web account is deleted on your phone as well. If the phone is linked, the app tells you before you delete something that the deletion will happen on the other devices and on the website too.</p>
     <p>Without linking the phone to an account, nothing is sent — not a single network request.</p>
-    <p>The data sent is stored on our own server, is not published and is not shared with third parties. No password is needed in the app for this.</p>
-    <p>You can unlink the phone from the account at any time in the app's settings. To delete the account itself and everything it has sent to the server, use the account-deletion page in your web account at my.vecturabook.com.</p>
+    <p>The data is stored on our own server, travels over an encrypted connection, is not published and is not shared with third parties. No password is needed in the app for this.</p>
+    <p>You can unlink the phone at any time in the app's settings, or remove it in your web account. Unlinking stops all sending and receiving for that phone; records that were already sent stay in your web account until you delete them there. To delete the account itself and everything it has sent to the server, use the account-deletion page in your web account at my.vecturabook.com.</p>
+    
 
     <h2><span class="n">6.</span> What we do <em>not</em> do</h2>
     <p>We do not sell personal data, do not use advertising trackers, and do not share your trip, vehicle or shift records with third parties beyond the diagnostic processing described in Section 4 and the opt-in web-account sync described in Section 5.</p>
@@ -142,7 +147,10 @@
     <p>Доступ к камере запрашивается только для функции распознавания текста (OCR) — сканирования номеров контейнеров, пломб и VIN. Обработка видео и распознавание происходят полностью на устройстве (офлайн) с помощью встроенных библиотек машинного обучения. Приложение не делает скрытых снимков, не читает галерею и не сохраняет в неё изображения. Видео не передаётся никуда и никогда. Кадры, которые сканер снял с номера контейнера, могут уйти с устройства только если вы включите переключатель <em>снимки номеров контейнеров</em> в канале диагностики — см. раздел 4.</p>
 
     <h2><span class="n">3.</span> Геолокация</h2>
-    <p>Приложение может запросить доступ к местоположению, чтобы подсказать, где вы находитесь — город или место стоянки, — и не заставлять вас набирать это руками. Позиция используется только в этот момент: координат приложение не хранит. Хранится то, что вы ввели или подтвердили, — адреса выезда и прибытия, остановки, времена и показания одометра. <strong>Данные о местоположении, которые вы вводите или сохраняете в приложении, входят в базу рейсов</strong>, а она лежит на вашем устройстве. Уйти с телефона она может только через канал диагностики из раздела 4 и только пока включён переключатель <em>база рейсов</em>; по умолчанию он выключен. Само по себе не уходит ничего, а отчёт уходит только тогда, когда вы сами его экспортируете или отправляете.</p>
+    <p>Приложение может запросить доступ к местоположению, чтобы подсказать, где вы находитесь — город или адрес места, например стоянки, — и не заставлять вас набирать это руками. Позиция считывается только в тот момент, когда вы пользуетесь такой функцией; маршрут приложение не записывает. Хранится то, что вы ввели или подтвердили, — адреса выезда и прибытия, остановки, времена и показания одометра.</p>
+    <p>Один случай назван прямо: если вы нажмёте кнопку местоположения на экране стоянки, а телефон не сможет превратить позицию в адрес улицы, приложение подставит в поле адреса сами координаты текстом — например «GPS 32.08040, 34.78180», точность около метра. Вы видите этот текст и можете исправить или заменить его до сохранения. После сохранения он — часть записи рейса, как любой другой адрес: лежит на вашем устройстве и уходит с него только необязательными путями из разделов 4 и 5.</p>
+    <p>Данные о местоположении, которые вы вводите или сохраняете в приложении, входят в базу рейсов, а она лежит на вашем устройстве. Уйти с телефона она может только через канал диагностики из раздела 4 и только пока включён переключатель «база рейсов»; по умолчанию он выключен. Отчёт уходит только тогда, когда вы сами его экспортируете или отправляете.</p>
+    
 
     <h2><span class="n">4.</span> Диагностика и данные об использовании (Firebase)</h2>
     <p>Для обеспечения стабильности и устранения ошибок VecturaBook автоматически отправляет в <strong>Firebase</strong> — сервис компании Google — следующее:</p>
@@ -163,10 +171,12 @@
     <p><strong>Этот сайт.</strong> Страница, которую вы сейчас читаете, использует Google Analytics — чтобы считать посещения и видеть, какие разделы открывают. Записываются страница, язык и нажатия на кнопки магазинов; IP-адрес обезличивается, рекламные сигналы выключены, и ничто здесь не опознаёт вас лично. Приложение и сайт — разные вещи, этот абзац только про сайт.</p>
 
     <h2><span class="n">5.</span> Синхронизация с личным кабинетом (по вашему выбору)</h2>
-    <p>Если вы сами привязываете телефон к личному кабинету на my.vecturabook.com — QR-кодом с компьютера, через браузер на самом телефоне или кодом вручную, — приложение начинает передавать на наш собственный сервер записи о технике, рейсах, сменах, заправках, клиентах, адресах и местах. Это нужно, чтобы те же данные были видны в личном кабинете и на других ваших привязанных устройствах.</p>
+    <p>Если вы сами привязываете телефон к личному кабинету на my.vecturabook.com — QR-кодом с компьютера, через браузер на самом телефоне или кодом вручную, — приложение начинает передавать на наш собственный сервер записи о технике, рейсах, сменах, заправках, клиентах, адресах и местах и получать их обратно. Это нужно, чтобы те же данные были видны в личном кабинете и на других ваших привязанных устройствах.</p>
+    <p>Новые записи синхронизируются между устройствами. Правки рейсов, смен и заправок и удаления записей, сделанные на телефоне, передаются на сервер. Если вы удалили запись, отправляется отметка об удалении, и запись удаляется на сервере, на других ваших привязанных устройствах и в личном кабинете. В обратную сторону работает удаление: запись, которую вы удалили в личном кабинете, удаляется и на телефоне. Если телефон привязан, приложение перед удалением предупреждает, что запись удалится и на других устройствах, и на сайте.</p>
     <p>Без привязки телефона к аккаунту не передаётся ничего — ни одного сетевого обращения.</p>
-    <p>Переданные данные хранятся на нашем собственном сервере, не публикуются и не передаются третьим лицам. Пароль в приложении для этого не нужен.</p>
-    <p>Отвязать телефон от аккаунта можно в любой момент в настройках приложения. Удалить сам аккаунт и все переданные на сервер данные — на странице удаления аккаунта в личном кабинете my.vecturabook.com.</p>
+    <p>Данные хранятся на нашем собственном сервере, передаются по защищённому соединению, не публикуются и не передаются третьим лицам. Пароль в приложении для этого не нужен.</p>
+    <p>Отвязать телефон можно в любой момент в настройках приложения или убрать его в личном кабинете. Отвязка останавливает всю передачу и приём для этого телефона; уже отправленные записи остаются в личном кабинете, пока вы не удалите их там. Удалить сам аккаунт и все переданные на сервер данные — на странице удаления аккаунта в личном кабинете my.vecturabook.com.</p>
+    
 
     <h2><span class="n">6.</span> Что мы <em>не</em> делаем</h2>
     <p>Мы не продаём персональные данные, не используем рекламные трекеры и не передаём ваши записи о рейсах, технике и сменах третьим лицам, кроме диагностической обработки, описанной в разделе 4, и синхронизации с личным кабинетом по вашему выбору, описанной в разделе 5.</p>
@@ -187,7 +197,10 @@
     <p>האפליקציה מבקשת גישה למצלמה אך ורק לצורך זיהוי טקסט אופטי (OCR) — סריקת מספרי מכולות, חותמות ו-VIN. עיבוד הווידאו וזיהוי הטקסט מתבצעים כולם במכשיר (לא מקוון), באמצעות ספריות למידת מכונה מובנות. האפליקציה אינה מצלמת תמונות נסתרות, אינה קוראת את גלריית התמונות ואינה שומרת בה תמונות. וידאו אינו מועבר לשום מקום לעולם. הפריימים שהסורק צילם ממספר מכולה יכולים לצאת מהמכשיר רק אם תפעילו את המתג <em>תמונות של מספרי מכולות</em> בערוץ האבחון — ראו סעיף 4.</p>
 
     <h2><span class="n">3.</span> מיקום</h2>
-    <p>האפליקציה יכולה לבקש גישה למיקום כדי להציע היכן אתם נמצאים — העיר או מקום העצירה — כדי שלא תצטרכו להקליד זאת. המיקום משמש באותו רגע בלבד: האפליקציה אינה שומרת קואורדינטות. מה שנשמר הוא מה שהזנתם או אישרתם — כתובות היציאה וההגעה, עצירות, זמנים וקריאות מד המרחק. <strong>נתוני מיקום שאתם מזינים או שומרים באפליקציה הם חלק ממסד הנסיעות</strong>, והוא נמצא במכשיר שלכם. הוא יכול לצאת מהטלפון רק דרך ערוץ האבחון המתואר בסעיף 4, ורק כל עוד המתג <em>מסד הנסיעות</em> דלוק; כברירת מחדל הוא כבוי. דבר אינו נשלח מעצמו, ודוח יוצא רק כאשר אתם בעצמכם מייצאים או שולחים אותו.</p>
+    <p>האפליקציה יכולה לבקש גישה למיקום כדי להציע היכן אתם נמצאים — העיר, או כתובת של מקום כמו חניית עצירה — כך שלא תצטרכו להקליד אותה. המיקום נקרא רק ברגע שאתם משתמשים בתכונה כזו; האפליקציה אינה מקליטה מסלול. מה שנשמר הוא מה שהזנתם או אישרתם — כתובות יציאה והגעה, עצירות, שעות וקריאות מד־אוץ.</p>
+    <p>מקרה אחד נאמר במפורש: אם תלחצו על לחצן המיקום במסך חניית עצירה והטלפון לא יצליח להפוך את המיקום לכתובת רחוב, האפליקציה תכניס לשדה הכתובת את הקואורדינטות עצמן כטקסט — למשל „GPS 32.08040, 34.78180”, בדיוק של כמטר. אתם רואים את הטקסט ויכולים לתקן או להחליף אותו לפני השמירה. לאחר השמירה הוא חלק מרשומת הנסיעה כמו כל כתובת אחרת: הוא נמצא במכשיר שלכם ויוצא ממנו רק בדרכים לבחירתכם שמתוארות בסעיפים 4 ו־5.</p>
+    <p>נתוני מיקום שאתם מזינים או שומרים באפליקציה הם חלק ממסד נתוני הנסיעות, ומסד זה נמצא במכשיר שלכם. הוא יכול לצאת מהטלפון רק דרך ערוץ האבחון שמתואר בסעיף 4, ורק כל עוד מתג „מסד נתוני הנסיעות” דולק; המתג כבוי עד שתדליקו אותו. דוח יוצא רק כשאתם מייצאים או שולחים אותו בעצמכם.</p>
+    
 
     <h2><span class="n">4.</span> נתוני אבחון ושימוש (Firebase)</h2>
     <p>כדי לשמור על יציבות האפליקציה ולתקן תקלות, VecturaBook שולחת אוטומטית אל <strong>Firebase</strong> — שירות המופעל על ידי Google — את הדברים הבאים:</p>
@@ -207,11 +220,13 @@
 
     <p><strong>האתר הזה.</strong> הדף שאתם קוראים כעת משתמש ב-Google Analytics כדי לספור ביקורים ולראות אילו חלקים נפתחים. נרשמים הדף, השפה והלחיצות על כפתורי החנויות; כתובת ה-IP מוסווית, אותות פרסום מכובים, ושום דבר כאן אינו מזהה אתכם אישית. האפליקציה והאתר הם דברים נפרדים — פסקה זו על האתר בלבד.</p>
 
-    <h2><span class="n">5.</span> סנכרון עם החשבון האישי (לפי בחירתכם)</h2>
-    <p>אם אתם מקשרים בעצמכם את הטלפון לחשבון האישי באתר my.vecturabook.com — בסריקת קוד QR ממחשב, דרך דפדפן בטלפון עצמו, או בהזנת קוד ידנית — האפליקציה מתחילה לשלוח לשרת שלנו רשומות על הרכב, הנסיעות, המשמרות, התדלוקים, הלקוחות, הכתובות והמקומות. זה נחוץ כדי שאותם נתונים יופיעו בחשבון האישי ובמכשירים המקושרים האחרים שלכם.</p>
-    <p>ללא קישור הטלפון לחשבון לא נשלח דבר — אף פנייה ברשת אחת.</p>
-    <p>הנתונים שנשלחים נשמרים בשרת שלנו, אינם מתפרסמים ואינם נמסרים לצדדים שלישיים. אין צורך בסיסמה באפליקציה לשם כך.</p>
-    <p>אפשר לנתק את הטלפון מהחשבון בכל רגע בהגדרות האפליקציה. כדי למחוק את החשבון עצמו ואת כל הנתונים שנשלחו לשרת, יש להשתמש בדף מחיקת החשבון בחשבון האישי בכתובת my.vecturabook.com.</p>
+    <h2><span class="n">5.</span> סנכרון עם החשבון המקוון שלכם (לפי בחירתכם)</h2>
+    <p>אם אתם מקשרים את הטלפון לחשבון שלכם ב־my.vecturabook.com — בסריקת קוד QR שמוצג במחשב, דרך דפדפן בטלפון עצמו או בהקלדת קוד ידנית — האפליקציה מתחילה לשלוח לשרת שלנו את רשומות המשאית והנגרר, הנסיעות, המשמרות, התדלוקים, הלקוחות, הכתובות והמקומות, ולקבל אותם ממנו חזרה. כך אותם נתונים מופיעים בחשבון המקוון ובמכשירים המקושרים האחרים שלכם.</p>
+    <p>רשומות חדשות מסונכרנות בין המכשירים. עריכות של נסיעות, משמרות ותדלוקים ומחיקות של רשומות, שנעשו בטלפון, נשלחות לשרת. כשאתם מוחקים רשומה, נשלח סימן מחיקה, והרשומה נמחקת מהשרת, מהמכשירים המקושרים האחרים ומהחשבון המקוון. מחיקה פועלת גם בכיוון ההפוך: רשומה שמחקתם בחשבון המקוון נמחקת גם בטלפון. אם הטלפון מקושר, האפליקציה מזהירה לפני מחיקה שהמחיקה תתבצע גם במכשירים האחרים ובאתר.</p>
+    <p>בלי קישור הטלפון לחשבון לא נשלח דבר — אף לא בקשת רשת אחת.</p>
+    <p>הנתונים נשמרים בשרת שלנו, עוברים בחיבור מוצפן, אינם מתפרסמים ואינם מועברים לצדדים שלישיים. אין צורך בסיסמה באפליקציה לשם כך.</p>
+    <p>אפשר לבטל את קישור הטלפון בכל עת בהגדרות האפליקציה, או להסיר אותו בחשבון המקוון. ביטול הקישור מפסיק כל שליחה וקבלה עבור הטלפון הזה; רשומות שכבר נשלחו נשארות בחשבון המקוון עד שתמחקו אותן שם. כדי למחוק את החשבון עצמו ואת כל מה ששלח לשרת, השתמשו בדף מחיקת החשבון בחשבון המקוון ב־my.vecturabook.com.</p>
+    
 
     <h2><span class="n">6.</span> מה אנחנו <em>לא</em> עושים</h2>
     <p>איננו מוכרים נתונים אישיים, איננו משתמשים בעוקבי פרסום, ואיננו משתפים את רשומות הנסיעות, הרכב והמשמרות שלך עם צדדים שלישיים מעבר לעיבוד האבחוני המתואר בסעיף 4, ולסנכרון עם החשבון האישי לפי בחירתכם המתואר בסעיף 5.</p>
