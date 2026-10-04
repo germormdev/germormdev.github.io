@@ -1,5 +1,14 @@
 # CargoLog — сайт
 
+## ИСТОЧНИК — NAS (слово German 04.10.2026)
+
+Источник витрины — bare-репозиторий `/volume1/Gromoz/CargoLogSite/Git/CargoLogSite.git` на NAS, рабочий клон — `/volume1/Gromoz/CargoLogSite/work`.
+Любое устройство клонирует оттуда (`ssh://Gromoz@192.168.50.21/volume1/Gromoz/CargoLogSite/Git/CargoLogSite.git`, ПК — `F:\CargoLogSite`,
+мак — `~/dev/cargologsite`) и пушит в `main` обратно. Хук `post-receive` на NAS подтягивает рабочий клон и `Y:\CargoLog\Site` (копия для
+просмотра) и отправляет `main` на GitHub Pages (`germormdev/germormdev.github.io`, домен `vecturabook.com`) ключом, который лежит только
+на NAS (`/volume1/secrets/github`). Не ушло на GitHub — пуш в NAS всё равно принят, причина в `CargoLogSite/github-push.log`, повтор:
+`sh /volume1/Gromoz/CargoLogSite/Git/push-to-github.sh`. Напрямую на GitHub с устройств больше не пушат.
+
 GitHub Pages, ветка `main`, домен `vecturabook.com` (репозиторий `germormdev.github.io`; старый адрес github.io мёртв и только перекидывает).
 Пять страниц: `index.html` (EN), `ru.html`, `he.html`, `privacy.html`, `versions.html`.
 

@@ -53,7 +53,8 @@ def version_key(v):
 
 def released_versions():
     """(версии по возрастанию, откуда взяты или None, если список не прочитан)."""
-    tree = os.environ.get("CARGOLOG_TREE", "F:/Bortovok")
+    # Источник кода — NAS (04.10.2026): клон приложения на NAS, потом мак, потом ПК. CARGOLOG_TREE перекрывает.
+    tree = os.environ.get("CARGOLOG_TREE") or next((t for t in ("/volume1/Gromoz/CargoLog/work", os.path.expanduser("~/dev/bortovok"), "F:/Bortovok") if os.path.isdir(t)), "F:/Bortovok")
     path = arg("--released") or os.path.join(tree, "published_version_names.txt")
     try:
         lines = io.open(path, encoding="utf-8").read().splitlines()
