@@ -51,6 +51,15 @@ function measure(doc, page) {
     for (var i = 0; i < el.children.length; i++) scan(el.children[i], d + 1);
   })(nav, 0);
   var parts = [];
+  // Переключатель языков: буквы не слипаются (German 27.10.2026 — на иврите «EN RU» стояли вплотную:
+  // space-x-reverse в RTL клал отступ не с той стороны). Боксы не пересекались — меряем промежуток.
+  var sw = nav.querySelector('.lang-switch');
+  if (sw) {
+    var r = Array.prototype.map.call(sw.children, function (c) { return c.getBoundingClientRect(); })
+      .sort(function (a, b) { return a.left - b.left; });
+    for (var k = 1; k < r.length; k++)
+      if (r[k].left - r[k - 1].right < 8) { parts.push('переключатель языков слипся: ' + Math.round(r[k].left - r[k - 1].right) + 'px'); break; }
+  } else if (/^(index|ru|he)[.]html$/.test(page)) parts.push('переключателя языков .lang-switch нет');
   if (spill.length) parts.push('текст вылезает за бокс: ' + spill.join(','));
   if (nav.scrollWidth > nav.clientWidth + 1) parts.push('шапка шире экрана');
   return parts.length ? parts.join('; ') : '';
@@ -99,6 +108,7 @@ def find_chrome():
     for p in (r"C:\Program Files\Google\Chrome\Application\chrome.exe",
               r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe",
               os.path.expandvars(r"%LOCALAPPDATA%\Google\Chrome\Application\chrome.exe"),
+              "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
               "/usr/bin/google-chrome", "/usr/bin/chromium"):
         if p and os.path.isfile(p):
             return p
@@ -116,7 +126,7 @@ def run(local_dir):
         for n in os.listdir(local_dir):
             s = os.path.join(local_dir, n)
             if os.path.isfile(s) and (n.endswith(".html") or n.endswith(".js")
-                                      or n.endswith(".png") or n.endswith(".ico")):
+                                      or n.endswith(".css") or n.endswith(".png") or n.endswith(".ico")):
                 shutil.copy2(s, os.path.join(tmp, n))
         h = (HARNESS.replace("%PAGES%", json.dumps(PAGES))
                     .replace("%WIDTHS%", json.dumps([[w, n] for w, n in WIDTHS]))

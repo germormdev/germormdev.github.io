@@ -41,15 +41,15 @@ def doc(version, locale, changes):
                        "changes": {"stringValue": changes}}}
 
 
-def run_check(site, snap, released, not_released=""):
+def run_check(site, snap, released, not_released="", geometry=False):
     work = tempfile.mkdtemp(prefix="bite-site-")
     snap_path = os.path.join(work, "fs.json")
     io.open(snap_path, "w", encoding="utf-8").write(json.dumps(snap, ensure_ascii=False))
     # Список не выходивших — свой у стенда: живой (2.4.0) не должен решать за зубы.
     skip_path = os.path.join(work, "not_released.txt")
     io.open(skip_path, "w", encoding="utf-8").write(not_released)
-    out = subprocess.run([sys.executable, os.path.join(HERE, "site_check.py"), "--local", site,
-                          "--no-geometry", "--fs-json", snap_path, "--released", released,
+    out = subprocess.run([sys.executable, os.path.join(HERE, "site_check.py"), "--local", site]
+                         + ([] if geometry else ["--no-geometry"]) + ["--fs-json", snap_path, "--released", released,
                           "--not-released", skip_path],
                          stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                          env=dict(os.environ, PYTHONIOENCODING="utf-8"))
@@ -193,6 +193,12 @@ def main():
     edit(site_q, "promo.js", "    paint();\n", "    paint();\n    box.insertAdjacentHTML(\"afterbegin\", '<div class=\"promo-tabs\"><button class=\"promo-tab\"></button></div>');\n")
     judge("Q. вкладки языка в promo.js", *run_check(site_q, live, released), "ВЕРНУЛИСЬ: promo.js")
     shutil.rmtree(site_q, ignore_errors=True)
+
+    # R. на иврите переключатель языков слипся (было 27.10.2026: «EN RU» вплотную)
+    site_r = copy_site()
+    edit(site_r, "he.html", "lang-switch flex items-baseline gap-4", "lang-switch flex items-baseline gap-0")
+    judge("R. слипшийся переключатель языков на he.html", *run_check(site_r, live, released, geometry=True), "переключатель языков слипся")
+    shutil.rmtree(site_r, ignore_errors=True)
 
     # P. файл ролика на английском пропал
     site_p = copy_site()

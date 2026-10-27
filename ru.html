@@ -221,12 +221,12 @@
         }
 
         /* 4. Магнитное подчеркивание при выборе языка */
-        nav .space-x-4 a, nav .space-x-reverse a {
+        nav .lang-switch a {
             position: relative;
             text-decoration: none;
             padding-bottom: 2px;
         }
-        nav .space-x-4 a::after, nav .space-x-reverse a::after {
+        nav .lang-switch a::after {
             content: '';
             position: absolute;
             width: 0;
@@ -237,7 +237,7 @@
             transition: width 0.3s ease, left 0.3s ease;
             border-radius: 2px;
         }
-        nav .space-x-4 a:hover::after, nav .space-x-reverse a:hover::after {
+        nav .lang-switch a:hover::after {
             width: 100%;
             left: 0;
         }
@@ -265,7 +265,7 @@
                class="bg-orange-500 hover:bg-orange-600 text-white text-sm font-semibold py-2 px-4 rounded-full transition">
                 Войти в приложение
             </a>
-            <div class="space-x-4 text-sm font-medium">
+            <div class="lang-switch flex items-baseline gap-4 text-sm font-medium">
                 <a href="index.html" class="text-gray-500 hover:text-orange-500 transition">EN</a>
                 <span class="text-orange-500 border-b-2 border-orange-500 pb-1">RU</span>
                 <a href="he.html" class="text-gray-500 hover:text-orange-500 transition">HE</a>

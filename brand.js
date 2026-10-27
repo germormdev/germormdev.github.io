@@ -40,35 +40,22 @@
   var NEW_NAME = 'VecturaBook';
   var OLD_NAME = 'CargoLog';
 
+  // Плашка — два предложения (German 27.10.2026): прежний текст на телефоне занимал полэкрана.
   var WORDS = {
     en: {
       was: 'formerly ' + OLD_NAME,
-      title: 'We have changed our surname.',
-      body: OLD_NAME + ' is now called ' + NEW_NAME +
-            ' — like a bride after the wedding: a new name on the passport, the ' +
-            'same person, the same passport number. There is nothing for you to ' +
-            'do: the app updates itself, all your trips and settings stayed exactly ' +
-            'where they were, and the icon on your screen stayed the same. Only the ' +
-            'name has changed — the same app and the same developer.'
+      title: OLD_NAME + ' is now called ' + NEW_NAME + '.',
+      body: 'Same app, same developer — your trips and settings stayed where they were.'
     },
     ru: {
       was: 'раньше ' + OLD_NAME,
-      title: 'Мы сменили фамилию.',
-      body: OLD_NAME + ' теперь называется ' + NEW_NAME +
-            ' — как барышня после свадьбы: имя в паспорте новое, человек тот же, ' +
-            'номер паспорта тот же. Делать ничего не нужно: приложение обновилось ' +
-            'само, все рейсы и настройки остались на месте, а значок на экране ' +
-            'остался прежним. Изменилось только имя — приложение то же самое и ' +
-            'разработчик тот же.'
+      title: OLD_NAME + ' теперь называется ' + NEW_NAME + '.',
+      body: 'Та же программа и тот же разработчик — все рейсы и настройки остались на месте.'
     },
     he: {
       was: 'לשעבר ' + OLD_NAME,
-      title: 'החלפנו שם משפחה.',
-      body: OLD_NAME + ' נקראת מעכשיו ' + NEW_NAME +
-            ' — כמו כלה אחרי החתונה: שם חדש בתעודה, אותו אדם, אותו מספר תעודה. ' +
-            'אין צורך לעשות דבר: האפליקציה התעדכנה מעצמה, כל הנסיעות וההגדרות ' +
-            'נשארו במקומן, והסמל במסך נשאר אותו סמל. רק השם השתנה — אותה ' +
-            'אפליקציה ואותו מפתח.'
+      title: OLD_NAME + ' נקראת מעכשיו ' + NEW_NAME + '.',
+      body: 'אותה אפליקציה ואותו מפתח — כל הנסיעות וההגדרות נשארו במקומן.'
     }
   };
 
