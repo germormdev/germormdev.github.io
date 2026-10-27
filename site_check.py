@@ -338,6 +338,39 @@ for p in LANG_PAGES:
     say(ok, "%s iframe с роликом: %d%s"
         % (p, len(hits), "" if ok else "  <- ролик пропал или не nocookie"))
 
+print("\n[4.1] рекламный ролик наверху главной на трёх языках, файлы на самом сайте (27.10.2026)")
+PROMO_LANG = {"index.html": "en", "ru.html": "ru", "he.html": "he"}
+for p, lang in PROMO_LANG.items():
+    raw = RAW.get(p) or ""
+    miss = [w for w in ('data-promo="%s"' % lang, 'src="promo.js"', 'href="promo.css"',
+                        'poster="video/promo-%s.jpg"' % lang) if raw.count(w) != 1]
+    nav_end = raw.find("</nav>")
+    # Первый тег после шапки (комментарии не в счёт) — сам блок ролика, а не заголовок страницы.
+    after = re.sub(r"<!--.*?-->", "", raw[nav_end + 6:], flags=re.S).lstrip() if nav_end >= 0 else ""
+    first = after.startswith('<section class="promo"')
+    ok = not miss and first
+    say(ok, "%s блок ролика %s%s" % (p, lang, "" if ok else "  <- " + (
+        "нет/не один: " + ", ".join(miss) if miss else "не первым под шапкой")))
+
+
+def exists(path):
+    if LOCAL:
+        full = os.path.join(LOCAL, path)
+        return os.path.isfile(full) and os.path.getsize(full) > 0
+    try:
+        req = urllib.request.Request(BASE_URL + path, method="HEAD",
+                                     headers={"User-Agent": "cargolog-site-check"})
+        return urllib.request.urlopen(req, timeout=30).status == 200
+    except Exception:
+        return False
+
+
+for lang in ("ru", "he", "en"):
+    gone = [f for f in ("video/promo-%s.mp4" % lang, "video/promo-%s.jpg" % lang) if not exists(f)]
+    say(not gone, "ролик %s: %s" % (lang, "файл и обложка на месте" if not gone else "НЕТ " + ", ".join(gone)))
+for f in ("promo.js", "promo.css"):
+    say(exists(f), "%s %s" % (f, "на месте" if exists(f) else "НЕТ"))
+
 print("\n[5] нет обещаний, что данные или местоположение не уходят")
 for p in PAGES:
     d = docs.get(p)

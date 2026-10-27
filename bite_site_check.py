@@ -22,7 +22,8 @@ import urllib.request
 
 sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 HERE = os.path.dirname(os.path.abspath(__file__))
-PAGES = ("index.html", "ru.html", "he.html", "privacy.html", "versions.html", "brand.js", "analytics.js")
+PAGES = ("index.html", "ru.html", "he.html", "privacy.html", "versions.html", "brand.js", "analytics.js",
+         "promo.js", "promo.css")
 
 
 def fs_snapshot():
@@ -62,6 +63,8 @@ def copy_site():
     site = tempfile.mkdtemp(prefix="bite-site-pages-")
     for name in PAGES:
         shutil.copy2(os.path.join(HERE, name), site)
+    # Ролики тяжёлые — копия ссылается на папку дерева, а не тащит её.
+    os.symlink(os.path.join(HERE, "video"), os.path.join(site, "video"))
     return site
 
 
@@ -167,6 +170,32 @@ def main():
     edit(site_m, "ru.html", "https://t.me/VecturaBook", "https://t.me/TripLog_app")
     judge("M. мёртвый t.me/TripLog_app на ru.html", *run_check(site_m, live, released), "МЁРТВЫЙ АДРЕС")
     shutil.rmtree(site_m, ignore_errors=True)
+
+    # N. с русской страницы пропал блок ролика
+    site_n = copy_site()
+    edit(site_n, "ru.html", 'data-promo="ru"', 'data-x="ru"')
+    judge("N. нет блока ролика на ru.html", *run_check(site_n, live, released), "блок ролика ru")
+    shutil.rmtree(site_n, ignore_errors=True)
+
+    # O. на иврите ролик уехал вниз, под заголовок
+    site_o = copy_site()
+    text = io.open(os.path.join(site_o, "he.html"), encoding="utf-8", newline="").read()
+    a = text.index("    <!-- Рекламный ролик")
+    z = text.index("</section>", a) + len("</section>\n")
+    block, text = text[a:z], text[:a] + text[z:]
+    h = text.index("</header>") + len("</header>\n")
+    io.open(os.path.join(site_o, "he.html"), "w", encoding="utf-8", newline="").write(text[:h] + block + text[h:])
+    judge("O. ролик на he.html не первым под шапкой", *run_check(site_o, live, released), "не первым под шапкой")
+    shutil.rmtree(site_o, ignore_errors=True)
+
+    # P. файл ролика на английском пропал
+    site_p = copy_site()
+    os.remove(os.path.join(site_p, "video"))
+    os.mkdir(os.path.join(site_p, "video"))
+    for f in ("promo-ru.mp4", "promo-ru.jpg", "promo-he.mp4", "promo-he.jpg", "promo-en.jpg"):
+        os.symlink(os.path.join(HERE, "video", f), os.path.join(site_p, "video", f))
+    judge("P. нет video/promo-en.mp4", *run_check(site_p, live, released), "НЕТ video/promo-en.mp4")
+    shutil.rmtree(site_p, ignore_errors=True)
 
     # H. список выпущенного не прочитан
     judge("H. список выпущенного недоступен", *run_check(site, live, os.path.join(work, "нет-такого.txt")),

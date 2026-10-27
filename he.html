@@ -6,6 +6,8 @@
     <title>VecturaBook — יומן נסיעות דיגיטלי לנהגי משאיות</title>
     <script src="analytics.js"></script>
     <script src="brand.js" defer></script>
+    <link rel="stylesheet" href="promo.css">
+    <script src="promo.js" defer></script>
     <meta name="description" content="יומן נסיעות חינמי לנהגי משאית: נסיעות, משמרות, תדלוקים, מטענים ומכולות. עובד אופליין, בלי הרשמה ובלי פרסומות. אנדרואיד, 29 שפות.">
     <link rel="canonical" href="https://vecturabook.com/he.html">
     <link rel="alternate" hreflang="en" href="https://vecturabook.com/">
@@ -250,6 +252,14 @@
             </div>
         </div>
     </nav>
+
+    <!-- Рекламный ролик (27.10.2026): вкладки и кнопку звука рисует promo.js, файл грузится после страницы. -->
+    <section class="promo" data-promo="he" aria-label="סרטון VecturaBook">
+        <div class="promo-tabs"></div>
+        <div class="promo-frame">
+            <video class="promo-video" poster="video/promo-he.jpg" muted playsinline preload="none"></video>
+        </div>
+    </section>
 
     <header class="container mx-auto px-6 pt-12 pb-8 text-center">
         <h1 id="content-hero-title" class="text-4xl md:text-6xl font-extrabold text-gray-900 mb-6 tracking-tight">

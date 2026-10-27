@@ -1,0 +1,50 @@
+/* Рекламный ролик наверху главной (задание German 27.10.2026). Один файл на три языка:
+   разметка блока на страницах — пустая рамка, кнопки рисует promo.js. */
+.promo { max-width: 960px; margin: 0 auto; padding: 20px 24px 8px; }
+.promo-tabs { display: flex; justify-content: center; gap: 8px; min-height: 36px; margin-bottom: 12px; }
+.promo-tab {
+    font: 600 14px/1 system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    padding: 10px 16px; border-radius: 999px; cursor: pointer;
+    border: 1px solid #D8C9B0; background: #FBF7EF; color: #5A4A33;
+    transition: background-color .15s ease, color .15s ease, border-color .15s ease;
+}
+.promo-tab:hover { border-color: #B05F2E; color: #B05F2E; }
+.promo-tab[aria-selected="true"] { background: #B05F2E; border-color: #B05F2E; color: #FBF7EF; }
+.promo-tab:focus-visible, .promo-btn:focus-visible { outline: 3px solid #EDC3A5; outline-offset: 2px; }
+.promo-frame {
+    position: relative; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 16px;
+    background: #F6EFE4; border: 1px solid #D8C9B0;
+    box-shadow: 0 10px 30px rgba(46, 36, 24, .12);
+    /* На низком экране ноутбука рамка целиком влезает под шапку — с кнопкой звука. */
+    max-width: max(480px, calc((100vh - 190px) * 16 / 9)); margin-inline: auto;
+}
+.promo-video { display: block; width: 100%; height: 100%; object-fit: contain; background: #F6EFE4; }
+.promo-btn {
+    position: absolute; bottom: 14px; inset-inline-end: 14px;
+    display: inline-flex; align-items: center; gap: 8px;
+    font: 600 14px/1 system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    padding: 10px 14px; border: 0; border-radius: 999px; cursor: pointer;
+    background: rgba(46, 36, 24, .78); color: #FBF7EF;
+    -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+}
+.promo-btn:hover { background: rgba(46, 36, 24, .92); }
+.promo-btn svg { width: 18px; height: 18px; flex: none; }
+/* Пока звук не включён, системных кнопок нет — их место у нашей кнопки звука. */
+.promo-video[controls] ~ .promo-btn { bottom: auto; top: 14px; }
+.promo-play {
+    position: absolute; inset: 0; margin: auto; width: 76px; height: 76px; border: 0; border-radius: 50%;
+    cursor: pointer; background: rgba(176, 95, 46, .92); color: #FBF7EF;
+    display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 20px rgba(46, 36, 24, .3);
+}
+.promo-play[hidden] { display: none; }
+/* Треугольник «играть» не зеркалится и на иврите. */
+.promo-play svg { width: 34px; height: 34px; margin-left: 4px; }
+/* На телефоне — по ширине экрана, без полей и скруглений. */
+@media (max-width: 640px) {
+    .promo { padding: 12px 0 4px; }
+    .promo-tabs { padding: 0 16px; }
+    .promo-frame { border-radius: 0; border-inline: 0; box-shadow: none; max-width: none; }
+    .promo-btn { bottom: 10px; inset-inline-end: 10px; padding: 9px 12px; font-size: 13px; }
+    .promo-video[controls] ~ .promo-btn { top: 10px; }
+    .promo-play { width: 64px; height: 64px; }
+}

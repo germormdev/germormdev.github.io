@@ -6,6 +6,8 @@
     <title>VecturaBook — Цифровой бортовой журнал для водителей грузовиков</title>
     <script src="analytics.js"></script>
     <script src="brand.js" defer></script>
+    <link rel="stylesheet" href="promo.css">
+    <script src="promo.js" defer></script>
     <meta name="description" content="Бесплатный бортовой журнал для водителей грузовиков: рейсы, смены, заправки, грузы и контейнеры. Работает офлайн, без регистрации и рекламы. 29 языков.">
     <link rel="canonical" href="https://vecturabook.com/ru.html">
     <link rel="alternate" hreflang="en" href="https://vecturabook.com/">
@@ -270,6 +272,14 @@
             </div>
         </div>
     </nav>
+
+    <!-- Рекламный ролик (27.10.2026): вкладки и кнопку звука рисует promo.js, файл грузится после страницы. -->
+    <section class="promo" data-promo="ru" aria-label="Рекламный ролик VecturaBook">
+        <div class="promo-tabs"></div>
+        <div class="promo-frame">
+            <video class="promo-video" poster="video/promo-ru.jpg" muted playsinline preload="none"></video>
+        </div>
+    </section>
 
     <header class="container mx-auto px-6 pt-12 pb-8 text-center">
         <h1 id="content-hero-title" class="text-4xl md:text-6xl font-extrabold text-gray-900 mb-6 tracking-tight">

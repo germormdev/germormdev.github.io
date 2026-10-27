@@ -6,6 +6,8 @@
     <title>VecturaBook — Digital Logbook for Truck Drivers</title>
     <script src="analytics.js"></script>
     <script src="brand.js" defer></script>
+    <link rel="stylesheet" href="promo.css">
+    <script src="promo.js" defer></script>
     <meta name="description" content="Free logbook app for truck drivers: trips, shifts, refuelling, cargo and containers. Works offline, no registration, no ads. Android, 29 languages.">
     <link rel="canonical" href="https://vecturabook.com/">
     <link rel="alternate" hreflang="en" href="https://vecturabook.com/">
@@ -270,6 +272,14 @@
             </div>
         </div>
     </nav>
+
+    <!-- Рекламный ролик (27.10.2026): вкладки и кнопку звука рисует promo.js, файл грузится после страницы. -->
+    <section class="promo" data-promo="en" aria-label="VecturaBook promo video">
+        <div class="promo-tabs"></div>
+        <div class="promo-frame">
+            <video class="promo-video" poster="video/promo-en.jpg" muted playsinline preload="none"></video>
+        </div>
+    </section>
 
     <header class="container mx-auto px-6 pt-12 pb-8 text-center">
         <!-- Hero title — редактируемый через site_content/{locale}.hero.title_html -->

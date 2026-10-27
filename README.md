@@ -42,6 +42,29 @@ gtag подключён на всех пяти страницах ровно о�
 
 ---
 
+## Рекламный ролик наверху главной (задание German 27.10.2026)
+
+Сразу под шапкой на `index.html`, `ru.html`, `he.html` — блок `<section class="promo" data-promo="<язык>">`.
+Вкладки (русский, иврит, английский; по умолчанию язык страницы), кнопку звука и загрузку рисует
+`promo.js`, вид — `promo.css`: один файл на три страницы. Ролик — на самом сайте, `video/promo-<язык>.mp4`,
+обложка до загрузки — `video/promo-<язык>.jpg`. Автозапуск беззвучный (со звуком браузеры не запускают),
+файл качается только после загрузки страницы, вне экрана беззвучный ролик стоит на паузе, при «экономии
+трафика» в браузере ждёт кнопки. Вкладка другого языка продолжает с того же места (ролики кадр в кадр).
+
+Замена ролика (источник — `Y:\CargoLog\ForGerman\<дата>-reklamnyj-rolik\VecturaBook-promo-<язык>.mp4`).
+⛔ Звук — трек German, только копией (`-c:a copy`), не перекодировать:
+
+```
+ffmpeg -i VecturaBook-promo-ru.mp4 -map 0:v:0 -map 0:a:0 -vf scale=1280:-2:flags=lanczos \
+  -c:v libx264 -preset slow -tune animation -crf 27 -maxrate 1000k -bufsize 2000k \
+  -profile:v high -level 4.0 -pix_fmt yuv420p -g 60 -c:a copy -movflags +faststart video/promo-ru.mp4
+ffmpeg -ss 12 -i video/promo-ru.mp4 -frames:v 1 -q:v 4 video/promo-ru.jpg   # обложка — титул ролика
+```
+
+Сторож: раздел [4.1] (блок первым под шапкой на трёх языках, файлы и обложки на месте), укусы N, O, P.
+
+---
+
 ## ⚠ ВИТРИНА ЦЕЛИКОМ СТАТИЧЕСКАЯ (замер 03.09.2026)
 
 Коллекции `site_content`, `site_screenshots`, `site_videos` — **пусты, 0
