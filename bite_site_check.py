@@ -204,11 +204,30 @@ def main():
     site_p = copy_site()
     os.remove(os.path.join(site_p, "video"))
     os.mkdir(os.path.join(site_p, "video"))
-    for f in ("promo-ru.mp4", "promo-ru.mov", "promo-ru.jpg", "promo-he.mp4", "promo-he.mov", "promo-he.jpg",
-              "promo-en.mov", "promo-en.jpg"):
+    for f in ("promo-ru.mp4", "promo-ru.jpg", "promo-he.mp4", "promo-he.jpg", "promo-en.jpg"):
         os.symlink(os.path.join(HERE, "video", f), os.path.join(site_p, "video", f))
     judge("P. нет video/promo-en.mp4", *run_check(site_p, live, released), "НЕТ video/promo-en.mp4")
     shutil.rmtree(site_p, ignore_errors=True)
+
+    # S. ролик на русском снова со звуком MP3 (Safari и iPhone играют немо — было 27.10.2026)
+    site_s = copy_site()
+    os.remove(os.path.join(site_s, "video"))
+    os.mkdir(os.path.join(site_s, "video"))
+    for f in ("promo-ru.jpg", "promo-he.mp4", "promo-he.jpg", "promo-en.mp4", "promo-en.jpg"):
+        os.symlink(os.path.join(HERE, "video", f), os.path.join(site_s, "video", f))
+    subprocess.run(["ffmpeg", "-nostdin", "-v", "error", "-f", "lavfi", "-i", "color=c=white:s=320x180:d=1",
+                    "-f", "lavfi", "-i", "anullsrc=r=44100:cl=stereo", "-t", "1", "-c:v", "libx264",
+                    "-c:a", "libmp3lame", "-movflags", "+faststart", os.path.join(site_s, "video", "promo-ru.mp4")],
+                   check=True)
+    judge("S. звук ролика ru — MP3", *run_check(site_s, live, released), "нужен AAC")
+    shutil.rmtree(site_s, ignore_errors=True)
+
+    # T. promo.js снова ищет MOV, которого на сайте нет
+    site_t = copy_site()
+    edit(site_t, "promo.js", 'video.src = "video/promo-" + page + ".mp4";',
+         'video.src = "video/promo-" + page + (video.canPlayType("video/quicktime") ? ".mov" : ".mp4");')
+    judge("T. promo.js ищет MOV", *run_check(site_t, live, released), "ищет MOV")
+    shutil.rmtree(site_t, ignore_errors=True)
 
     # H. список выпущенного не прочитан
     judge("H. список выпущенного недоступен", *run_check(site, live, os.path.join(work, "нет-такого.txt")),

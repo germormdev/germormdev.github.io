@@ -365,11 +365,60 @@ def exists(path):
         return False
 
 
+def head_bytes(path, n=4 << 20):
+    # Начало файла: заголовок ролика лежит в начале (+faststart), весь ролик не качаем.
+    if LOCAL:
+        full = os.path.join(LOCAL, path)
+        if not os.path.isfile(full):
+            return b""
+        with open(full, "rb") as f:
+            return f.read(n)
+    try:
+        req = urllib.request.Request(BASE_URL + path, headers={"User-Agent": "cargolog-site-check",
+                                                               "Range": "bytes=0-%d" % (n - 1)})
+        return urllib.request.urlopen(req, timeout=60).read()
+    except Exception:
+        return b""
+
+
+def audio_codec(data):
+    # Звук в MP4 — запись esds: objectTypeIndication 0x40 = AAC, 0x69/0x6B = MP3. Нет esds — звука нет.
+    i = data.find(b"esds")
+    if i < 0:
+        return "нет звука"
+    p = i + 8                                   # имя + версия/флаги
+
+    def desc(p, tag):
+        if p >= len(data) or data[p] != tag:
+            return None
+        p += 1
+        for _ in range(4):                      # длина — до четырёх байт со старшим битом «дальше»
+            b = data[p]; p += 1
+            if not b & 0x80:
+                break
+        return p
+    p = desc(p, 0x03)
+    if p is None:
+        return "?"
+    flags = data[p + 2]; p += 3                 # ES_ID + флаги
+    if flags & 0x80: p += 2
+    if flags & 0x40: p += 1 + data[p]
+    if flags & 0x20: p += 2
+    p = desc(p, 0x04)
+    if p is None:
+        return "?"
+    return {0x40: "AAC", 0x66: "AAC", 0x67: "AAC", 0x68: "AAC", 0x69: "MP3", 0x6B: "MP3"}.get(data[p], "0x%02X" % data[p])
+
+
 for lang in ("ru", "he", "en"):
-    # .mov — тот же ролик для Safari/iPhone: MP3 в MP4 плеер Apple не слышит (27.10.2026).
-    gone = [f for f in ("video/promo-%s.mp4" % lang, "video/promo-%s.mov" % lang, "video/promo-%s.jpg" % lang)
-            if not exists(f)]
+    # Один файл на язык — MP4 со звуком AAC (German 27.10.2026). MOV для Safari больше не нужен:
+    # AAC в MP4 плеер Apple слышит, а прежний MP3 в MP4 играл немо.
+    gone = [f for f in ("video/promo-%s.mp4" % lang, "video/promo-%s.jpg" % lang) if not exists(f)]
     say(not gone, "ролик %s: %s" % (lang, "файл и обложка на месте" if not gone else "НЕТ " + ", ".join(gone)))
+    if not gone:
+        codec = audio_codec(head_bytes("video/promo-%s.mp4" % lang))
+        say(codec == "AAC", "ролик %s: звук %s%s" % (lang, codec, "" if codec == "AAC" else
+                                                     "  <- нужен AAC: иначе Safari и iPhone играют немо"))
 for f in ("promo.js", "promo.css"):
     say(exists(f), "%s %s" % (f, "на месте" if exists(f) else "НЕТ"))
 # Вкладок языка над роликом нет (German 27.10.2026): выбранная вкладка возвращалась кнопкой «Назад»
@@ -382,6 +431,10 @@ def promo_js():
 tabbed = [n for n, txt in [("promo.js", promo_js())] + [(p, RAW.get(p) or "") for p in PROMO_LANG]
           if "promo-tab" in txt]
 say(not tabbed, "вкладок языка у ролика %s" % ("нет" if not tabbed else "ВЕРНУЛИСЬ: " + ", ".join(tabbed)))
+# MOV с сайта убран (27.10.2026): ветка, отдающая Safari .mov, увела бы его на пустой адрес.
+js = promo_js()
+mov = [w for w in (".mov", "quicktime") if w in js]
+say(not mov, "promo.js отдаёт всем MP4%s" % ("" if not mov else "  <- ищет MOV: " + ", ".join(mov)))
 
 print("\n[5] нет обещаний, что данные или местоположение не уходят")
 for p in PAGES:

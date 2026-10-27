@@ -54,21 +54,21 @@ gtag подключён на всех пяти страницах ровно о�
 трафика» в браузере ждёт кнопки.
 
 Замена ролика (источник — `Y:\CargoLog\ForGerman\<дата>-reklamnyj-rolik\VecturaBook-promo-<язык>.mp4`).
-⛔ Звук — трек German, только копией (`-c:a copy`), не перекодировать:
+⛔ Звук — трек German (AAC 320 кбит/с), только копией (`-c:a copy`), не перекодировать:
 
 ```
 ffmpeg -i VecturaBook-promo-ru.mp4 -map 0:v:0 -map 0:a:0 -vf scale=1280:-2:flags=lanczos \
   -c:v libx264 -preset slow -tune animation -crf 27 -maxrate 1000k -bufsize 2000k \
   -profile:v high -level 4.0 -pix_fmt yuv420p -g 60 -c:a copy -movflags +faststart video/promo-ru.mp4
-ffmpeg -i video/promo-ru.mp4 -c copy -movflags +faststart video/promo-ru.mov   # тот же ролик для Safari/iPhone
 ffmpeg -ss 12 -i video/promo-ru.mp4 -frames:v 1 -q:v 4 video/promo-ru.jpg   # обложка — титул ролика
 ```
 
-⛔ Звук трека — MP3. В упаковке MP4 плеер Apple (Safari на маке и iPhone, QuickTime) дорожку MP3 не видит и играет
-немо (German заметил 27.10.2026). Поэтому рядом лежит `.mov` — та же запись перепакована без перекодирования (md5
-звука совпадает), `promo.js` отдаёт его браузерам, которые берут `video/quicktime` (Safari), остальным — `.mp4`.
+⛔ Звук в MP4 — только AAC. MP3 в упаковке MP4 плеер Apple (Safari на маке и iPhone, QuickTime) не видит и играет
+немо (German заметил 27.10.2026; до пересборки ролика рядом лежал `.mov`). С 27.10.2026 звук AAC, файл один — `.mp4`
+для всех браузеров, MOV убран.
 
-Сторож: раздел [4.1] (блок первым под шапкой на трёх языках, файлы и обложки на месте, вкладок нет), укусы N, O, P, Q.
+Сторож: раздел [4.1] (блок первым под шапкой на трёх языках, файл и обложка на месте, звук AAC — читает заголовок
+ролика, вкладок нет, `promo.js` не ищет MOV), укусы N, O, P, Q, S (звук MP3), T (ветка MOV).
 Кнопка звука — в верхнем углу кадра: надписи ролика бывают только внизу и посередине (German 27.10.2026).
 
 Переключатель языков в шапке — `<div class="lang-switch flex … gap-4">`, на иврите с `dir="ltr"` (порядок EN RU HE как

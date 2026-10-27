@@ -49,10 +49,9 @@
     function load() {
       started = true;
       video.preload = "auto";
-      // Звук ролика — трек German в MP3 без перекодирования. В упаковке MP4 плеер Apple (Safari, iPhone)
-      // его не видит — играет немо; в MOV та же дорожка побайтно слышна (German 27.10.2026).
-      // Chrome и Firefox MOV не берут — им MP4.
-      video.src = "video/promo-" + page + (video.canPlayType("video/quicktime") ? ".mov" : ".mp4");
+      // Звук ролика — AAC: его слышат все браузеры, и Safari с iPhone тоже, поэтому файл один, MP4
+      // (German 27.10.2026; прежний MP3 в MP4 плеер Apple не видел и играл немо).
+      video.src = "video/promo-" + page + ".mp4";
       start();
     }
 
