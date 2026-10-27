@@ -1,16 +1,7 @@
 /* Рекламный ролик наверху главной (задание German 27.10.2026). Один файл на три языка:
-   разметка блока на страницах — пустая рамка, кнопки рисует promo.js. */
+   разметка блока на страницах — рамка с видео своего языка, кнопки рисует promo.js. */
 .promo { max-width: 960px; margin: 0 auto; padding: 20px 24px 8px; }
-.promo-tabs { display: flex; justify-content: center; gap: 8px; min-height: 36px; margin-bottom: 12px; }
-.promo-tab {
-    font: 600 14px/1 system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-    padding: 10px 16px; border-radius: 999px; cursor: pointer;
-    border: 1px solid #D8C9B0; background: #FBF7EF; color: #5A4A33;
-    transition: background-color .15s ease, color .15s ease, border-color .15s ease;
-}
-.promo-tab:hover { border-color: #B05F2E; color: #B05F2E; }
-.promo-tab[aria-selected="true"] { background: #B05F2E; border-color: #B05F2E; color: #FBF7EF; }
-.promo-tab:focus-visible, .promo-btn:focus-visible { outline: 3px solid #EDC3A5; outline-offset: 2px; }
+.promo-btn:focus-visible { outline: 3px solid #EDC3A5; outline-offset: 2px; }
 .promo-frame {
     position: relative; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 16px;
     background: #F6EFE4; border: 1px solid #D8C9B0;
@@ -42,7 +33,6 @@
 /* На телефоне — по ширине экрана, без полей и скруглений. */
 @media (max-width: 640px) {
     .promo { padding: 12px 0 4px; }
-    .promo-tabs { padding: 0 16px; }
     .promo-frame { border-radius: 0; border-inline: 0; box-shadow: none; max-width: none; }
     .promo-btn { bottom: 10px; inset-inline-end: 10px; padding: 9px 12px; font-size: 13px; }
     .promo-video[controls] ~ .promo-btn { top: 10px; }

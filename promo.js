@@ -1,18 +1,15 @@
 // Рекламный ролик наверху главной (задание German 27.10.2026).
 // Файл лежит на самом сайте (video/promo-<язык>.mp4, 720p, звук трека German без перекодирования),
-// вкладки — три языка ролика, по умолчанию язык страницы. Автозапуск беззвучный (со звуком
+// язык ролика = язык страницы (data-promo), меняется только переключателем языка сайта: вкладок над
+// видео нет (German 27.10.2026 — вкладка, выбранная на странице, возвращалась кнопкой «Назад» из
+// памяти браузера, и на английской странице шёл ролик на иврите). Автозапуск беззвучный (со звуком
 // браузеры не запускают), звук — кнопкой на видео. Ролик качается только после загрузки
 // страницы, до того видна обложка; вне экрана беззвучный ролик стоит на паузе.
 (function () {
-  var LANGS = [
-    { id: "ru", name: "Русский" },
-    { id: "he", name: "עברית" },
-    { id: "en", name: "English" }
-  ];
   var TEXT = {
-    ru: { on: "Включить звук", off: "Выключить звук", play: "Смотреть ролик", tabs: "Язык ролика" },
-    he: { on: "הפעלת קול", off: "השתקת קול", play: "צפייה בסרטון", tabs: "שפת הסרטון" },
-    en: { on: "Sound on", off: "Sound off", play: "Watch the video", tabs: "Video language" }
+    ru: { on: "Включить звук", off: "Выключить звук", play: "Смотреть ролик" },
+    he: { on: "הפעלת קול", off: "השתקת קול", play: "צפייה בסרטון" },
+    en: { on: "Sound on", off: "Sound off", play: "Watch the video" }
   };
   var ICON_MUTED = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="m23 9-6 6M17 9l6 6"/></svg>';
   var ICON_SOUND = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></svg>';
@@ -27,23 +24,7 @@
     var t = TEXT[page] || TEXT.en;
     var video = box.querySelector("video");
     var frame = video.parentNode;
-    var lang = page, started = false, userPaused = false, visible = true, switching = false;
-
-    var tabs = box.querySelector(".promo-tabs");
-    tabs.setAttribute("role", "tablist");
-    tabs.setAttribute("aria-label", t.tabs);
-    LANGS.forEach(function (l) {
-      var b = document.createElement("button");
-      b.type = "button";
-      b.className = "promo-tab";
-      b.setAttribute("role", "tab");
-      b.setAttribute("lang", l.id);
-      b.setAttribute("data-lang", l.id);
-      b.setAttribute("aria-selected", String(l.id === lang));
-      b.textContent = l.name;
-      b.addEventListener("click", function () { choose(l.id); });
-      tabs.appendChild(b);
-    });
+    var started = false, userPaused = false, visible = true;
 
     var sound = document.createElement("button");
     sound.type = "button";
@@ -61,7 +42,6 @@
       sound.innerHTML = (video.muted ? ICON_MUTED : ICON_SOUND) + "<span>" + (video.muted ? t.on : t.off) + "</span>";
       sound.setAttribute("aria-pressed", String(!video.muted));
     }
-    function src(id) { return "video/promo-" + id + ".mp4"; }
     function start() {
       var p = video.play();
       if (p && p.catch) p.catch(function () { play.hidden = false; });
@@ -69,29 +49,8 @@
     function load() {
       started = true;
       video.preload = "auto";
-      video.src = src(lang);
+      video.src = "video/promo-" + page + ".mp4";
       start();
-    }
-
-    function choose(id) {
-      if (id === lang) return;
-      var at = video.currentTime || 0, wasPlaying = started && !video.paused;
-      lang = id;
-      Array.prototype.forEach.call(tabs.children, function (b) {
-        b.setAttribute("aria-selected", String(b.getAttribute("data-lang") === id));
-      });
-      video.poster = "video/promo-" + id + ".jpg";
-      track("promo_language", { promo_lang: id, page_lang: page });
-      if (!started) return;
-      // Ролики на трёх языках идут кадр в кадр — продолжаем с того же места.
-      switching = true;
-      video.src = src(id);
-      video.addEventListener("loadedmetadata", function once() {
-        video.removeEventListener("loadedmetadata", once);
-        switching = false;
-        if (at > 0 && at < video.duration) video.currentTime = at;
-        if (wasPlaying) start();
-      });
     }
 
     sound.addEventListener("click", function () {
@@ -100,7 +59,7 @@
       if (!video.muted) video.controls = true;
       userPaused = false;
       if (!started) load(); else if (video.paused) start();
-      if (!video.muted) track("promo_sound_on", { promo_lang: lang, page_lang: page });
+      if (!video.muted) track("promo_sound_on", { promo_lang: page });
     });
     play.addEventListener("click", function () {
       userPaused = false;
@@ -111,7 +70,7 @@
     video.addEventListener("ended", function () { play.hidden = false; });
     video.addEventListener("pause", function () {
       // Пауза, поставленная не нами (системная кнопка), — воля человека: вне экрана не будим.
-      if (visible && !switching && !video.ended) userPaused = true;
+      if (visible && !video.ended) userPaused = true;
     });
     paint();
 

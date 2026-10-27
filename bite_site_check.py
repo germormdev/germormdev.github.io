@@ -188,6 +188,12 @@ def main():
     judge("O. ролик на he.html не первым под шапкой", *run_check(site_o, live, released), "не первым под шапкой")
     shutil.rmtree(site_o, ignore_errors=True)
 
+    # Q. над роликом вернулись вкладки языка
+    site_q = copy_site()
+    edit(site_q, "promo.js", "    paint();\n", "    paint();\n    box.insertAdjacentHTML(\"afterbegin\", '<div class=\"promo-tabs\"><button class=\"promo-tab\"></button></div>');\n")
+    judge("Q. вкладки языка в promo.js", *run_check(site_q, live, released), "ВЕРНУЛИСЬ: promo.js")
+    shutil.rmtree(site_q, ignore_errors=True)
+
     # P. файл ролика на английском пропал
     site_p = copy_site()
     os.remove(os.path.join(site_p, "video"))

@@ -370,6 +370,16 @@ for lang in ("ru", "he", "en"):
     say(not gone, "ролик %s: %s" % (lang, "файл и обложка на месте" if not gone else "НЕТ " + ", ".join(gone)))
 for f in ("promo.js", "promo.css"):
     say(exists(f), "%s %s" % (f, "на месте" if exists(f) else "НЕТ"))
+# Вкладок языка над роликом нет (German 27.10.2026): выбранная вкладка возвращалась кнопкой «Назад»
+# из памяти браузера, и на английской странице шёл ролик на иврите. Язык ролика = язык страницы.
+def promo_js():
+    if LOCAL:
+        full = os.path.join(LOCAL, "promo.js")
+        return io.open(full, encoding="utf-8").read() if os.path.isfile(full) else ""
+    return fetch("promo.js") or ""
+tabbed = [n for n, txt in [("promo.js", promo_js())] + [(p, RAW.get(p) or "") for p in PROMO_LANG]
+          if "promo-tab" in txt]
+say(not tabbed, "вкладок языка у ролика %s" % ("нет" if not tabbed else "ВЕРНУЛИСЬ: " + ", ".join(tabbed)))
 
 print("\n[5] нет обещаний, что данные или местоположение не уходят")
 for p in PAGES:
