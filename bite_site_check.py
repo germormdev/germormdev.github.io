@@ -204,7 +204,8 @@ def main():
     site_p = copy_site()
     os.remove(os.path.join(site_p, "video"))
     os.mkdir(os.path.join(site_p, "video"))
-    for f in ("promo-ru.mp4", "promo-ru.jpg", "promo-he.mp4", "promo-he.jpg", "promo-en.jpg"):
+    for f in ("promo-ru.mp4", "promo-ru.mov", "promo-ru.jpg", "promo-he.mp4", "promo-he.mov", "promo-he.jpg",
+              "promo-en.mov", "promo-en.jpg"):
         os.symlink(os.path.join(HERE, "video", f), os.path.join(site_p, "video", f))
     judge("P. нет video/promo-en.mp4", *run_check(site_p, live, released), "НЕТ video/promo-en.mp4")
     shutil.rmtree(site_p, ignore_errors=True)

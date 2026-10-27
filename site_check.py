@@ -366,7 +366,9 @@ def exists(path):
 
 
 for lang in ("ru", "he", "en"):
-    gone = [f for f in ("video/promo-%s.mp4" % lang, "video/promo-%s.jpg" % lang) if not exists(f)]
+    # .mov — тот же ролик для Safari/iPhone: MP3 в MP4 плеер Apple не слышит (27.10.2026).
+    gone = [f for f in ("video/promo-%s.mp4" % lang, "video/promo-%s.mov" % lang, "video/promo-%s.jpg" % lang)
+            if not exists(f)]
     say(not gone, "ролик %s: %s" % (lang, "файл и обложка на месте" if not gone else "НЕТ " + ", ".join(gone)))
 for f in ("promo.js", "promo.css"):
     say(exists(f), "%s %s" % (f, "на месте" if exists(f) else "НЕТ"))
