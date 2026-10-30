@@ -25,7 +25,7 @@ not_released_versions.txt с причиной, и записи для них с�
 класс дефекта — пустой массив, затирающий контейнер, — закрыт в signin.js
 проверкой на length, а не здесь.
 """
-import io, json, os, re, sys, urllib.request
+import io, json, os, re, subprocess, sys, urllib.request
 from html.parser import HTMLParser
 
 BASE_URL = "https://vecturabook.com/"
@@ -59,6 +59,19 @@ def released_versions():
     try:
         lines = io.open(path, encoding="utf-8").read().splitlines()
     except OSError:
+        lines = None
+    if lines is None and not arg("--released"):
+        # 30.10.2026: клон мака ~/dev/bortovok — только .git (без рабочих файлов) — список читается из master самого git.
+        for ref in ("network/master", "origin/master", "master"):
+            try:
+                out = subprocess.run(["git", "-C", tree, "show", ref + ":published_version_names.txt"],
+                                     capture_output=True, timeout=30)
+            except (OSError, subprocess.SubprocessError):
+                break
+            if out.returncode == 0:
+                lines, path = out.stdout.decode("utf-8").splitlines(), "%s (git %s)" % (path, ref)
+                break
+    if lines is None:
         return sorted(FLOOR, key=version_key), None
     named = {l.strip() for l in lines if re.match(r"^\d+\.\d+\.\d+$", l.strip())}
     newer = {v for v in named if version_key(v) >= version_key(FLOOR[0])}
