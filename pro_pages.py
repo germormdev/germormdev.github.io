@@ -45,12 +45,7 @@ T = {
     ],
     shots_h="What is already done",
     shots_note="Screenshots of the current version on demo data. The interface is adjusted for each client — what you see here is changed to fit your company.",
-    shots=[
-        ("fleetdesk-windows.jpg", 900, 656, "Windows: the “Trucks” section — list and the truck card: coupling, current trip, service, coupling history"),
-        ("fleetdesk-mac-machines.jpg", 900, 493, "Mac: the same window — every truck with its driver, trailer, trip and deadlines"),
-        ("fleetdesk-mac-service.jpg", 900, 493, "Mac: “Service and inspection” — overdue first, by date, kilometres or engine hours"),
-        ("fleetdesk-android.jpg", 420, 933, "Android: the truck card on a phone"),
-    ],
+    shots=[],
     contact_h="Let's talk about your fleet",
     contact="Tell us how many trucks and branches you have and what you work in now. We will answer by e-mail.",
     footer_privacy="Privacy Policy", footer_home="VecturaBook for drivers",
@@ -119,12 +114,7 @@ T = {
     ],
     shots_h="מה כבר עשוי",
     shots_note="צילומי מסך של הגרסה הנוכחית על נתוני הדגמה. הממשק מותאם לכל לקוח — מה שרואים כאן משתנה לפי החברה שלכם.",
-    shots=[
-        ("fleetdesk-windows.jpg", 900, 656, "Windows: הלשונית „משאיות” — רשימה וכרטיס משאית: צימוד, נסיעה נוכחית, טיפולים, היסטוריית צימוד"),
-        ("fleetdesk-mac-machines.jpg", 900, 493, "Mac: אותו חלון — כל משאית עם הנהג, הנגרר, הנסיעה והמועדים שלה"),
-        ("fleetdesk-mac-service.jpg", 900, 493, "Mac: „טיפולים וטסט” — מה שעבר מועדו ראשון, לפי תאריך, קילומטרים או שעות מנוע"),
-        ("fleetdesk-android.jpg", 420, 933, "אנדרואיד: כרטיס משאית בטלפון"),
-    ],
+    shots=[],
     contact_h="בואו נדבר על הצי שלכם",
     contact="ספרו לנו כמה משאיות וסניפים יש לכם ובמה אתם עובדים היום. נענה במייל.",
     footer_privacy="מדיניות פרטיות", footer_home="VecturaBook לנהגים",
@@ -148,9 +138,31 @@ def page(lang):
     custom = "\n".join(
         f'''            <div><h3 class="text-xl font-bold mb-2"><i class="fa-solid {i} text-orange-500 me-2"></i>{e(h)}</h3><p class="text-gray-300">{e(p)}</p></div>'''
         for i, h, p in t["custom"])
+    if t["shots"]:
+        f0, w0, h0, _ = t["shots"][0]
+        og_url = f"https://vecturabook.com/pro/{f0}"
+        og_image = (f'    <meta property="og:image" content="{og_url}">\n    <meta property="og:image:type" content="image/jpeg">\n'
+                    f'    <meta property="og:image:width" content="{w0}">\n    <meta property="og:image:height" content="{h0}">')
+    else:
+        og_url = "https://vecturabook.com/og-image.png"
+        og_image = f'    <meta property="og:image" content="{og_url}">'
     shots = "\n".join(
         f'''            <figure class="pro-shot{' pro-shot-phone' if h > w else ''}"><a href="pro/{f}" target="_blank" rel="noopener"><img src="pro/{f}" alt="{e(c)}" width="{w}" height="{h}" loading="lazy"></a><figcaption>{e(c)}</figcaption></figure>'''
         for f, w, h, c in t["shots"])
+    if not t["shots"]:
+        shots_section = ""
+    else:
+        shots_section = f'''    <section class="bg-white py-16 border-t border-gray-200">
+        <div class="container mx-auto px-6 max-w-5xl">
+            <h2 class="text-3xl font-bold text-gray-900 mb-4 pb-2 border-b-2 border-orange-500 inline-block">{e(t["shots_h"])}</h2>
+            <p class="pro-note mb-8">{e(t["shots_note"])}</p>
+            <div class="pro-shots">
+{shots}
+            </div>
+        </div>
+    </section>
+
+'''
     return f'''<!DOCTYPE html>
 <html lang="{lang}"{' dir="rtl"' if rtl else ''}>
 <head>
@@ -170,16 +182,13 @@ def page(lang):
     <meta property="og:title" content="{e(t["title"])}">
     <meta property="og:description" content="{e(t["desc"])}">
     <meta property="og:url" content="{url}">
-    <meta property="og:image" content="https://vecturabook.com/pro/fleetdesk-windows.jpg">
-    <meta property="og:image:type" content="image/jpeg">
-    <meta property="og:image:width" content="900">
-    <meta property="og:image:height" content="656">
+{og_image}
     <meta property="og:locale" content="{LOCALE[lang]}">
 {og_alt}
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{e(t["title"])}">
     <meta name="twitter:description" content="{e(t["desc"])}">
-    <meta name="twitter:image" content="https://vecturabook.com/pro/fleetdesk-windows.jpg">
+    <meta name="twitter:image" content="{og_url}">
 <!-- Голова ниже (палитра «Манила», шрифты, значки) — та же, что у index.html. Страницу собирает один шаблон на три языка. -->
 {HEAD_SHARED}
     <link rel="stylesheet" href="pro.css">
@@ -232,17 +241,7 @@ def page(lang):
         </div>
     </section>
 
-    <section class="bg-white py-16 border-t border-gray-200">
-        <div class="container mx-auto px-6 max-w-5xl">
-            <h2 class="text-3xl font-bold text-gray-900 mb-4 pb-2 border-b-2 border-orange-500 inline-block">{e(t["shots_h"])}</h2>
-            <p class="pro-note mb-8">{e(t["shots_note"])}</p>
-            <div class="pro-shots">
-{shots}
-            </div>
-        </div>
-    </section>
-
-    <section class="py-16 border-t border-gray-200">
+{shots_section}    <section class="py-16 border-t border-gray-200">
         <div class="container mx-auto px-6 max-w-3xl text-center">
             <h2 class="text-3xl font-bold text-gray-900 mb-4">{e(t["contact_h"])}</h2>
             <p class="text-lg text-gray-700 mb-8">{e(t["contact"])}</p>
