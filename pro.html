@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VecturaBook Pro — fleet program for transport companies</title>
+    <script src="analytics.js"></script>
+    <script src="brand.js" defer></script>
+    <meta name="description" content="VecturaBook Pro: your company&#x27;s own server, a dispatcher window for Windows, Mac and Android, drivers, trucks, trailers, couplings, trips, branches, service and deadlines. Tailored to your company, with your data moved from the old system.">
+    <link rel="canonical" href="https://vecturabook.com/pro.html">
+    <link rel="alternate" hreflang="en" href="https://vecturabook.com/pro.html">
+    <link rel="alternate" hreflang="ru" href="https://vecturabook.com/pro-ru.html">
+    <link rel="alternate" hreflang="he" href="https://vecturabook.com/pro-he.html">
+    <link rel="alternate" hreflang="x-default" href="https://vecturabook.com/pro.html">
+    <link rel="icon" href="favicon.ico" sizes="any">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="VecturaBook">
+    <meta property="og:title" content="VecturaBook Pro — fleet program for transport companies">
+    <meta property="og:description" content="VecturaBook Pro: your company&#x27;s own server, a dispatcher window for Windows, Mac and Android, drivers, trucks, trailers, couplings, trips, branches, service and deadlines. Tailored to your company, with your data moved from the old system.">
+    <meta property="og:url" content="https://vecturabook.com/pro.html">
+    <meta property="og:image" content="https://vecturabook.com/pro/fleetdesk-windows.jpg">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:width" content="900">
+    <meta property="og:image:height" content="656">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:locale:alternate" content="ru_RU">
+    <meta property="og:locale:alternate" content="he_IL">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="VecturaBook Pro — fleet program for transport companies">
+    <meta name="twitter:description" content="VecturaBook Pro: your company&#x27;s own server, a dispatcher window for Windows, Mac and Android, drivers, trucks, trailers, couplings, trips, branches, service and deadlines. Tailored to your company, with your data moved from the old system.">
+    <meta name="twitter:image" content="https://vecturabook.com/pro/fleetdesk-windows.jpg">
+<!-- Голова ниже (палитра «Манила», шрифты, значки) — та же, что у index.html. Страницу собирает один шаблон на три языка. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 30.07.2026: палитра сайта = палитра приложения (пресет «Манила»,
+         канон domain/.../theme/ColorScheme.kt val LIGHT). Переопределяем шкалы
+         Tailwind, а не классы в разметке: так же перекрашивается и то, что
+         рисует signin.js на лету. -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              white: '#FBF7EF',          // поверхность карточек — тёплая, не белая
+              gray: {
+                50:  '#F6EFE4',          // фон страницы (background)
+                100: '#EFE4D0',          // тулбар
+                200: '#E6D9C2',
+                300: '#D8C9B0',          // border
+                400: '#A08B69',
+                500: '#7A6749',          // textSecondary
+                600: '#6B5941',
+                700: '#5A4A33',
+                800: '#43301B',          // font — основной текст
+                900: '#2E2418'           // самая тёмная сепия (кнопки, рамки)
+              },
+              orange: {
+                50:  '#FBEDE4',
+                100: '#F5DCCB',
+                200: '#EDC3A5',
+                300: '#E5A87F',
+                400: '#E8935B',          // акцент тёмных пресетов — ховер на тёмном
+                500: '#C9713F',          // АКЦЕНТ приложения
+                600: '#B05F2E',          // акцент «Крафта» — ховер на светлом
+                700: '#944E24',
+                800: '#78401E',
+                900: '#5C3218'
+              }
+            },
+            fontFamily: {
+              sans: ['Newsreader', 'Georgia', 'serif'],
+              display: ['Fraunces', 'Georgia', 'serif']
+            }
+          }
+        }
+      }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="pro.css">
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <nav class="container mx-auto px-6 py-4 flex flex-wrap justify-between items-center gap-y-2">
+        <a href="index.html" id="brand" class="text-2xl font-bold text-orange-500 tracking-tight">CargoLog</a>
+        <div class="flex flex-wrap items-center justify-end gap-x-4 gap-y-2">
+            <a href="https://my.vecturabook.com" target="_blank" rel="noopener"
+               class="bg-orange-500 hover:bg-orange-600 text-white text-sm font-semibold py-2 px-4 rounded-full transition">
+                Sign in
+            </a>
+            <div class="lang-switch flex items-baseline gap-4 text-sm font-medium">
+                <span class="text-orange-500 border-b-2 border-orange-500 pb-1">EN</span>
+                <a href="pro-ru.html" class="text-gray-500 hover:text-orange-500 transition">RU</a>
+                <a href="pro-he.html" class="text-gray-500 hover:text-orange-500 transition">HE</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="container mx-auto px-6 pt-10 pb-12 text-center">
+        <p class="mb-6"><a href="index.html" class="text-orange-600 hover:underline">← VecturaBook for drivers</a></p>
+        <h1 class="text-4xl md:text-6xl font-extrabold text-gray-900 mb-6 tracking-tight">
+            <span translate="no">VecturaBook Pro</span><br><span class="text-orange-500">for transport companies</span>
+        </h1>
+        <p class="text-lg md:text-xl text-gray-600 mb-10 max-w-3xl mx-auto">Your company&#x27;s own server, a dispatcher window and the driver&#x27;s VecturaBook app working together. Drivers, trucks, trailers, couplings, trips, branches, service and deadlines — in one place, on your own computers.</p>
+        <a href="mailto:germormdev@gmail.com?subject=VecturaBook%20Pro" class="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-7 rounded-full transition">
+            <i class="fa-solid fa-envelope"></i> Write to us
+        </a>
+    </header>
+
+    <section class="bg-white py-16 border-t border-gray-200">
+        <div class="container mx-auto px-6 max-w-5xl">
+            <h2 class="text-3xl font-bold text-gray-900 mb-8 pb-2 border-b-2 border-orange-500 inline-block">What&#x27;s inside</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+            <div class="pro-card"><h3 class="text-xl font-bold text-gray-900 mb-2"><i class="fa-solid fa-server text-orange-500 me-2"></i>Company server</h3><p class="text-gray-700">Runs on your own computer or server — Windows or Linux. The data stays inside the company, not in someone else&#x27;s cloud.</p></div>
+            <div class="pro-card"><h3 class="text-xl font-bold text-gray-900 mb-2"><i class="fa-solid fa-desktop text-orange-500 me-2"></i>Dispatcher window</h3><p class="text-gray-700">One program for the office and the road: Windows, Mac and Android. Live list of trucks, who drives what and where it is going.</p></div>
+            <div class="pro-card"><h3 class="text-xl font-bold text-gray-900 mb-2"><i class="fa-solid fa-id-card text-orange-500 me-2"></i>Drivers</h3><p class="text-gray-700">Who is working and who is not, which truck and trailer each driver has now, and the history of who drove what.</p></div>
+            <div class="pro-card"><h3 class="text-xl font-bold text-gray-900 mb-2"><i class="fa-solid fa-truck text-orange-500 me-2"></i>Trucks</h3><p class="text-gray-700">Tractors, rigid trucks and cars. The picture is drawn by the real wheel layout (4×2, 6×4, 8×4…), with mileage and engine hours.</p></div>
+            <div class="pro-card"><h3 class="text-xl font-bold text-gray-900 mb-2"><i class="fa-solid fa-trailer text-orange-500 me-2"></i>Trailers</h3><p class="text-gray-700">Every trailer by axles and body: where it stands, which truck it is coupled to, what is due on it.</p></div>
+            <div class="pro-card"><h3 class="text-xl font-bold text-gray-900 mb-2"><i class="fa-solid fa-link text-orange-500 me-2"></i>Couplings</h3><p class="text-gray-700">Driver + truck + trailer as one unit. Re-couple on the fly; every change is kept in the history.</p></div>
+            <div class="pro-card"><h3 class="text-xl font-bold text-gray-900 mb-2"><i class="fa-solid fa-route text-orange-500 me-2"></i>Trips</h3><p class="text-gray-700">Jobs with loading and unloading points. The driver&#x27;s status comes from the phone: accepted, on the way, unloaded.</p></div>
+            <div class="pro-card"><h3 class="text-xl font-bold text-gray-900 mb-2"><i class="fa-solid fa-code-branch text-orange-500 me-2"></i>Branches</h3><p class="text-gray-700">Each branch works with its own trucks and people; other branches are visible read-only.</p></div>
+            <div class="pro-card"><h3 class="text-xl font-bold text-gray-900 mb-2"><i class="fa-solid fa-screwdriver-wrench text-orange-500 me-2"></i>Service and deadlines</h3><p class="text-gray-700">Service and inspection by date, kilometres or engine hours. Overdue goes first, “due soon” is warned in advance.</p></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16">
+        <div class="container mx-auto px-6 max-w-5xl">
+            <div class="bg-gray-900 text-white rounded-2xl p-8">
+                <h2 class="text-3xl font-bold mb-8">Built around your company</h2>
+                <div class="grid md:grid-cols-3 gap-8">
+            <div><h3 class="text-xl font-bold mb-2"><i class="fa-solid fa-pen-ruler text-orange-500 me-2"></i>Adapted to your tasks</h3><p class="text-gray-300">VecturaBook Pro is finished for the work of a specific company: your cargo types, your documents, your rules for drivers and branches. What you need is added; what you don&#x27;t need is not in the way.</p></div>
+            <div><h3 class="text-xl font-bold mb-2"><i class="fa-solid fa-palette text-orange-500 me-2"></i>Your own interface</h3><p class="text-gray-300">Sections, fields, wording, order of columns and the look of the window can be changed for you. The screenshots below are the starting point, not a fixed form.</p></div>
+            <div><h3 class="text-xl font-bold mb-2"><i class="fa-solid fa-right-left text-orange-500 me-2"></i>Moving your data</h3><p class="text-gray-300">Drivers, trucks, trailers, deadlines and history are moved from your previous system — Excel tables, an old program or a database. You start with your own data, not an empty screen.</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-white py-16 border-t border-gray-200">
+        <div class="container mx-auto px-6 max-w-5xl">
+            <h2 class="text-3xl font-bold text-gray-900 mb-4 pb-2 border-b-2 border-orange-500 inline-block">What is already done</h2>
+            <p class="pro-note mb-8">Screenshots of the current version on demo data. The interface is adjusted for each client — what you see here is changed to fit your company.</p>
+            <div class="pro-shots">
+            <figure class="pro-shot"><a href="pro/fleetdesk-windows.jpg" target="_blank" rel="noopener"><img src="pro/fleetdesk-windows.jpg" alt="Windows: the “Trucks” section — list and the truck card: coupling, current trip, service, coupling history" width="900" height="656" loading="lazy"></a><figcaption>Windows: the “Trucks” section — list and the truck card: coupling, current trip, service, coupling history</figcaption></figure>
+            <figure class="pro-shot"><a href="pro/fleetdesk-mac-machines.jpg" target="_blank" rel="noopener"><img src="pro/fleetdesk-mac-machines.jpg" alt="Mac: the same window — every truck with its driver, trailer, trip and deadlines" width="900" height="493" loading="lazy"></a><figcaption>Mac: the same window — every truck with its driver, trailer, trip and deadlines</figcaption></figure>
+            <figure class="pro-shot"><a href="pro/fleetdesk-mac-service.jpg" target="_blank" rel="noopener"><img src="pro/fleetdesk-mac-service.jpg" alt="Mac: “Service and inspection” — overdue first, by date, kilometres or engine hours" width="900" height="493" loading="lazy"></a><figcaption>Mac: “Service and inspection” — overdue first, by date, kilometres or engine hours</figcaption></figure>
+            <figure class="pro-shot pro-shot-phone"><a href="pro/fleetdesk-android.jpg" target="_blank" rel="noopener"><img src="pro/fleetdesk-android.jpg" alt="Android: the truck card on a phone" width="420" height="933" loading="lazy"></a><figcaption>Android: the truck card on a phone</figcaption></figure>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 border-t border-gray-200">
+        <div class="container mx-auto px-6 max-w-3xl text-center">
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">Let&#x27;s talk about your fleet</h2>
+            <p class="text-lg text-gray-700 mb-8">Tell us how many trucks and branches you have and what you work in now. We will answer by e-mail.</p>
+            <a href="mailto:germormdev@gmail.com?subject=VecturaBook%20Pro" class="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-7 rounded-full transition">
+                <i class="fa-solid fa-envelope"></i> germormdev@gmail.com
+            </a>
+        </div>
+    </section>
+
+    <footer class="bg-gray-900 text-white py-10">
+        <div class="container mx-auto px-6 text-center text-sm flex flex-wrap justify-center gap-6">
+            <a href="index.html" class="text-gray-400 hover:text-orange-400 transition">VecturaBook for drivers</a>
+            <a href="privacy.html" class="text-gray-400 hover:text-orange-400 transition">Privacy Policy</a>
+            <a href="mailto:germormdev@gmail.com" class="text-gray-400 hover:text-orange-400 transition">germormdev@gmail.com</a>
+        </div>
+    </footer>
+</body>
+</html>

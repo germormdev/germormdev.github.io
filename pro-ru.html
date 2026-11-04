@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VecturaBook Pro — программа для транспортных компаний</title>
+    <script src="analytics.js"></script>
+    <script src="brand.js" defer></script>
+    <meta name="description" content="VecturaBook Pro: свой сервер фирмы, окно диспетчера для Windows, Мака и Android, водители, машины, прицепы, сцепки, рейсы, филиалы, ТО и сроки. Дорабатывается под фирму, данные переносятся из прежней системы.">
+    <link rel="canonical" href="https://vecturabook.com/pro-ru.html">
+    <link rel="alternate" hreflang="en" href="https://vecturabook.com/pro.html">
+    <link rel="alternate" hreflang="ru" href="https://vecturabook.com/pro-ru.html">
+    <link rel="alternate" hreflang="he" href="https://vecturabook.com/pro-he.html">
+    <link rel="alternate" hreflang="x-default" href="https://vecturabook.com/pro.html">
+    <link rel="icon" href="favicon.ico" sizes="any">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="VecturaBook">
+    <meta property="og:title" content="VecturaBook Pro — программа для транспортных компаний">
+    <meta property="og:description" content="VecturaBook Pro: свой сервер фирмы, окно диспетчера для Windows, Мака и Android, водители, машины, прицепы, сцепки, рейсы, филиалы, ТО и сроки. Дорабатывается под фирму, данные переносятся из прежней системы.">
+    <meta property="og:url" content="https://vecturabook.com/pro-ru.html">
+    <meta property="og:image" content="https://vecturabook.com/pro/fleetdesk-windows.jpg">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:width" content="900">
+    <meta property="og:image:height" content="656">
+    <meta property="og:locale" content="ru_RU">
+    <meta property="og:locale:alternate" content="en_US">
+    <meta property="og:locale:alternate" content="he_IL">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="VecturaBook Pro — программа для транспортных компаний">
+    <meta name="twitter:description" content="VecturaBook Pro: свой сервер фирмы, окно диспетчера для Windows, Мака и Android, водители, машины, прицепы, сцепки, рейсы, филиалы, ТО и сроки. Дорабатывается под фирму, данные переносятся из прежней системы.">
+    <meta name="twitter:image" content="https://vecturabook.com/pro/fleetdesk-windows.jpg">
+<!-- Голова ниже (палитра «Манила», шрифты, значки) — та же, что у index.html. Страницу собирает один шаблон на три языка. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 30.07.2026: палитра сайта = палитра приложения (пресет «Манила»,
+         канон domain/.../theme/ColorScheme.kt val LIGHT). Переопределяем шкалы
+         Tailwind, а не классы в разметке: так же перекрашивается и то, что
+         рисует signin.js на лету. -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              white: '#FBF7EF',          // поверхность карточек — тёплая, не белая
+              gray: {
+                50:  '#F6EFE4',          // фон страницы (background)
+                100: '#EFE4D0',          // тулбар
+                200: '#E6D9C2',
+                300: '#D8C9B0',          // border
+                400: '#A08B69',
+                500: '#7A6749',          // textSecondary
+                600: '#6B5941',
+                700: '#5A4A33',
+                800: '#43301B',          // font — основной текст
+                900: '#2E2418'           // самая тёмная сепия (кнопки, рамки)
+              },
+              orange: {
+                50:  '#FBEDE4',
+                100: '#F5DCCB',
+                200: '#EDC3A5',
+                300: '#E5A87F',
+                400: '#E8935B',          // акцент тёмных пресетов — ховер на тёмном
+                500: '#C9713F',          // АКЦЕНТ приложения
+                600: '#B05F2E',          // акцент «Крафта» — ховер на светлом
+                700: '#944E24',
+                800: '#78401E',
+                900: '#5C3218'
+              }
+            },
+            fontFamily: {
+              sans: ['Newsreader', 'Georgia', 'serif'],
+              display: ['Fraunces', 'Georgia', 'serif']
+            }
+          }
+        }
+      }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="pro.css">
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <nav class="container mx-auto px-6 py-4 flex flex-wrap justify-between items-center gap-y-2">
+        <a href="ru.html" id="brand" class="text-2xl font-bold text-orange-500 tracking-tight">CargoLog</a>
+        <div class="flex flex-wrap items-center justify-end gap-x-4 gap-y-2">
+            <a href="https://my.vecturabook.com" target="_blank" rel="noopener"
+               class="bg-orange-500 hover:bg-orange-600 text-white text-sm font-semibold py-2 px-4 rounded-full transition">
+                Войти
+            </a>
+            <div class="lang-switch flex items-baseline gap-4 text-sm font-medium">
+                <a href="pro.html" class="text-gray-500 hover:text-orange-500 transition">EN</a>
+                <span class="text-orange-500 border-b-2 border-orange-500 pb-1">RU</span>
+                <a href="pro-he.html" class="text-gray-500 hover:text-orange-500 transition">HE</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="container mx-auto px-6 pt-10 pb-12 text-center">
+        <p class="mb-6"><a href="ru.html" class="text-orange-600 hover:underline">← VecturaBook для водителей</a></p>
+        <h1 class="text-4xl md:text-6xl font-extrabold text-gray-900 mb-6 tracking-tight">
+            <span translate="no">VecturaBook Pro</span><br><span class="text-orange-500">для транспортных компаний</span>
+        </h1>
+        <p class="text-lg md:text-xl text-gray-600 mb-10 max-w-3xl mx-auto">Свой сервер фирмы, окно диспетчера и приложение VecturaBook у водителей — вместе. Водители, машины, прицепы, сцепки, рейсы, филиалы, ТО и сроки — в одном месте, на ваших компьютерах.</p>
+        <a href="mailto:germormdev@gmail.com?subject=VecturaBook%20Pro" class="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-7 rounded-full transition">
+            <i class="fa-solid fa-envelope"></i> Написать нам
+        </a>
+    </header>
+
+    <section class="bg-white py-16 border-t border-gray-200">
+        <div class="container mx-auto px-6 max-w-5xl">
+            <h2 class="text-3xl font-bold text-gray-900 mb-8 pb-2 border-b-2 border-orange-500 inline-block">Что внутри</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+            <div class="pro-card"><h3 class="text-xl font-bold text-gray-900 mb-2"><i class="fa-solid fa-server text-orange-500 me-2"></i>Сервер фирмы</h3><p class="text-gray-700">Стоит на вашем компьютере или сервере — Windows или Linux. Данные остаются в фирме, а не в чужом облаке.</p></div>
+            <div class="pro-card"><h3 class="text-xl font-bold text-gray-900 mb-2"><i class="fa-solid fa-desktop text-orange-500 me-2"></i>Окно диспетчера</h3><p class="text-gray-700">Одна программа для офиса и дороги: Windows, Мак и Android. Живой список машин: кто на чём едет и куда.</p></div>
+            <div class="pro-card"><h3 class="text-xl font-bold text-gray-900 mb-2"><i class="fa-solid fa-id-card text-orange-500 me-2"></i>Водители</h3><p class="text-gray-700">Кто в работе, а кто нет, какая машина и прицеп у водителя сейчас, история — кто на чём ездил.</p></div>
+            <div class="pro-card"><h3 class="text-xl font-bold text-gray-900 mb-2"><i class="fa-solid fa-truck text-orange-500 me-2"></i>Машины</h3><p class="text-gray-700">Тягачи, грузовики и легковые. Рисунок — по настоящей колёсной формуле (4×2, 6×4, 8×4…), пробег и моточасы.</p></div>
+            <div class="pro-card"><h3 class="text-xl font-bold text-gray-900 mb-2"><i class="fa-solid fa-trailer text-orange-500 me-2"></i>Прицепы</h3><p class="text-gray-700">Каждый прицеп по осям и кузову: где стоит, с какой машиной сцеплен, что по нему подходит.</p></div>
+            <div class="pro-card"><h3 class="text-xl font-bold text-gray-900 mb-2"><i class="fa-solid fa-link text-orange-500 me-2"></i>Сцепки</h3><p class="text-gray-700">Водитель + машина + прицеп одной связкой. Перецепка на ходу, каждая смена остаётся в истории.</p></div>
+            <div class="pro-card"><h3 class="text-xl font-bold text-gray-900 mb-2"><i class="fa-solid fa-route text-orange-500 me-2"></i>Рейсы</h3><p class="text-gray-700">Задания с точками погрузки и разгрузки. Состояние приходит с телефона водителя: принято, в пути, разгружен.</p></div>
+            <div class="pro-card"><h3 class="text-xl font-bold text-gray-900 mb-2"><i class="fa-solid fa-code-branch text-orange-500 me-2"></i>Филиалы</h3><p class="text-gray-700">Каждый филиал ведёт свои машины и людей; чужие филиалы видны только для чтения.</p></div>
+            <div class="pro-card"><h3 class="text-xl font-bold text-gray-900 mb-2"><i class="fa-solid fa-screwdriver-wrench text-orange-500 me-2"></i>ТО и сроки</h3><p class="text-gray-700">ТО и техосмотр по дате, километрам или моточасам. Просроченное — первым, «скоро» — предупреждение заранее.</p></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16">
+        <div class="container mx-auto px-6 max-w-5xl">
+            <div class="bg-gray-900 text-white rounded-2xl p-8">
+                <h2 class="text-3xl font-bold mb-8">Под вашу фирму</h2>
+                <div class="grid md:grid-cols-3 gap-8">
+            <div><h3 class="text-xl font-bold mb-2"><i class="fa-solid fa-pen-ruler text-orange-500 me-2"></i>Дорабатывается под ваши задачи</h3><p class="text-gray-300">VecturaBook Pro доводится под работу конкретной фирмы: ваши грузы, ваши документы, ваши правила для водителей и филиалов. Нужное добавляется, ненужное не мешает.</p></div>
+            <div><h3 class="text-xl font-bold mb-2"><i class="fa-solid fa-palette text-orange-500 me-2"></i>Свой интерфейс</h3><p class="text-gray-300">Разделы, поля, надписи, порядок колонок и вид окна меняются под вас. Снимки ниже — отправная точка, а не застывшая форма.</p></div>
+            <div><h3 class="text-xl font-bold mb-2"><i class="fa-solid fa-right-left text-orange-500 me-2"></i>Перенос данных</h3><p class="text-gray-300">Водители, машины, прицепы, сроки и история переносятся из вашей прежней системы — таблиц Excel, старой программы или базы. Вы начинаете со своими данными, а не с пустого экрана.</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-white py-16 border-t border-gray-200">
+        <div class="container mx-auto px-6 max-w-5xl">
+            <h2 class="text-3xl font-bold text-gray-900 mb-4 pb-2 border-b-2 border-orange-500 inline-block">Что уже сделано</h2>
+            <p class="pro-note mb-8">Снимки нынешней версии на проверочных данных. Интерфейс подстраивается под каждого клиента — то, что вы видите, меняется под вашу фирму.</p>
+            <div class="pro-shots">
+            <figure class="pro-shot"><a href="pro/fleetdesk-windows.jpg" target="_blank" rel="noopener"><img src="pro/fleetdesk-windows.jpg" alt="Windows: раздел «Машины» — список и карточка машины: сцепка, рейс сейчас, ТО, история сцепки" width="900" height="656" loading="lazy"></a><figcaption>Windows: раздел «Машины» — список и карточка машины: сцепка, рейс сейчас, ТО, история сцепки</figcaption></figure>
+            <figure class="pro-shot"><a href="pro/fleetdesk-mac-machines.jpg" target="_blank" rel="noopener"><img src="pro/fleetdesk-mac-machines.jpg" alt="Мак: то же окно — каждая машина с водителем, прицепом, рейсом и сроками" width="900" height="493" loading="lazy"></a><figcaption>Мак: то же окно — каждая машина с водителем, прицепом, рейсом и сроками</figcaption></figure>
+            <figure class="pro-shot"><a href="pro/fleetdesk-mac-service.jpg" target="_blank" rel="noopener"><img src="pro/fleetdesk-mac-service.jpg" alt="Мак: «ТО и техосмотр» — просроченное первым, по дате, километрам или моточасам" width="900" height="493" loading="lazy"></a><figcaption>Мак: «ТО и техосмотр» — просроченное первым, по дате, километрам или моточасам</figcaption></figure>
+            <figure class="pro-shot pro-shot-phone"><a href="pro/fleetdesk-android.jpg" target="_blank" rel="noopener"><img src="pro/fleetdesk-android.jpg" alt="Android: карточка машины на телефоне" width="420" height="933" loading="lazy"></a><figcaption>Android: карточка машины на телефоне</figcaption></figure>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 border-t border-gray-200">
+        <div class="container mx-auto px-6 max-w-3xl text-center">
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">Поговорим о вашем парке</h2>
+            <p class="text-lg text-gray-700 mb-8">Напишите, сколько у вас машин и филиалов и в чём вы работаете сейчас. Ответим письмом.</p>
+            <a href="mailto:germormdev@gmail.com?subject=VecturaBook%20Pro" class="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-7 rounded-full transition">
+                <i class="fa-solid fa-envelope"></i> germormdev@gmail.com
+            </a>
+        </div>
+    </section>
+
+    <footer class="bg-gray-900 text-white py-10">
+        <div class="container mx-auto px-6 text-center text-sm flex flex-wrap justify-center gap-6">
+            <a href="ru.html" class="text-gray-400 hover:text-orange-400 transition">VecturaBook для водителей</a>
+            <a href="privacy.html" class="text-gray-400 hover:text-orange-400 transition">Политика конфиденциальности</a>
+            <a href="mailto:germormdev@gmail.com" class="text-gray-400 hover:text-orange-400 transition">germormdev@gmail.com</a>
+        </div>
+    </footer>
+</body>
+</html>

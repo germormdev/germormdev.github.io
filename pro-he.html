@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VecturaBook Pro — תוכנה לחברות הובלה</title>
+    <script src="analytics.js"></script>
+    <script src="brand.js" defer></script>
+    <meta name="description" content="VecturaBook Pro: שרת משלכם בחברה, חלון סדרן ל-Windows, Mac ואנדרואיד, נהגים, משאיות, נגררים, צימודים, נסיעות, סניפים, טיפולים ומועדים. מותאם לחברה שלכם, והנתונים מועברים מהמערכת הקודמת.">
+    <link rel="canonical" href="https://vecturabook.com/pro-he.html">
+    <link rel="alternate" hreflang="en" href="https://vecturabook.com/pro.html">
+    <link rel="alternate" hreflang="ru" href="https://vecturabook.com/pro-ru.html">
+    <link rel="alternate" hreflang="he" href="https://vecturabook.com/pro-he.html">
+    <link rel="alternate" hreflang="x-default" href="https://vecturabook.com/pro.html">
+    <link rel="icon" href="favicon.ico" sizes="any">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="VecturaBook">
+    <meta property="og:title" content="VecturaBook Pro — תוכנה לחברות הובלה">
+    <meta property="og:description" content="VecturaBook Pro: שרת משלכם בחברה, חלון סדרן ל-Windows, Mac ואנדרואיד, נהגים, משאיות, נגררים, צימודים, נסיעות, סניפים, טיפולים ומועדים. מותאם לחברה שלכם, והנתונים מועברים מהמערכת הקודמת.">
+    <meta property="og:url" content="https://vecturabook.com/pro-he.html">
+    <meta property="og:image" content="https://vecturabook.com/pro/fleetdesk-windows.jpg">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:width" content="900">
+    <meta property="og:image:height" content="656">
+    <meta property="og:locale" content="he_IL">
+    <meta property="og:locale:alternate" content="en_US">
+    <meta property="og:locale:alternate" content="ru_RU">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="VecturaBook Pro — תוכנה לחברות הובלה">
+    <meta name="twitter:description" content="VecturaBook Pro: שרת משלכם בחברה, חלון סדרן ל-Windows, Mac ואנדרואיד, נהגים, משאיות, נגררים, צימודים, נסיעות, סניפים, טיפולים ומועדים. מותאם לחברה שלכם, והנתונים מועברים מהמערכת הקודמת.">
+    <meta name="twitter:image" content="https://vecturabook.com/pro/fleetdesk-windows.jpg">
+<!-- Голова ниже (палитра «Манила», шрифты, значки) — та же, что у index.html. Страницу собирает один шаблон на три языка. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 30.07.2026: палитра сайта = палитра приложения (пресет «Манила»,
+         канон domain/.../theme/ColorScheme.kt val LIGHT). Переопределяем шкалы
+         Tailwind, а не классы в разметке: так же перекрашивается и то, что
+         рисует signin.js на лету. -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              white: '#FBF7EF',          // поверхность карточек — тёплая, не белая
+              gray: {
+                50:  '#F6EFE4',          // фон страницы (background)
+                100: '#EFE4D0',          // тулбар
+                200: '#E6D9C2',
+                300: '#D8C9B0',          // border
+                400: '#A08B69',
+                500: '#7A6749',          // textSecondary
+                600: '#6B5941',
+                700: '#5A4A33',
+                800: '#43301B',          // font — основной текст
+                900: '#2E2418'           // самая тёмная сепия (кнопки, рамки)
+              },
+              orange: {
+                50:  '#FBEDE4',
+                100: '#F5DCCB',
+                200: '#EDC3A5',
+                300: '#E5A87F',
+                400: '#E8935B',          // акцент тёмных пресетов — ховер на тёмном
+                500: '#C9713F',          // АКЦЕНТ приложения
+                600: '#B05F2E',          // акцент «Крафта» — ховер на светлом
+                700: '#944E24',
+                800: '#78401E',
+                900: '#5C3218'
+              }
+            },
+            fontFamily: {
+              sans: ['Newsreader', 'Georgia', 'serif'],
+              display: ['Fraunces', 'Georgia', 'serif']
+            }
+          }
+        }
+      }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="pro.css">
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <nav class="container mx-auto px-6 py-4 flex flex-wrap justify-between items-center gap-y-2">
+        <a href="he.html" id="brand" class="text-2xl font-bold text-orange-500 tracking-tight">CargoLog</a>
+        <div class="flex flex-wrap items-center justify-end gap-x-4 gap-y-2 flex-row-reverse">
+            <a href="https://my.vecturabook.com" target="_blank" rel="noopener"
+               class="bg-orange-500 hover:bg-orange-600 text-white text-sm font-semibold py-2 px-4 rounded-full transition">
+                כניסה לאפליקציה
+            </a>
+            <div class="lang-switch flex items-baseline gap-4 text-sm font-medium" dir="ltr">
+                <a href="pro.html" class="text-gray-500 hover:text-orange-500 transition">EN</a>
+                <a href="pro-ru.html" class="text-gray-500 hover:text-orange-500 transition">RU</a>
+                <span class="text-orange-500 border-b-2 border-orange-500 pb-1">HE</span>
+            </div>
+        </div>
+    </nav>
+
+    <header class="container mx-auto px-6 pt-10 pb-12 text-center">
+        <p class="mb-6"><a href="he.html" class="text-orange-600 hover:underline">VecturaBook לנהגים →</a></p>
+        <h1 class="text-4xl md:text-6xl font-extrabold text-gray-900 mb-6 tracking-tight">
+            <span translate="no">VecturaBook Pro</span><br><span class="text-orange-500">לחברות הובלה</span>
+        </h1>
+        <p class="text-lg md:text-xl text-gray-600 mb-10 max-w-3xl mx-auto">שרת משלכם בחברה, חלון סדרן ואפליקציית VecturaBook אצל הנהגים — עובדים יחד. נהגים, משאיות, נגררים, צימודים, נסיעות, סניפים, טיפולים ומועדים — במקום אחד, על המחשבים שלכם.</p>
+        <a href="mailto:germormdev@gmail.com?subject=VecturaBook%20Pro" class="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-7 rounded-full transition">
+            <i class="fa-solid fa-envelope"></i> כתבו לנו
+        </a>
+    </header>
+
+    <section class="bg-white py-16 border-t border-gray-200">
+        <div class="container mx-auto px-6 max-w-5xl">
+            <h2 class="text-3xl font-bold text-gray-900 mb-8 pb-2 border-b-2 border-orange-500 inline-block">מה יש בפנים</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+            <div class="pro-card"><h3 class="text-xl font-bold text-gray-900 mb-2"><i class="fa-solid fa-server text-orange-500 me-2"></i>שרת של החברה</h3><p class="text-gray-700">פועל על מחשב או שרת שלכם — Windows או Linux. הנתונים נשארים בחברה, לא בענן של מישהו אחר.</p></div>
+            <div class="pro-card"><h3 class="text-xl font-bold text-gray-900 mb-2"><i class="fa-solid fa-desktop text-orange-500 me-2"></i>חלון סדרן</h3><p class="text-gray-700">תוכנה אחת למשרד ולדרך: Windows, Mac ואנדרואיד. רשימה חיה של המשאיות: מי נוהג במה ולאן נוסעים.</p></div>
+            <div class="pro-card"><h3 class="text-xl font-bold text-gray-900 mb-2"><i class="fa-solid fa-id-card text-orange-500 me-2"></i>נהגים</h3><p class="text-gray-700">מי בעבודה ומי לא, איזו משאית ואיזה נגרר יש לכל נהג עכשיו, והיסטוריה — מי נהג במה.</p></div>
+            <div class="pro-card"><h3 class="text-xl font-bold text-gray-900 mb-2"><i class="fa-solid fa-truck text-orange-500 me-2"></i>משאיות</h3><p class="text-gray-700">ראשי גרר, משאיות ורכבים פרטיים. הציור לפי תצורת הסרנים האמיתית (4×2, 6×4, 8×4…), עם קילומטראז&#x27; ושעות מנוע.</p></div>
+            <div class="pro-card"><h3 class="text-xl font-bold text-gray-900 mb-2"><i class="fa-solid fa-trailer text-orange-500 me-2"></i>נגררים</h3><p class="text-gray-700">כל נגרר לפי סרנים ומרכב: איפה הוא עומד, לאיזו משאית הוא מחובר, מה מתקרב אצלו.</p></div>
+            <div class="pro-card"><h3 class="text-xl font-bold text-gray-900 mb-2"><i class="fa-solid fa-link text-orange-500 me-2"></i>צימודים</h3><p class="text-gray-700">נהג + משאית + נגרר כיחידה אחת. החלפה תוך כדי עבודה, וכל שינוי נשמר בהיסטוריה.</p></div>
+            <div class="pro-card"><h3 class="text-xl font-bold text-gray-900 mb-2"><i class="fa-solid fa-route text-orange-500 me-2"></i>נסיעות</h3><p class="text-gray-700">משימות עם נקודות העמסה ופריקה. המצב מגיע מהטלפון של הנהג: התקבל, בדרך, נפרק.</p></div>
+            <div class="pro-card"><h3 class="text-xl font-bold text-gray-900 mb-2"><i class="fa-solid fa-code-branch text-orange-500 me-2"></i>סניפים</h3><p class="text-gray-700">כל סניף מנהל את המשאיות והאנשים שלו; סניפים אחרים גלויים לקריאה בלבד.</p></div>
+            <div class="pro-card"><h3 class="text-xl font-bold text-gray-900 mb-2"><i class="fa-solid fa-screwdriver-wrench text-orange-500 me-2"></i>טיפולים ומועדים</h3><p class="text-gray-700">טיפול וטסט לפי תאריך, קילומטרים או שעות מנוע. מה שעבר מועדו — ראשון, ו„בקרוב” — התראה מראש.</p></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16">
+        <div class="container mx-auto px-6 max-w-5xl">
+            <div class="bg-gray-900 text-white rounded-2xl p-8">
+                <h2 class="text-3xl font-bold mb-8">בנוי סביב החברה שלכם</h2>
+                <div class="grid md:grid-cols-3 gap-8">
+            <div><h3 class="text-xl font-bold mb-2"><i class="fa-solid fa-pen-ruler text-orange-500 me-2"></i>מותאם למשימות שלכם</h3><p class="text-gray-300">VecturaBook Pro מושלם לעבודה של חברה מסוימת: סוגי המטען שלכם, המסמכים שלכם, הכללים שלכם לנהגים ולסניפים. מה שצריך — מתווסף, מה שלא צריך — לא מפריע.</p></div>
+            <div><h3 class="text-xl font-bold mb-2"><i class="fa-solid fa-palette text-orange-500 me-2"></i>ממשק משלכם</h3><p class="text-gray-300">אפשר לשנות בשבילכם את הלשוניות, השדות, הכיתובים, סדר העמודות ומראה החלון. צילומי המסך למטה הם נקודת התחלה, לא צורה קבועה.</p></div>
+            <div><h3 class="text-xl font-bold mb-2"><i class="fa-solid fa-right-left text-orange-500 me-2"></i>העברת נתונים</h3><p class="text-gray-300">נהגים, משאיות, נגררים, מועדים והיסטוריה מועברים מהמערכת הקודמת שלכם — טבלאות Excel, תוכנה ישנה או מסד נתונים. מתחילים עם הנתונים שלכם, לא ממסך ריק.</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-white py-16 border-t border-gray-200">
+        <div class="container mx-auto px-6 max-w-5xl">
+            <h2 class="text-3xl font-bold text-gray-900 mb-4 pb-2 border-b-2 border-orange-500 inline-block">מה כבר עשוי</h2>
+            <p class="pro-note mb-8">צילומי מסך של הגרסה הנוכחית על נתוני הדגמה. הממשק מותאם לכל לקוח — מה שרואים כאן משתנה לפי החברה שלכם.</p>
+            <div class="pro-shots">
+            <figure class="pro-shot"><a href="pro/fleetdesk-windows.jpg" target="_blank" rel="noopener"><img src="pro/fleetdesk-windows.jpg" alt="Windows: הלשונית „משאיות” — רשימה וכרטיס משאית: צימוד, נסיעה נוכחית, טיפולים, היסטוריית צימוד" width="900" height="656" loading="lazy"></a><figcaption>Windows: הלשונית „משאיות” — רשימה וכרטיס משאית: צימוד, נסיעה נוכחית, טיפולים, היסטוריית צימוד</figcaption></figure>
+            <figure class="pro-shot"><a href="pro/fleetdesk-mac-machines.jpg" target="_blank" rel="noopener"><img src="pro/fleetdesk-mac-machines.jpg" alt="Mac: אותו חלון — כל משאית עם הנהג, הנגרר, הנסיעה והמועדים שלה" width="900" height="493" loading="lazy"></a><figcaption>Mac: אותו חלון — כל משאית עם הנהג, הנגרר, הנסיעה והמועדים שלה</figcaption></figure>
+            <figure class="pro-shot"><a href="pro/fleetdesk-mac-service.jpg" target="_blank" rel="noopener"><img src="pro/fleetdesk-mac-service.jpg" alt="Mac: „טיפולים וטסט” — מה שעבר מועדו ראשון, לפי תאריך, קילומטרים או שעות מנוע" width="900" height="493" loading="lazy"></a><figcaption>Mac: „טיפולים וטסט” — מה שעבר מועדו ראשון, לפי תאריך, קילומטרים או שעות מנוע</figcaption></figure>
+            <figure class="pro-shot pro-shot-phone"><a href="pro/fleetdesk-android.jpg" target="_blank" rel="noopener"><img src="pro/fleetdesk-android.jpg" alt="אנדרואיד: כרטיס משאית בטלפון" width="420" height="933" loading="lazy"></a><figcaption>אנדרואיד: כרטיס משאית בטלפון</figcaption></figure>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 border-t border-gray-200">
+        <div class="container mx-auto px-6 max-w-3xl text-center">
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">בואו נדבר על הצי שלכם</h2>
+            <p class="text-lg text-gray-700 mb-8">ספרו לנו כמה משאיות וסניפים יש לכם ובמה אתם עובדים היום. נענה במייל.</p>
+            <a href="mailto:germormdev@gmail.com?subject=VecturaBook%20Pro" class="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-7 rounded-full transition">
+                <i class="fa-solid fa-envelope"></i> germormdev@gmail.com
+            </a>
+        </div>
+    </section>
+
+    <footer class="bg-gray-900 text-white py-10">
+        <div class="container mx-auto px-6 text-center text-sm flex flex-wrap justify-center gap-6">
+            <a href="he.html" class="text-gray-400 hover:text-orange-400 transition">VecturaBook לנהגים</a>
+            <a href="privacy.html" class="text-gray-400 hover:text-orange-400 transition">מדיניות פרטיות</a>
+            <a href="mailto:germormdev@gmail.com" class="text-gray-400 hover:text-orange-400 transition">germormdev@gmail.com</a>
+        </div>
+    </footer>
+</body>
+</html>

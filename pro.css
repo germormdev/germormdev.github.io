@@ -1,0 +1,35 @@
+/* Страницы VecturaBook Pro (pro.html, pro-ru.html, pro-he.html; собирает pro_pages.py). Бумага, шапка и кнопки — как на главной. */
+body {
+    background-color: #F6EFE4;
+    background-image: repeating-linear-gradient(to bottom, rgba(122, 103, 73, 0.055) 0px, rgba(122, 103, 73, 0.055) 1px, transparent 1px, transparent 34px);
+    -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3 { font-family: 'Fraunces', Georgia, serif; letter-spacing: -0.01em; }
+nav {
+    position: sticky; top: 0; z-index: 40;
+    backdrop-filter: saturate(140%) blur(8px);
+    -webkit-backdrop-filter: saturate(140%) blur(8px);
+    background: rgba(246, 239, 228, 0.92);
+    border-bottom: 1px solid #D8C9B0;
+}
+a.bg-orange-500, a.bg-orange-600 { color: #171310; border-radius: 0.9rem; box-shadow: 0 1px 0 rgba(67, 48, 27, 0.18); }
+
+/* Карточки возможностей — как «What VecturaBook does» на главной. */
+.pro-card {
+    background: #FBF7EF; border: 1px solid #D8C9B0; border-inline-start: 3px solid #C9713F;
+    border-radius: 14px; padding: 16px 18px;
+}
+
+.pro-note { color: #5A4A33; max-width: 46rem; }
+
+/* Снимки окна диспетчера: широкие — по два в ряд, телефонный — узкой колонкой. */
+.pro-shots { display: grid; gap: 28px; grid-template-columns: 1fr; align-items: start; }
+@media (min-width: 768px) { .pro-shots { grid-template-columns: 1fr 1fr; } }
+.pro-shot { margin: 0; min-width: 0; }
+.pro-shot img {
+    display: block; width: 100%; height: auto;
+    border: 1px solid #D8C9B0; border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(67, 48, 27, .12);
+}
+.pro-shot-phone { max-width: 300px; justify-self: center; }
+.pro-shot figcaption { margin-top: 10px; font-size: .95rem; color: #5A4A33; line-height: 1.4; }

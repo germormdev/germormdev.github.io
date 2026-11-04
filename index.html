@@ -260,7 +260,11 @@
 
     <nav class="container mx-auto px-6 py-4 flex flex-wrap justify-between items-center gap-y-2">
         <div id="brand" class="text-2xl font-bold text-orange-500 tracking-tight">CargoLog</div>
-        <div class="flex items-center gap-4">
+        <div class="flex flex-wrap items-center justify-end gap-x-4 gap-y-2">
+            <a href="pro.html" translate="no"
+               class="border-2 border-orange-500 text-orange-600 hover:bg-orange-500 hover:text-gray-900 text-sm font-semibold py-1.5 px-4 rounded-full transition">
+                VecturaBook Pro
+            </a>
             <a href="https://my.vecturabook.com" target="_blank" rel="noopener"
                class="bg-orange-500 hover:bg-orange-600 text-white text-sm font-semibold py-2 px-4 rounded-full transition">
                 Sign in
@@ -334,6 +338,15 @@
         </div>
 
     </header>
+
+    <!-- VecturaBook Pro (решение German 04.11.2026): заметная ссылка на главной, не в подвале. Страница — pro_pages.py. -->
+    <section class="container mx-auto px-6 mb-14 max-w-3xl">
+        <a href="pro.html" class="block bg-gray-900 text-white rounded-2xl p-6 md:p-8 shadow-lg hover:shadow-xl transition">
+            <h2 class="text-2xl md:text-3xl font-bold mb-3"><i class="fa-solid fa-truck-fast text-orange-500 mr-3"></i>VecturaBook Pro — for transport companies</h2>
+            <p class="text-gray-300 mb-5">Your own server, a dispatcher window for Windows, Mac and Android, and the driver app connected to it. Tailored to your company, with your data moved from the old system.</p>
+            <span class="inline-flex items-center gap-2 bg-orange-500 text-gray-900 font-semibold py-2 px-6 rounded-full">About VecturaBook Pro <i class="fa-solid fa-arrow-right text-sm"></i></span>
+        </a>
+    </section>
 
     <!-- Скриншоты — динамический контейнер. Если в Firestore пусто, signin.js
          показывает fallback (screen1/2/3.png). -->
@@ -549,7 +562,7 @@
 
             <div class="mt-12 bg-gray-900 text-white rounded-2xl p-8">
                 <h3 class="text-2xl font-bold mb-3"><i class="fa-solid fa-truck-fast text-orange-500 mr-3"></i>For transport companies</h3>
-                <p class="text-gray-300 mb-6 max-w-3xl">VecturaBook is growing beyond a single driver's logbook. A connected version for fleets is in exploration:</p>
+                <p class="text-gray-300 mb-6 max-w-3xl">The fleet version is VecturaBook Pro: your own server, a dispatcher window and drivers connected. Where it is heading:</p>
                 <ul class="grid md:grid-cols-2 gap-x-8 gap-y-3 text-gray-200 mb-6">
                     <li><i class="fa-solid fa-gauge-high text-orange-500 mr-2"></i> Dispatcher dashboard — all trucks, trips and drivers in one place</li>
                     <li><i class="fa-solid fa-tower-broadcast text-orange-500 mr-2"></i> Real-time updates from drivers in the field, even on poor connections</li>
@@ -557,8 +570,8 @@
                     <li><i class="fa-solid fa-server text-orange-500 mr-2"></i> Your data stays yours — the fleet version runs on your own infrastructure, no third-party cloud</li>
                     <li><i class="fa-solid fa-signature text-orange-500 mr-2"></i> Proof of delivery with driver signatures</li>
                 </ul>
-                <a href="mailto:germormdev@gmail.com?subject=VecturaBook%20for%20Fleets" class="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-7 rounded-full transition">
-                    <i class="fa-solid fa-envelope"></i> Interested in VecturaBook for your fleet? Get in touch
+                <a href="pro.html" class="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-7 rounded-full transition">
+                    <i class="fa-solid fa-truck-fast"></i> About VecturaBook Pro
                 </a>
             </div>
         </div>
