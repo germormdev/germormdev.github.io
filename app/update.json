@@ -1,5 +1,6 @@
 {
   "android": {
     "minVersionCode": 0
-  }
+  },
+  "min_build_ios": 0
 }
