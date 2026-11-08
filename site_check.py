@@ -449,6 +449,34 @@ js = promo_js()
 mov = [w for w in (".mov", "quicktime") if w in js]
 say(not mov, "promo.js отдаёт всем MP4%s" % ("" if not mov else "  <- ищет MOV: " + ", ".join(mov)))
 
+print("\n[4.2] значок App Store: официальный значок Apple первым в ряду магазинов, скрыт до выхода (08.11.2026)")
+# Правила Apple: значок как есть (файл с Apple Marketing Tools), чёрный при других магазинах, первым в ряду,
+# высота не меньше 40 px. Скрытие («hidden») снимает сторож NAS tools/appstore-badge-keeper.py — руками не трогать.
+import hashlib
+APPLE_BADGE = {  # sha256 файлов с toolbox.marketingtools.apple.com (download-on-the-app-store/black), 08.11.2026
+    "en": "a26fc5b38380272c92e9019a2eb8b45542a66814b3e2b203772db8904b9fb99f",
+    "ru": "27f35c64f2a984ecb4546982889d5514a46666b7aba55909d052e4036862e725",
+    "he": "e0ed003efa194a29a51b70222ed5b3cce84c6192c08b3409c418f4ff212c195f"}
+for p, lang in PROMO_LANG.items():
+    raw = RAW.get(p) or ""
+    m = re.search(r'<a data-appstore-badge( hidden)? href="https://apps\.apple\.com/app/id6830076619"[^>]*>\s*'
+                  r'<img src="(badges/app-store-%s\.svg)"[^>]*height:(\d+)px' % lang, raw)
+    play = raw.find("play.google.com/store/apps/details")
+    bad = []
+    if raw.count("data-appstore-badge") != 1 or not m:
+        bad.append("нет значка или не один")
+    else:
+        if int(m.group(3)) < 40:
+            bad.append("ниже 40 px")
+        if play >= 0 and m.start() > play:
+            bad.append("не первым в ряду (Apple: App Store первым)")
+        if not exists(m.group(2)):
+            bad.append("нет файла " + m.group(2))
+        elif hashlib.sha256((fetch(m.group(2)) or "").encode("utf-8")).hexdigest() != APPLE_BADGE[lang]:
+            bad.append("файл значка не тот, что дал Apple (правка значка запрещена правилами Apple)")
+    say(not bad, "%s значок App Store %s: %s" % (p, lang, ("  <- " + "; ".join(bad)) if bad else
+                                                ("скрыт (ждёт выхода в App Store)" if m.group(1) else "показан")))
+
 print("\n[5] нет обещаний, что данные или местоположение не уходят")
 for p in PAGES:
     d = docs.get(p)

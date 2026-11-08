@@ -93,6 +93,8 @@
       GA.track("store_click", { store: "google_play" });
     } else if (href.indexOf("rustore.ru") >= 0) {
       GA.track("store_click", { store: "rustore" });
+    } else if (href.indexOf("apps.apple.com") >= 0) {
+      GA.track("store_click", { store: "app_store" });
     } else if (href === "index.html" || href === "ru.html" || href === "he.html") {
       GA.track("language_switch", { to: href === "index.html" ? "en" : href.slice(0, 2) });
     } else if (href === "privacy.html" || href.indexOf("privacy.html") >= 0) {

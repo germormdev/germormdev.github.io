@@ -71,6 +71,33 @@ ffmpeg -ss 12 -i video/promo-ru.mp4 -frames:v 1 -q:v 4 video/promo-ru.jpg   # о
 ролика, вкладок нет, `promo.js` не ищет MOV), укусы N, O, P, Q, S (звук MP3), T (ветка MOV).
 Кнопка звука — в верхнем углу кадра: надписи ролика бывают только внизу и посередине (German 27.10.2026).
 
+Ролик заменён 08.11.2026 на новый из `Y:\CargoLog\ForGerman\2026-11-07-kadry-rolik\rolik-<язык>.mp4` (1080p → 720p той же
+командой, звук копией; RuStore в конце только у русского — так задумано German).
+
+---
+
+## Значок App Store (задание German 08.11.2026)
+
+В ряду магазинов под заголовком на `index.html`, `ru.html`, `he.html` — официальный значок Apple «Download on the App Store»
+(`badges/app-store-<язык>.svg`, взят как есть с `toolbox.marketingtools.apple.com/api/v2/badges/download-on-the-app-store/black/<en-us|ru-ru|he-il>`;
+прежний адрес `tools.applemarketingtools.com` больше не существует). Ссылка `https://apps.apple.com/app/id6830076619`.
+Правила Apple, которые здесь соблюдены: значок не перерисовывать и не менять; при других магазинах — чёрный; **App Store первым
+в ряду** (на иврите — справа); высота не меньше 40 px (стоит 66 px, как кнопка Google Play); поле вокруг — не меньше четверти
+высоты (`gap-4` = 16 px).
+
+⛔ **Пока VecturaBook нет в App Store, ссылка стоит с атрибутом `hidden`** (`<a data-appstore-badge hidden …>`). Снимает его
+сторож NAS `tools/appstore-badge-keeper.py` (установлен `/usr/local/sbin/appstore-badge-keeper.py`, `/etc/crontab` под Gromoz, :23
+каждый час): спрашивает открытый поиск Apple `itunes.apple.com/lookup?id=6830076619` в us/il/gb/de/ru, нашёл — коммит в `main`
+с тремя страницами, пуш (хук отправит на GitHub Pages), телеграм German; отметка `CargoLogSite/.appstore-badge-keeper.done`,
+журнал `CargoLogSite/appstore-badge-keeper.log`. Руками `hidden` не снимать и не возвращать. Посетители сайта к Apple за
+проверкой не ходят. Клики считает `analytics.js` (`store_click`, `store: app_store`).
+
+Сторож витрины: раздел [4.2] — значок на трёх языках, ровно один, первым перед Google Play, не ниже 40 px, файл совпадает
+с файлом Apple по sha256. Укусы 08.11.2026: убрать значок (ru), высота 30 px (he), значок после RuStore (en), байт в файле (en) —
+все четыре КРАСНЫЕ.
+
+---
+
 Переключатель языков в шапке — `<div class="lang-switch flex … gap-4">`, на иврите с `dir="ltr"` (порядок EN RU HE как
 на остальных страницах). ⛔ Не `space-x-*` с `space-x-reverse`: в RTL отступ ложился не с той стороны, и «EN RU»
 слиплись (S24, 27.10.2026). Сторож [9] меряет промежуток (меньше 8 px — красное), укус R; на маке [9] теперь
