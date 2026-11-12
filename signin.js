@@ -452,6 +452,14 @@ async function loadVersions(maxCount = null) {
   }
 }
 
+// Ссылки в записи истории версий (12.11.2026, запись 2.7.3 со ссылкой на App Store): нажимаемыми становятся ТОЛЬКО адреса
+// магазинов и своих сайтов, уже после escapeHtml — чужой адрес остаётся текстом. Клик считает analytics.js (store_click).
+const VERSION_LINK = /https:\/\/(?:apps\.apple\.com|play\.google\.com|www\.rustore\.ru|apps\.rustore\.ru|vecturabook\.com|help\.vecturabook\.com|my\.vecturabook\.com)\/[^\s<>"']*/g;
+function linkStores(escaped) {
+  return escaped.replace(VERSION_LINK, (u) =>
+    `<a href="${u}" target="_blank" rel="noopener" class="text-orange-600 underline break-all">${u}</a>`);
+}
+
 function renderVersionCard(v, isAdmin) {
   const date = v.releasedAt && v.releasedAt.toDate
     ? v.releasedAt.toDate().toLocaleDateString(LOCALE === "he" ? "he-IL" : LOCALE === "ru" ? "ru-RU" : "en-US",
@@ -460,7 +468,7 @@ function renderVersionCard(v, isAdmin) {
   const changesHtml = (v.changes || "")
     .split("\n")
     .filter((l) => l.trim().length > 0)
-    .map((l) => `<li class="text-gray-700">${escapeHtml(l.trim())}</li>`)
+    .map((l) => `<li class="text-gray-700">${linkStores(escapeHtml(l.trim()))}</li>`)
     .join("");
 
   const adminBtn = isAdmin
