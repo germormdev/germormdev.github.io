@@ -45,20 +45,25 @@ def lookup():
     """Страна, где VecturaBook уже есть в App Store, и адрес карточки; None — пока нигде."""
     if E("K_FOUND"):
         return "test", "https://apps.apple.com/app/id" + APP_ID
-    errors = 0
+    # 12.11.2026: тот же адрес поиска Apple отдаёт закэшированный «0» часами (VecturaBook в App Store с 11.11, а сторож всё
+    # время видел 0 во всех пяти странах — замер с мака и NAS). Метка против кэша в адресе и три попытки на страну.
+    errors, tries = 0, 0
     for cc in COUNTRIES:
-        url = "https://itunes.apple.com/lookup?id=%s&country=%s" % (APP_ID, cc)
-        try:
-            req = urllib.request.Request(url, headers={"User-Agent": "vecturabook-site-keeper"})
-            data = json.loads(urllib.request.urlopen(req, timeout=30).read().decode("utf-8"))
-        except Exception as e:
-            errors += 1
-            continue
-        for item in data.get("results", []):
-            if str(item.get("trackId")) == APP_ID:
-                return cc, item.get("trackViewUrl", "")
-    if errors == len(COUNTRIES):
-        log("ОТКАЗ: поиск Apple не ответил ни в одной стране")
+        for i in range(3):
+            tries += 1
+            url = "https://itunes.apple.com/lookup?id=%s&country=%s&_=%d" % (APP_ID, cc, int(time.time() * 1000) + i)
+            try:
+                req = urllib.request.Request(url, headers={"User-Agent": "vecturabook-site-keeper"})
+                data = json.loads(urllib.request.urlopen(req, timeout=30).read().decode("utf-8"))
+            except Exception as e:
+                errors += 1
+                continue
+            for item in data.get("results", []):
+                if str(item.get("trackId")) == APP_ID:
+                    return cc, item.get("trackViewUrl", "")
+            time.sleep(1)
+    log("в поиске Apple пока нет (%d стран, %d запросов%s)" % (len(COUNTRIES), tries,
+                                                               ", ОТКАЗ: поиск не ответил ни разу" if errors == tries else ""))
     return None
 
 
