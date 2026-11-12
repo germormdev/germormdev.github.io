@@ -89,7 +89,7 @@ ffmpeg -ss 12 -i video/promo-ru.mp4 -frames:v 1 -q:v 4 video/promo-ru.jpg   # о
 сторож NAS `tools/appstore-badge-keeper.py` (установлен `/usr/local/sbin/appstore-badge-keeper.py`, `/etc/crontab` под Gromoz, :23
 каждый час): спрашивает открытый поиск Apple `itunes.apple.com/lookup?id=6830076619` в us/il/gb/de/ru, нашёл — коммит в `main`
 с тремя страницами, пуш (хук отправит на GitHub Pages), телеграм German; отметка `CargoLogSite/.appstore-badge-keeper.done`,
-журнал `CargoLogSite/appstore-badge-keeper.log`. Руками `hidden` не снимать и не возвращать. Посетители сайта к Apple за
+журнал `CargoLogSite/appstore-badge-keeper.log`. Руками `hidden` не снимать и не возвращать. 12.11.2026: сторож сутки не видел VecturaBook, хотя она в App Store с 11.11 — тот же адрес поиска Apple отдавал закэшированный «0»; теперь метка против кэша и три попытки на страну, каждый запуск — строка в журнал. Значок включён сторожем 12.11.2026 11:25 (коммит 8d502be). Ссылка `https://apps.apple.com/app/id6830076619`: на iPhone — переход в приложение App Store (`itms-appss://`), в браузере — карточка «VecturaBook App - App Store». Посетители сайта к Apple за
 проверкой не ходят. Клики считает `analytics.js` (`store_click`, `store: app_store`).
 
 Сторож витрины: раздел [4.2] — значок на трёх языках, ровно один, первым перед Google Play, не ниже 40 px, файл совпадает
