@@ -8,6 +8,7 @@
     <script src="brand.js" defer></script>
     <link rel="stylesheet" href="promo.css">
     <script src="promo.js" defer></script>
+    <script src="features-pdf.js" defer></script>
     <meta name="description" content="יומן נסיעות חינמי לנהגי משאית: נסיעות, משמרות, תדלוקים, מטענים ומכולות. עובד אופליין, בלי הרשמה ובלי פרסומות. אנדרואיד, 29 שפות.">
     <link rel="canonical" href="https://vecturabook.com/he.html">
     <link rel="alternate" hreflang="en" href="https://vecturabook.com/">
@@ -410,6 +411,20 @@
                 <div><h4 class="font-bold text-xl text-gray-900 mb-2">טיימרים</h4><p>טיימרים מובנים להמתנה אצל לקוח, תדלוק, פריקה — עם התראות ברקע.</p></div>
                 <div><h4 class="font-bold text-xl text-gray-900 mb-2">זיהוי מכולות OCR</h4><p>מספרי מכולות נקראים במצלמה ישירות בטלפון, בלי אינטרנט — אופקיים, אנכיים ודו-שורתיים. בדיקת ספרת ביקורת ISO 6346 אוטומטית עם רטט.</p></div>
                 <div><h4 class="font-bold text-xl text-gray-900 mb-2">מסמכים</h4><p>"צילום מסמכים" בכל נסיעה: תעודות משלוח, שטרי מטען וכל נייר אחר — מצולמים בהעמסה ובפריקה ונשמרים עם הנסיעה. מסמכי המשאית והנגרר במגרש הרכבים — רישיון רכב, ביטוח, טסט ומסמכים משלך — עם צילום של כל עמוד ותאריך תוקף. רישיון נהיגה ומסמכי נהג נוספים בפרופיל הנהג, עם צילומים. התראות לפני שתוקף מסמך מסתיים.</p></div>
+            </div>
+
+            <!-- «Возможности VecturaBook» — PDF на 29 языках (German 12.11.2026). Язык по умолчанию = язык страницы,
+                 выбор остальных рисует features-pdf.js; файлы features/VecturaBook-<язык>.pdf. Сторож [4.3]. -->
+            <div id="features-pdf" data-features-pdf="he" class="bg-orange-50 border border-orange-200 rounded-2xl p-6 mb-16 flex flex-col md:flex-row md:items-center gap-4">
+                <div class="flex-1 min-w-0">
+                    <h3 class="text-xl font-bold text-gray-900 mb-1 flex items-center gap-2"><i class="fa-solid fa-file-pdf text-orange-500" aria-hidden="true"></i><span>היכולות של VecturaBook — PDF</span></h3>
+                    <p class="text-gray-700">התיאור מהחנות ופרקי ה«עזרה» עם צילומי מסך: 8 עמודים, 29 שפות.</p>
+                </div>
+                <div class="flex flex-col sm:flex-row gap-3 sm:items-center">
+                    <label class="sr-only" for="features-pdf-lang">שפה</label>
+                    <select id="features-pdf-lang" translate="no" autocomplete="off" hidden class="border border-gray-300 rounded-lg px-3 py-3 bg-white text-gray-900"></select>
+                    <a href="features/VecturaBook-he.pdf" hreflang="he" download class="bg-orange-500 hover:bg-orange-600 text-white font-bold px-6 py-3 rounded-lg text-center inline-flex items-center justify-center gap-2"><i class="fa-solid fa-download" aria-hidden="true"></i><span>הורדת PDF</span></a>
+                </div>
             </div>
 
             <div class="grid md:grid-cols-2 gap-12 mb-16">

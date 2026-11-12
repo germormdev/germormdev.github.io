@@ -8,6 +8,7 @@
     <script src="brand.js" defer></script>
     <link rel="stylesheet" href="promo.css">
     <script src="promo.js" defer></script>
+    <script src="features-pdf.js" defer></script>
     <meta name="description" content="Бесплатный бортовой журнал для водителей грузовиков: рейсы, смены, заправки, грузы и контейнеры. Работает офлайн, без регистрации и рекламы. 29 языков.">
     <link rel="canonical" href="https://vecturabook.com/ru.html">
     <link rel="alternate" hreflang="en" href="https://vecturabook.com/">
@@ -436,6 +437,20 @@
                 <div><h4 class="font-bold text-xl text-gray-900 mb-2">Таймеры</h4><p>Встроенные таймеры ожидания у клиента, заправки, разгрузки — с уведомлениями в фоне.</p></div>
                 <div><h4 class="font-bold text-xl text-gray-900 mb-2">OCR контейнеров</h4><p>Номера контейнеров читает камера прямо на телефоне, без интернета — горизонтальные, вертикальные и двустрочные. Автоматическая проверка контрольной цифры ISO 6346 с вибрацией.</p></div>
                 <div><h4 class="font-bold text-xl text-gray-900 mb-2">Документы</h4><p>«Фото документов» в каждом рейсе: накладные, CMR и любые другие бумаги — снимаются на погрузке и разгрузке и хранятся вместе с рейсом. Документы тягача и прицепа в гараже — техпаспорт, страховка, техосмотр и свои — с фото каждой страницы и сроком действия. Водительское удостоверение и другие документы водителя в профиле водителя, с фото. Уведомления до окончания срока документа.</p></div>
+            </div>
+
+            <!-- «Возможности VecturaBook» — PDF на 29 языках (German 12.11.2026). Язык по умолчанию = язык страницы,
+                 выбор остальных рисует features-pdf.js; файлы features/VecturaBook-<язык>.pdf. Сторож [4.3]. -->
+            <div id="features-pdf" data-features-pdf="ru" class="bg-orange-50 border border-orange-200 rounded-2xl p-6 mb-16 flex flex-col md:flex-row md:items-center gap-4">
+                <div class="flex-1 min-w-0">
+                    <h3 class="text-xl font-bold text-gray-900 mb-1 flex items-center gap-2"><i class="fa-solid fa-file-pdf text-orange-500" aria-hidden="true"></i><span>Возможности VecturaBook — PDF</span></h3>
+                    <p class="text-gray-700">Описание из магазина и разделы «Помощи» со снимками экрана: 8 страниц, 29 языков.</p>
+                </div>
+                <div class="flex flex-col sm:flex-row gap-3 sm:items-center">
+                    <label class="sr-only" for="features-pdf-lang">Язык</label>
+                    <select id="features-pdf-lang" translate="no" autocomplete="off" hidden class="border border-gray-300 rounded-lg px-3 py-3 bg-white text-gray-900"></select>
+                    <a href="features/VecturaBook-ru.pdf" hreflang="ru" download class="bg-orange-500 hover:bg-orange-600 text-white font-bold px-6 py-3 rounded-lg text-center inline-flex items-center justify-center gap-2"><i class="fa-solid fa-download" aria-hidden="true"></i><span>Скачать PDF</span></a>
+                </div>
             </div>
 
             <div class="grid md:grid-cols-2 gap-12 mb-16">

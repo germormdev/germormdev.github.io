@@ -98,6 +98,18 @@ ffmpeg -ss 12 -i video/promo-ru.mp4 -frames:v 1 -q:v 4 video/promo-ru.jpg   # о
 
 ---
 
+## «Возможности VecturaBook» — PDF на 29 языках (задание German 12.11.2026)
+
+Под «What VecturaBook does» / «Что умеет VecturaBook» на `index.html`, `ru.html`, `he.html` — блок `data-features-pdf="<язык>"`:
+кнопка «Download PDF / Скачать PDF / הורדת PDF» ведёт на `features/VecturaBook-<язык страницы>.pdf` (работает и без скрипта),
+рядом выбор остальных языков — рисует `features-pdf.js` (список кодов и названий там один, как у справки; при «Назад»
+выбор возвращается к языку страницы). Файлы собирает Клод Мак (`tools/help/features_pdf.py`), источник —
+`Y:\CargoLog\Marketing\<дата>-vozmozhnosti\` с `SHA256SUMS`; замена — скопировать 29 файлов в `features/` со сверкой sha256.
+Клик считает `analytics.js` (`features_pdf`, `lang`). Сторож: раздел [4.3] (29 языков в скрипте, 29 файлов, кнопка на
+язык страницы, скрипт подключён один раз); укус 12.11.2026 (нет sv, ru→en, блок he с языком en) — три КРАСНЫХ.
+
+---
+
 Переключатель языков в шапке — `<div class="lang-switch flex … gap-4">`, на иврите с `dir="ltr"` (порядок EN RU HE как
 на остальных страницах). ⛔ Не `space-x-*` с `space-x-reverse`: в RTL отступ ложился не с той стороны, и «EN RU»
 слиплись (S24, 27.10.2026). Сторож [9] меряет промежуток (меньше 8 px — красное), укус R; на маке [9] теперь

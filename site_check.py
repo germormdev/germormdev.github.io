@@ -477,6 +477,30 @@ for p, lang in PROMO_LANG.items():
     say(not bad, "%s значок App Store %s: %s" % (p, lang, ("  <- " + "; ".join(bad)) if bad else
                                                 ("скрыт (ждёт выхода в App Store)" if m.group(1) else "показан")))
 
+print("\n[4.3] «Возможности VecturaBook» PDF: кнопка на языке страницы, все 29 файлов на месте (12.11.2026)")
+# Список языков — один, в features-pdf.js (как у справки). Ссылка без скрипта ведёт на язык страницы.
+fjs = (io.open(os.path.join(LOCAL, "features-pdf.js"), encoding="utf-8").read()
+       if LOCAL and os.path.isfile(os.path.join(LOCAL, "features-pdf.js")) else (fetch("features-pdf.js") or ""))
+codes = re.findall(r'"([a-z]{2})": "', fjs[fjs.find("NAMES"):fjs.find("};", fjs.find("NAMES"))]) if "NAMES" in fjs else []
+say(len(codes) == 29, "features-pdf.js: языков %d%s" % (len(codes), "" if len(codes) == 29 else "  <- нужно 29"))
+gone = [c for c in codes if not exists("features/VecturaBook-%s.pdf" % c)]
+say(codes and not gone, "PDF на месте: %d из %d%s" % (len(codes) - len(gone), len(codes),
+                                                    ("  <- НЕТ " + ", ".join(gone)) if gone else ""))
+for p, lang in PROMO_LANG.items():
+    raw = RAW.get(p) or ""
+    m = re.search(r'data-features-pdf="([a-z]{2})"', raw)
+    link = re.search(r'<a href="(features/VecturaBook-([a-z]{2})\.pdf)"[^>]*\bdownload\b', raw)
+    bad = []
+    if raw.count("data-features-pdf=") != 1 or not m:
+        bad.append("нет блока или не один")
+    elif m.group(1) != lang:
+        bad.append("язык блока %s, а страница %s" % (m.group(1), lang))
+    if not link or link.group(2) != lang:
+        bad.append("кнопка не на язык страницы")
+    if raw.count('src="features-pdf.js"') != 1:
+        bad.append("features-pdf.js подключён не один раз")
+    say(not bad, "%s кнопка PDF %s%s" % (p, lang, ("  <- " + "; ".join(bad)) if bad else ""))
+
 print("\n[5] нет обещаний, что данные или местоположение не уходят")
 for p in PAGES:
     d = docs.get(p)

@@ -99,6 +99,9 @@
       GA.track("language_switch", { to: href === "index.html" ? "en" : href.slice(0, 2) });
     } else if (href === "privacy.html" || href.indexOf("privacy.html") >= 0) {
       GA.track("policy_click", {});
+    } else if (href.indexOf("features/VecturaBook-") >= 0) {
+      // «Возможности VecturaBook» PDF (12.11.2026): какой язык скачали.
+      GA.track("features_pdf", { lang: a.getAttribute("hreflang") || "" });
     } else if (href.indexOf("profi-nav.co.il") >= 0) {
       // Баннер партнёра: без этого события нечем ответить, работает он или зря стоит.
       GA.track("partner_click", { partner: "profi-nav" });
