@@ -74,6 +74,9 @@ ffmpeg -ss 12 -i video/promo-ru.mp4 -frames:v 1 -q:v 4 video/promo-ru.jpg   # о
 Ролик заменён 08.11.2026 на новый из `Y:\CargoLog\ForGerman\2026-11-07-kadry-rolik\rolik-<язык>.mp4` (1080p → 720p той же
 командой, звук копией; RuStore в конце только у русского — так задумано German).
 
+Ролик заменён 13.11.2026 на ролик Клода Мака 12.11 с карточкой со значками (`Y:\CargoLog\ForGerman\2026-11-12-rolik-znachki\VecturaBook-promo-<язык>.mp4`,
+sha256 = NAS): у каждой ссылки финальной карточки значок, App Store официальным значком; 720p той же командой, звук побайтно = источник.
+
 ---
 
 ## Значок App Store (задание German 08.11.2026)
