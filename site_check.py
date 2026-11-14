@@ -54,16 +54,25 @@ def version_key(v):
 def released_versions():
     """(версии по возрастанию, откуда взяты или None, если список не прочитан)."""
     # Источник кода — NAS (04.10.2026). Первым — само хранилище CargoLog.git (master, всегда свежий): рабочий клон
-    # CargoLog/work на NAS сам не обновлялся и 14.11.2026 стоял на 2.5.1 — список версий брался оттуда устаревшим.
-    # Дальше мак (только .git), ПК. CARGOLOG_TREE перекрывает.
-    tree = os.environ.get("CARGOLOG_TREE") or next((t for t in ("/volume1/Gromoz/CargoLog/Git/CargoLog.git", "/volume1/Gromoz/CargoLog/work",
-                                                                os.path.expanduser("~/dev/bortovok"), "F:/Bortovok") if os.path.isdir(t)), "F:/Bortovok")
-    path = arg("--released") or os.path.join(tree, "published_version_names.txt")
-    try:
-        lines = io.open(path, encoding="utf-8").read().splitlines()
-    except OSError:
-        lines = None
-    if lines is None and not arg("--released"):
+    # CargoLog/work на NAS сам не обновлялся и 14.11.2026 стоял на 2.5.1 — список версий брался оттуда устаревшим
+    # (теперь его подтягивает хук post-receive хранилища). Дальше клон NAS, мак (только .git), ПК. CARGOLOG_TREE перекрывает.
+    # Место не прочиталось (нет git в PATH, git отказал) — берётся следующее, а не «список не прочитан».
+    lines, path = None, arg("--released")
+    if path:
+        try:
+            lines = io.open(path, encoding="utf-8").read().splitlines()
+        except OSError:
+            lines = None
+    env_tree = os.environ.get("CARGOLOG_TREE")
+    trees = [env_tree] if env_tree else ["/volume1/Gromoz/CargoLog/Git/CargoLog.git", "/volume1/Gromoz/CargoLog/work",
+                                         os.path.expanduser("~/dev/bortovok"), "F:/Bortovok"]
+    for tree in ([] if path else [t for t in trees if os.path.isdir(t)]):
+        path = os.path.join(tree, "published_version_names.txt")
+        try:
+            lines = io.open(path, encoding="utf-8").read().splitlines()
+            break
+        except OSError:
+            pass
         # 30.10.2026: клон мака ~/dev/bortovok — только .git (без рабочих файлов) — список читается из master самого git.
         for ref in ("network/master", "origin/master", "master"):
             try:
@@ -74,6 +83,8 @@ def released_versions():
             if out.returncode == 0:
                 lines, path = out.stdout.decode("utf-8").splitlines(), "%s (git %s)" % (path, ref)
                 break
+        if lines is not None:
+            break
     if lines is None:
         return sorted(FLOOR, key=version_key), None
     named = {l.strip() for l in lines if re.match(r"^\d+\.\d+\.\d+$", l.strip())}
